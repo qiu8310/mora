@@ -1,0 +1,8 @@
+node_modules
+dist
+.idea
+sinaapp/mora/1/frontend
+sinaapp/mora/.svn
+.tmp
+.sass-cache
+app/bower_components
