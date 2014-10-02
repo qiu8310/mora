@@ -7,13 +7,23 @@ angular
     'ngSanitize',
     'ngRoute'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
+
+    $locationProvider.html5Mode(true).hashPrefix('!');
+
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/home.html',
+        controller: 'HomeCtrl'
       })
-      .otherwise({
+      .when('/home', {
         redirectTo: '/'
+      })
+
+
+      .otherwise({
+        redirectTo: function() {
+          window.location.href = '/404.html';
+        }
       });
   });

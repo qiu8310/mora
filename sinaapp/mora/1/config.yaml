@@ -1,2 +1,37 @@
 name: mora
 version: 1
+#accesskey: fuck_world
+#cron:
+#  - description: cron task run every 45 mins
+#      url: cron/every_45_mins.php
+#      schedule: */45 * * * *
+#      timezone: Beijing
+
+handle:
+
+  # 需要密码访问
+  - passwdaccess: if(path ~ "^/logs.php") passwd "mora:qiu8310"
+
+  # 对cron任务保护，防止被外部抓取，我们将cron任务放在cron目录下(sae中cron服务执行时，走的是内部网络)
+  - hostaccess: if(path ~ "^/cron/") allow "10.0.0.0/8"
+
+  # 重定向 testswarm
+  - rewrite: if(!is_dir() && !is_file() && path !~ "^[scripts|styles|images|static]") goto "/frontend/#/"
+  #- rewrite: if(path ~ "^/testswarm/?$" && !is_dir() && !is_file()) goto "/testswarm/index.php?${QUERY_STRING}"
+  #- rewrite: if(path ~ "^/testswarm/([^/]+)/?$" && !is_dir() && !is_file()) goto "/testswarm/index.php?action=$1&${QUERY_STRING}"
+  #- rewrite: if(path ~ "^/testswarm/([^/]+)/([^/]+)/?$" && !is_dir() && !is_file()) goto "/testswarm/index.php?action=$1&item=$2&${QUERY_STRING}"
+
+
+  # 设置过期时间
+  #- expire: if(is_file() && path ~ "\.js$|\.css$|\.png$|\.gif$|\.jpg$|\.jpeg$") time 86400
+
+
+  # 压缩
+  #- compress: if(is_file() && path ~ "\.js$|\.css$) compress
+  - compress: if ( out_header["Content-type"] ~ "text/css" ) compress
+  - compress: if ( out_header["Content-type"] ~ "text/javascript" ) compress
+  - compress: if ( out_header["Content-type"] ~ "image/jpeg" ) compress
+  - compress: if ( out_header["Content-type"] ~ "image/png" ) compress
+  - compress: if ( out_header["Content-type"] ~ "image/pjpeg" ) compress
+  - compress: if ( out_header["Content-type"] ~ "image/gif" ) compress
+  - compress: if ( out_header["Content-type"] ~ "image/bmp" ) compress

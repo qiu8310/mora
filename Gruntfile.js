@@ -6,6 +6,31 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+var LIVERELOAD_PORT = 35999;
+var mountFolder = function(connect, dir) {
+  return connect.static(require('path').resolve(dir));
+};
+var modRewrite = require('connect-modrewrite');
+
+function getMiddleware(dirs) {
+
+  if (!Array.isArray(dirs)) {
+    dirs = [dirs];
+  }
+
+  return function(connect) {
+    var result = [
+      modRewrite(['!\\.\\w+$ /index.html [L]']),
+      //modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
+    ];
+
+    dirs.forEach(function(dir) {
+      result.push(mountFolder(connect, dir));
+    });
+
+    return result;
+  };
+}
 
 module.exports = function (grunt) {
 
@@ -15,15 +40,16 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  var yeomanConfig = {
+    app : require('./bower.json').appPath || 'app',
+    dist: 'sinaapp/mora/1/frontend'
+  };
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
     // Project settings
-    yeoman: {
-      // configurable paths
-      app: require('./bower.json').appPath || 'app',
-      dist: 'sinaapp/mora/1/frontend'
-    },
+    yeoman: yeomanConfig,
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -67,30 +93,35 @@ module.exports = function (grunt) {
         port: 9999,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: '0.0.0.0',
-        livereload: 35999
+        livereload: LIVERELOAD_PORT
       },
       livereload: {
         options: {
           open: true,
+          middleware: getMiddleware(['.tmp', yeomanConfig.app])
+          /*
           base: [
             '.tmp',
             '<%= yeoman.app %>'
           ]
+          */
         }
       },
       test: {
         options: {
           port: 9998,
-          base: [
+          middleware: getMiddleware(['.tmp', 'test', yeomanConfig.app])
+          /*base: [
             '.tmp',
             'test',
             '<%= yeoman.app %>'
-          ]
+          ]*/
         }
       },
       dist: {
         options: {
-          base: '<%= yeoman.dist %>'
+          middleware: getMiddleware(['.tmp', yeomanConfig.dist])
+          //base: '<%= yeoman.dist %>'
         }
       }
     },
