@@ -17,6 +17,14 @@ function writelog($file, $log, $logtime=true) {
 	*/
 
 	if (ENVIRONMENT === ENVIRONMENT_SAE) {
+		if (DEBUG) {
+			sae_set_display_errors(true); //不记录日志而将日志打印出来
+		}
+		sae_debug(CURRENT_TIME . ' ' . $file . ': ' . $log);
+
+		// 恢复初始状态
+		sae_set_display_errors(SAE_DEBUG);
+
 		//DB::insert('logs', array('time'=>date('Y-m-d H:i:s', TIMESTAMP), 'app'=>$file, 'message'=>$log));
 		return true;
 	}

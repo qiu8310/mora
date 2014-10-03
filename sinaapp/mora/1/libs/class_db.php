@@ -4,8 +4,8 @@ if (!defined('ROOT')) exit();
 class DB extends database {
 	public static $_cache = array();
 
-	public static function count($table) {
-		return self::result_first('SELECT COUNT(*) FROM %t', array($table));
+	public static function count($table, $condition = '1') {
+		return self::result_first('SELECT COUNT(*) FROM %t WHERE %r', array($table, self::where($condition)));
 	}
 
 	/*
@@ -42,16 +42,7 @@ class DB extends database {
 			)
 	
 	 */
-	public static function table_meta($table, $force = false) {
-		if (!$force) {
-			$key = 'table_meta_'.$table;
-			if (!isset(self::$_cache[$key])) {
-				//self::$_cache[$key] = forward_static_call(array('DB', 'table_meta'), $table, true);
-				self::$_cache[$key] = Storage::get($key, create_function('$table', 'return DB::table_meta($table, true);'), array($table));
-			}
-			return self::$_cache[$key];
-		}
-
+	private static function _cache_table_meta($table, $force = false) {
 		# SHOW COLUMNS FROM m_option
 		# SHOW CREATE TABLE m_option
 		# SHOW FULL FIELDS FROM m_option
@@ -87,16 +78,7 @@ class DB extends database {
 			
 			)
 	 */
-	public static function db_meta($force = false) {
-		if (!$force) {
-			$key = 'db_meta';
-			if (!isset(self::$_cache[$key])) {
-				//self::$_cache[$key] = forward_static_call(array('DB', 'db_meta'), true);
-				self::$_cache[$key] = Storage::get($key, create_function('', 'return DB::db_meta(true);'));
-			}
-			return self::$_cache[$key];
-		}
-
+	private static function _cache_db_meta($force = false) {
 		// SHOW TABLE STATUS
 		$res = self::fetch_all('SHOW TABLE STATUS', array());
 		// 去掉表前缀
@@ -122,4 +104,42 @@ class DB extends database {
 		return array_keys(self::table_meta($table));
 	}
 
+	public static function __callStatic($func, $arguments) {
+		static $_caches = array();
+
+		$cache_name = '_cache_' . $func;
+		$force = end($arguments);
+
+		// get cache key
+		if (is_bool($force)) {
+			array_pop($arguments);
+			$key = $func . implode('_', $arguments);
+			array_push($arguments, $force);
+		} else {
+			$force = false; // 默认如果没有 $force，则永远为 false
+			$key = $func . implode('_', $arguments);
+		}
+		$key = __CLASS__ . '_' . $key;
+
+		if (!$force) {
+			if (isset($_caches[$key])) {
+				return $_caches[$key];
+			} else {
+				$val = Storage::get($key);
+				if ($val) {
+					$_caches[$key] = $val;
+					return $val;
+				}
+			}
+		}
+
+		if (method_exists(DB, $cache_name)) {
+			$val = forward_static_call_array(array(self, $cache_name), $arguments);
+			$_caches[$key] = $val;
+			return Storage::set($key, $val);
+
+		} else {
+			throw new Exception("Static function [" . __CLASS__ . "::$func()] not found");
+		}
+	}
 }

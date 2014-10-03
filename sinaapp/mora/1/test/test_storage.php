@@ -6,27 +6,27 @@ require_once( "../common.php" );
 $key = '___k';
 
 Storage::del($key);
-assert(false === Storage::get($key), 'get empty key return false');
+assert(false === Storage::get($key));
 
 
 $val = Storage::set($key, '1');
-assert($val === '1', 'set will return your set value');
+assert($val === '1');
 
 
-assert($val === Storage::get($key), 'get should return your set value');
+assert($val === Storage::get($key));
 
 
 Storage::set($key, '2');
-assert('2' === Storage::get($key), 'should overwrite set value');
+assert('2' === Storage::get($key));
 
 
 
 Storage::del($key);
-assert(false === Storage::get($key), 'set value should be deleted');
+assert(false === Storage::get($key));
 
 
 $val = Storage::get($key, create_function('', 'return 2;'));
-assert($val === Storage::get($key), 'support callback');
+assert($val === Storage::get($key));
 
 Storage::del($key);
 

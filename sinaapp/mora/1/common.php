@@ -7,10 +7,13 @@ define('OS_EOL', PHP_EOL);
 define('HTML_EOL', '<br/>');
 define('ROOT', dirname(__FILE__) . DS);
 define('TIMESTAMP', time());
+define('CURRENT_TIME', date('Y-m-d H:i:s', TIMESTAMP));
 
 define('PATH_CONFIG', ROOT . 'config' . DS);
 define('PATH_LIBS', ROOT . 'libs' . DS);
 define('PATH_MODEL', ROOT . 'models' . DS);
+define('PATH_VENDOR', ROOT . 'vendor' . DS);
+
 
 // 导入环境变量
 require_once( PATH_LIBS . 'environment.php' );
@@ -20,11 +23,10 @@ require_once( PATH_LIBS . 'environment.php' );
 global $_G;
 
 
-error_reporting(ENVIRONMENT === ENVIRONMENT_LOCAL ? E_ALL : 0);
-
-ini_set('magic_quotes_gpc', 'off');
-ini_set('default_charset', 'UTF-8');
-
+if (function_exists('ini_set')) {
+	ini_set('magic_quotes_gpc', 'off');
+	ini_set('default_charset', 'UTF-8');
+}
 
 
 require_once( PATH_LIBS . 'function_core.php' );
@@ -40,6 +42,14 @@ $_G['config'] = $_config;
 // DEBUG
 if (!defined('DEBUG')) {
 	define('DEBUG', isset($_config['debug']) ? $_config['debug'] : false);
+}
+
+// error_reporting
+error_reporting((ENVIRONMENT == ENVIRONMENT_LOCAL || DEBUG) ? E_ALL : 0);
+// sae error reporting
+define('SAE_DEBUG', DEBUG && ENVIRONMENT === ENVIRONMENT_SAE);
+if (SAE_DEBUG) {
+	sae_set_display_errors(SAE_DEBUG);
 }
 
 

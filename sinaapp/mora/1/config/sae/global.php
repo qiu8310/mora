@@ -3,7 +3,7 @@ if (!defined('ROOT')) exit();
 
 $_config = array();
 
-$_config['debug'] = false;
+$_config['debug'] = true;
 
 // ----------------------------  CONFIG DB  ----------------------------- //
 $_config['db']['1']['dbhost'] = SAE_MYSQL_HOST_M . ':' . SAE_MYSQL_PORT;

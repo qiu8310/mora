@@ -56,6 +56,14 @@ class model {
 		return DB::delete($this->table, $condition, $limit);
 	}
 
+	public function delete_all() {
+		return DB::delete($this->table, '1');
+	}
+
+	public function truncate() {
+		return DB::query('TRUNCATE %t', array($this->table));
+	}
+
 
 	public function update($data, $condition) {
 		return DB::update($this->table, $data, $condition);
@@ -65,13 +73,13 @@ class model {
 		return DB::fetch_all('SELECT * FROM %t WHERE %r', array($this->table, DB::where($condition)), $keyfield);
 	}
 
-	public function page($condition = '1', $page_num = 1, $page_size = 10, $keyfield = '') {
+	public function page($page_num = 1, $page_size = 10, $condition = '1', $keyfield = '') {
 		$limit = DB::limit(($page_num - 1) * $page_size, $page_size);
 		return DB::fetch_all('SELECT * FROM %t WHERE %r %r', array($this->table, DB::where($condition), $limit), $keyfield);
 	}
 
-	public function count() {
-		return DB::count($this->table);
+	public function count($condition = '1') {
+		return DB::count($this->table, $condition);
 	}
 
 	public function get($pri_value) {
@@ -81,6 +89,10 @@ class model {
 	public function set($pri_value, $data) {
 		$this->update($data, array('where' => '%F = %q', 'arg' => array($this->pri, $pri_value)));
 		return DB::affected_rows() == 1;
+	}
+
+	public function del($pri_value) {
+		return $this->delete(array('where' => '%F = %q', 'arg' => array($this->pri, $pri_value)), 1);
 	}
 
 

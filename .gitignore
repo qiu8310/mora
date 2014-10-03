@@ -2,10 +2,8 @@ node_modules
 dist
 .idea
 
-sinaapp/mora/1/frontend
-sinaapp/mora/.svn
-sinaapp/mora/1/.cache/
-sinaapp/mora/1/logs/
+# 这里的文件归 svn 管理
+sinaapp/mora
 
 .tmp
 .sass-cache
