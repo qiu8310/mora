@@ -1,0 +1,68 @@
+
+
+<form class="col-sm-6 col-sm-offset-3 form-horizontal"
+      name="signup"
+      ng-submit="submit()">
+
+  <div class="form-group has-feedback" ng-class="getCssClasses(signup.email)">
+    <label class="control-label col-sm-3">邮箱</label>
+    <div class="col-sm-9">
+      <input type="email" class="form-control" placeholder="example@example.com"
+             name="email"
+             ng-model="user.email"
+             unique-validate="user.email"
+             required/>
+      <span ng-show="showFeedback(signup.email)" class="glyphicon glyphicon-ok form-control-feedback"></span>
+      <p class="help-block" ng-show="showError(signup.email, 'unique')">邮箱已经被注册了，忘记密码 或 直接登录</p>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback" ng-class="getCssClasses(signup.nickname)">
+    <label class="control-label col-sm-3">昵称</label>
+    <div class="col-sm-9">
+      <input class="form-control" placeholder="请输入您的昵称"
+             name="nickname"
+             ng-model="user.nickname"
+             range-validate="4-10"
+             required/>
+      <span ng-show="showFeedback(signup.nickname)" class="glyphicon glyphicon-ok form-control-feedback"></span>
+      <p class="help-block" ng-show="showError(signup.nickname, 'require')">请输入您的昵称</p>
+      <p class="help-block" ng-show="showError(signup.nickname, 'range')">只能输入4-10个字符</p>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback" ng-class="getCssClasses(signup.password)">
+    <label class="control-label col-sm-3">密码</label>
+    <div class="col-sm-9">
+      <input type="password" class="form-control" placeholder="请输入您的密码"
+             name="password"
+             ng-model="user.password"
+             ng-minlength="6"
+             ng-maxlength="20"
+             required/>
+      <span ng-show="showFeedback(signup.password)" class="glyphicon glyphicon-ok form-control-feedback"></span>
+      <p class="help-block" ng-show="showError(signup.password, 'require')">请输入您的昵称</p>
+      <p class="help-block" ng-show="showError(signup.password, 'minlength')">最少输入6个字符</p>
+      <p class="help-block" ng-show="showError(signup.password, 'maxlength')">最长输入20个字符</p>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback">
+    <label class="control-label col-sm-3">密码确认</label>
+    <div class="col-sm-9">
+      <input type="password" class="form-control" placeholder="请再次输入您的密码"
+             name="user.password_check"
+             ng-model="user.password_check"
+             required/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-9 col-sm-offset-3">
+      <button type="submit" class="btn btn-primary"
+              ng-disabled="signup.$invalid">注册</button>
+    </div>
+  </div>
+
+
+</form>

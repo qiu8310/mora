@@ -7,7 +7,7 @@
   "curly": true,
   "eqeqeq": true,
   "immed": true,
-  "indent": 2,
+  "indent": false,
   "latedef": true,
   "newcap": true,
   "noarg": true,
@@ -15,7 +15,7 @@
   "regexp": true,
   "undef": true,
   "unused": true,
-  "strict": true,
+  "strict": false, /* js hint 检查差不多就包括了 strict */
   "trailing": true,
   "smarttabs": true,
   "globals": {

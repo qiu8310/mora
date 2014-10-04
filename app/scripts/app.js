@@ -7,9 +7,11 @@ angular
     'ngSanitize',
     'ngRoute'
   ])
-  .config(function ($routeProvider, $locationProvider) {
+  .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
     $locationProvider.html5Mode(true).hashPrefix('!');
+
+    $httpProvider.interceptors.push('HttpInterceptor');
 
     $routeProvider
       .when('/', {
@@ -21,6 +23,14 @@ angular
       })
 
 
+      .when('/signup', {
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
       .otherwise({
         redirectTo: function() {
           window.location.href = '/404.html';
