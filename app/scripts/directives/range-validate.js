@@ -2,7 +2,7 @@
  *
  * @example
  *
- * <input type="text" range-validate="4-10|filter" />
+ * <input type="text" ng-model="text" range-validate="4-10|filter" />
  *
  * filter 只会把 modelValue filter 成指定的值，不会改变 viewValue
  *
@@ -13,14 +13,11 @@ angular.module('moraApp')
       require: '?ngModel',
       restrict: 'A',
       link: function postLink(scope, element, attrs, model) {
-        if (!model) {
-          return ;
-        }
 
         var ranges = attrs.rangeValidate.match(/(\d+)\-(\d+)\|?(\w+)?/),
           start, end, op;
         if (!ranges) {
-          throw new Error('rangeValidate should be set to something like this: range-validate="4-10|filter"');
+          throw new Error('rangeValidate should be set to something like this: range-validate="4-10"');
         }
 
         start = parseInt(ranges[1]);

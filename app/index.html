@@ -66,6 +66,11 @@
     <![endif]-->
     <!-- endbuild -->
 
+    <!-- build:js scripts/lib.js -->
+    <script src="scripts/vendors/lodash.js"></script>
+    <script src="scripts/vendors/kinetic.js"></script>
+    <!-- endbuild -->
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/angular/angular.js"></script>
@@ -73,6 +78,7 @@
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -80,13 +86,15 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/root.js"></script>
     <script src="scripts/controllers/home.js"></script>
-
-
     <script src="scripts/controllers/signup.js"></script>
     <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/services/http-interceptor-service.js"></script>
+
     <script src="scripts/directives/unique-validate.js"></script>
     <script src="scripts/directives/range-validate.js"></script>
+    <script src="scripts/directives/equal-validate.js"></script>
+    <script src="scripts/directives/form-control.js"></script>
+
+    <script src="scripts/services/http-interceptor-service.js"></script>
     <!-- endbuild -->
 </body>
 </html>

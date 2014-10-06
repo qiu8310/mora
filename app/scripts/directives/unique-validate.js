@@ -1,21 +1,17 @@
 /**
  *
  * @example
- *  <input type="email" unique-field="[table].[field]|[timeout]" />
+ *  <input type="email" ng-model="email" unique-field="[table].[field]" />
  *
  */
 angular.module('moraApp')
-  .directive('uniqueValidate', function ($timeout, $parse, $http) {
+  .directive('uniqueValidate', function ($http) {
     return {
       require: '?ngModel',
       restrict: 'A',
       link: function postLink(scope, element, attrs, model) {
 
-        if (!model) {
-          return ;
-        }
-
-        var sid, table, field, timeout = 500,
+        var table, field,
           tableField = attrs.uniqueValidate.replace(/\s+/, '').split('.');
 
         if (tableField.length !== 2) {
@@ -24,33 +20,22 @@ angular.module('moraApp')
 
         table = tableField[0];
         field = tableField[1];
-        if (field.indexOf('|') > 0) {
-          field = field.split('|');
-          timeout = parseInt(field.pop(), 10) || timeout;
-          field = field.shift();
-        }
 
+        scope.$watch(attrs.ngModel, function(modelValue) {
 
-        function handler() {
-          var modelValue = $parse(attrs.ngModel)(scope),
-            path = table + '/exist',
+          if (model.$isEmpty(modelValue)) {
+            return false;
+          }
+
+          var path = table + '/exist',
             data = {};
           data[field] = modelValue;
-
+          model.$setValidity('unique', null);
           $http
             .post(path, data)
             .success(function() { model.$setValidity('unique', false); })
             .error(function() {   model.$setValidity('unique', true); });
-        }
 
-        scope.$watch(attrs.ngModel, function(modelValue) {
-          if (modelValue === undefined || modelValue === '') {
-            return false;
-          }
-          if (sid) {
-            $timeout.cancel(sid);
-          }
-          sid = $timeout(handler, timeout, true);
         });
       }
     };

@@ -15,12 +15,10 @@ angular.module('moraApp')
 
         // 处理 user/exist
         var paths = request.url.split('/'),
-          phpFile = 'http://mora.com/api/' + paths.shift() + '.php?',
+          phpFile = 'http://mora.com/api/' + paths.shift() + '.php?';
 
-          module = paths.shift() || 'index',
-          action = paths.shift() || 'index';
 
-        request.url = phpFile + 'm=' + module + '&a=' + action;
+        request.url = phpFile + 'p=' + paths.join('___');
 
         console.log(request);
 

@@ -1,34 +1,26 @@
 'use strict';
 
 angular.module('moraApp')
-  .controller('SignupCtrl', function ($scope) {
-    $scope.user = {};
-
-    $scope.showFeedback = function(ctrl) {
-      if (ctrl && ctrl.$valid && ctrl.$dirty) {
-        return true;
-      }
-      return false;
+  .controller('SignupCtrl', function ($scope, $http, md5) {
+    $scope.user = {
+      email: 'qiuzhongleiabc@126.com',
+      nickname: 'Mora',
+      password: 'qiu8310',
+      passwordCheck: 'qiu8310'
     };
 
-    $scope.getCssClasses = function(ctrl) {
-      if (!ctrl) {
-        return false;
-      }
-      return {
-        'has-error': ctrl.$invalid && ctrl.$dirty,
-        'has-success': ctrl.$valid && ctrl.$dirty
-      };
-    };
+    $http.post('user', {
+      email: $scope.user.email,
+      nickname: $scope.user.nickname,
+      password: md5.createHash($scope.user.password)
+    });
 
-    $scope.showError = function(ctrl, error) {
-      if (!ctrl) {
-        return false;
-      }
-      return ctrl.$error[error];
-    };
 
     $scope.submit = function() {
-      console.log($scope.signup);
+      $http.put('user', {
+        email: $scope.user.email,
+        nickname: $scope.user.nickname,
+        password: md5.createHash($scope.user.password)
+      });
     };
   });
