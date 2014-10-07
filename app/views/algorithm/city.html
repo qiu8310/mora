@@ -1,0 +1,49 @@
+<br>
+<form class="col-sm-12 form-horizontal" name="city" layout="7-5">
+  <div class="col-sm-4">
+    <form-control label="城市的宽度">
+      <input type="number" class="form-control" ng-model="size.width" required/>
+    </form-control>
+  </div>
+
+  <div class="col-sm-4">
+    <form-control label="城市的高度">
+      <input type="number" class="form-control" ng-model="size.height" required/>
+    </form-control>
+  </div>
+
+  <div class="col-sm-4">
+    <form-control label="城市的类型">
+      <select class="form-control" ng-model="road.type" ng-options="key as label for (key, label) in road.types">
+      </select>{{a.roadType}}
+    </form-control>
+  </div>
+
+  <div class="col-sm-4" ng-repeat="(key, item) in options">
+    <form-control label="{{item.label}}">
+      <input type="{{item.type || 'number'}}" class="form-control" ng-model="item.value" required/>
+    </form-control>
+  </div>
+
+
+  <div class="col-sm-4" ng-repeat="(key, item) in roadTypeOptions[road.type]">
+    <form-control label="{{item.label}}">
+      <input class="form-control" type="number" ng-model="item.value" required/>
+    </form-control>
+  </div>
+
+
+  <div class="col-sm-12">
+    <center>
+      <button class="btn btn-primary" ng-click="generateCityModel()">生成城市模型</button>
+      <button class="btn btn-primary" ng-click="generateRandomCrossPoints()">随机生成交叉路口</button>
+      <button class="btn btn-primary" ng-click="searchNearestRSU()">查找最近的 RSU</button>
+    </center>
+  </div>
+
+
+  <div class="col-sm-offset-1 col-sm-10">
+    <div id="stage"></div>
+  </div>
+
+</form>

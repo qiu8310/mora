@@ -21,6 +21,7 @@ angular.module('moraApp')
     return {
       templateUrl: 'views/tpls/form-control.html',
       transclude: true,
+      replace: true,
       restrict: 'E',
       require: '^form',
       scope: {

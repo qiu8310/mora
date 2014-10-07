@@ -68,6 +68,11 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
+
+      .when('/algorithm/city', {
+        templateUrl: 'views/algorithm/city.html',
+        controller: 'AlgorithmCityCtrl'
+      })
       .otherwise({
         redirectTo: function() {
           window.location.href = '/404.html';
