@@ -28,7 +28,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta name="mobile-web-app-capable" content="yes">
     <meta http-equiv="cleartype" content="on">
-    <meta http-equiv="X-Frame-Options" content="DENY">
+
+    <!-- SAE 下用不了 -->
+    <!--<meta http-equiv="X-Frame-Options" content="DENY">-->
 
     <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.css">
     <!-- build:css({.tmp,app}) /styles/main.css -->
@@ -73,12 +75,14 @@
 
     <!-- build:js /scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-resource/angular-resource.js"></script>
-    <script src="/bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="/bower_components/angular-route/angular-route.js"></script>
-    <script src="/bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

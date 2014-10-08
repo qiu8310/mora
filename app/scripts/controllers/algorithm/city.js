@@ -3,6 +3,8 @@
 angular.module('moraApp')
   .controller('AlgorithmCityCtrl', function (Algorithm, $scope) {
 
+    var DEBUG = false;
+
     var Point = Algorithm.Point,
       Line = Algorithm.Line,
       Rectangle = Algorithm.Rectangle;
@@ -38,7 +40,7 @@ angular.module('moraApp')
     // 保存到每点的距离的排序
     CrossPoint.prototype.getDistance = function(target) {
       if ((target.name in this.distance) || this === target) { return false; }
-      var distance = Math.pow(this.point.x - target.point.x, 2) + Math.pow(this.point.y - target.point.y, 2);
+      var distance = Math.round(Math.sqrt(Math.pow(this.point.x - target.point.x, 2) + Math.pow(this.point.y - target.point.y, 2)));
       this.distance[target.name] = distance;
       target.distance[this.name] = distance;
     };
@@ -47,23 +49,6 @@ angular.module('moraApp')
     CrossPoint.prototype.getNearestPointNames = function() {
       var names = _.keys(this.distance), self = this;
       return _.sortBy(names, function(name) { return self.distance[name]; });
-    };
-
-    // 得到可能的线
-    CrossPoint.prototype.getPossibleLines = function() {
-      var lines = [], cp = this, line;
-      _.each(this.getNearestPointNames(), function(name) {
-        var target = gCrossPoints[name],
-          line = new Line(cp.point, target.point);
-
-        if ($scope.road.type === 'rect' && !line.isParallel) {
-          return true;
-        }
-
-        lines.push(line);
-      });
-
-      return lines;
     };
 
 
@@ -203,49 +188,53 @@ angular.module('moraApp')
     $scope.searchNearestRSU = function() {
       if (!gStartCrossPoint) { return false; }
 
-      var distance = {}, // 起点到每个点的距离
+      var distance = {}, // 起点到每个点的最短距离
         path = {}; // 记录起点到每个点的最短路径的路线
 
       _.each(gCrossPoints, function(cp) {
         distance[cp.name] = cp === gStartCrossPoint ? 0 : Infinity; // 初始化为无穷大（到它自己的距离当然为0）
-        path[cp.name] = []; // path 都是空的
+        path[cp.name] = gStartCrossPoint.name; // path 都是空的
       });
 
       var startCP = gStartCrossPoint,
-        nearCP, nearDistance;
+        finishCPs = {}, // 已经处理过的点
+        minDistance, minName;
       while(startCP) {
-        nearCP = null;
-        nearDistance = Infinity;
+        finishCPs[startCP.name] = true;
 
+        console.groupCollapsed(startCP.name);
         _.each(startCP.linePointNames, function(name) {
           var target = gCrossPoints[name],
             targetDistance = distance[startCP.name] + startCP.distance[name];
           if (targetDistance < distance[name]) {
             distance[name] = targetDistance;
 
-            if (targetDistance < nearDistance) {
-              // 保存最近的一个点
-              nearDistance = targetDistance;
-              nearCP = target;
-
-              // 生成从起点 gStartCrossPoint 经过 startCP 到 target 的路径
-              path[name] = [];
-              _.each(path[startCP.name], function(point) {
-                path[name].push(point);
-              });
-              path[name].push(target.point);
-            }
+            // 生成从起点 gStartCrossPoint 经过 startCP 到 target 的路径
+            path[name] = path[startCP.name] + ',' + target.name;
           }
-
         });
 
-        startCP = nearCP;
+        // 寻找 distance 中最短的一条
+        minDistance = Infinity;
+        minName = false;
+        _.each(distance, function(len, name) {
+          if (len < minDistance && !finishCPs[name]) {
+            minDistance = len;
+            minName = name;
+          }
+        });
+
+        startCP = minName ? gCrossPoints[minName] : null;
+
+        console.groupEnd();
+
       }
 
+      console.log('result distance: %o path: %o', distance, path);
 
 
       // 遍历 RSU
-      nearCP = null;
+      var nearCP = null;
       _.each(gRSUCrossPoints, function(cp) {
         if (nearCP === null || distance[cp.name] < distance[nearCP.name]) {
           nearCP = cp;
@@ -257,11 +246,12 @@ angular.module('moraApp')
       } else {
         gEndCrossPoint = nearCP;
         gPath = [gStartCrossPoint.point.x, gStartCrossPoint.point.y];
-        _.each(path[nearCP.name], function(p) {
+        _.each(path[nearCP.name].split(','), function(name) {
+          var p = gCrossPoints[name].point;
           gPath.push(p.x);
           gPath.push(p.y);
         });
-        console.log('%o %o', gEndCrossPoint, gPath);
+        console.log('gPath %o', gPath);
         _renderResult();
       }
 
@@ -293,6 +283,7 @@ angular.module('moraApp')
 
 
     function _renderResult() {
+      _render();
       var layer = new Kinetic.Layer();
       layer.add(new Kinetic.Line({
         points: gPath,
@@ -333,6 +324,17 @@ angular.module('moraApp')
           listening: true
         });
         circle.on('click', _clickOnCircle);
+
+        if (DEBUG) {
+          layer.add(new Kinetic.Text({
+            x: cp.point.x,
+            y: cp.point.y,
+            offset: {x: 3, y: 3},
+            text: cp.name,
+            fill: $scope.options[cp.type + 'Color'].value
+          }));
+        }
+
         layer.add(circle);
       });
 
@@ -344,4 +346,11 @@ angular.module('moraApp')
 
     // 初始化
     $scope.generateCityModel();
+    angular.extend(document.querySelector('.kineticjs-content').style, {
+      margin: '10px auto',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      display: 'block',
+      border: '1px solid ghostwhite'
+    });
   });

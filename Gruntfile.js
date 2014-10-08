@@ -34,6 +34,8 @@ function getMiddleware(dirs) {
 
 module.exports = function (grunt) {
 
+  grunt.loadTasks( "grunt_plugin/tasks" );
+
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
@@ -50,6 +52,23 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: yeomanConfig,
+
+    // My custom cmd
+    shell: {
+      hello: {
+        cmd: 'echo "\nHello, you are on: " && pwd'
+      },
+      git: {
+        options: {
+          stdout: false,
+          callback: function(stdout, done){
+            console.log(stdout);
+            done();
+          }
+        },
+        cmd: 'git st'
+      }
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {

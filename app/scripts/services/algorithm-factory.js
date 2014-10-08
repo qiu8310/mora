@@ -45,6 +45,64 @@ angular.module('moraApp')
     Line.prototype.equal = function(l) { return this.p1.equal(l.p1) && this.p2.equal(l.p2); };
 
 
+    // 两条线相连，但不重合（可以延长）
+    Line.prototype.joinWith = function(line) {
+      // 一定只有一个端点相等，且两线不平行(斜率不相等)
+
+      // p1 p2 是有大小的，小的是 p1，大的是 p2，所以不可能出现 this.p1 === line.p2 && this.p2 === line.p1
+      if (this.p1.equal(line.p1) && this.p2.equal(line.p2)) {
+        return false;
+      }
+
+      if (this.p1.equal(line.p2) || this.p2.equal(line.p1)) {
+        return true;
+      }
+
+      // 斜率是否相等
+      var isEqualSlope =  (line.p2.y - line.p1.y)*(this.p2.x - this.p1.x) ===
+        (this.p2.y - this.p1.y)*(line.p2.x - line.p1.x);
+
+
+      if (this.p1.equal(line.p1) || this.p2.equal(line.p2)) {
+        return !isEqualSlope; // 斜率相等表示两条线重合了
+      }
+
+      return false;
+    };
+
+    // 判断两条线段是否能相交（一条线的一个点在另一条线上面，也算相交；两线重合也算相交）
+    Line.prototype.crossWith = function(line) {
+      // 第一步：矩形法排除：以 l1 为对角线的矩形与以 l2 为对角线的矩形没有任何交点
+      // 或： 另一个方法就是线的两个点都在矩形的四边中的同一边外
+
+      //if (!Rectangle.lineToRectangle(this).crossWith(Rectangle.lineToRectangle(line))) { return false; }
+      if (Math.max(line.p2.x, line.p1.x) < Math.min(this.p2.x, this.p1.x) ||
+        Math.min(line.p2.x, line.p1.x) > Math.max(this.p2.x, this.p1.x) ||
+        Math.max(line.p2.y, line.p1.y) < Math.min(this.p2.y, this.p1.y) ||
+        Math.min(line.p2.y, line.p1.y) > Math.max(this.p2.y, this.p1.y)) {
+        return false;
+      }
+
+      // 第二步：利用向量的叉积
+      // 叉积为正时 ＝>
+      // 叉积为0时 ＝> 两向量同向或反向
+      // 叉积为负时 ＝>
+      var v1 = new Vector(this.p1, this.p2), // P2 - P1
+        v2 = new Vector(line.p1, line.p2),  // Q2 - Q1
+        v3 = new Vector(this.p1, line.p1),  // Q1 - P1
+        v4 = new Vector(this.p1, line.p2),  // Q2 - P1
+        v5 = new Vector(line.p1, this.p1);  // P1 - Q1
+
+      var d1 = v1.multiply(v3),
+        d2 = v4.multiply(v1),
+        d3 = v2.multiply(v5),
+        d4 = v1.multiply(v2);
+
+      return d1 * d2 >= 0 && d3 * d4 >= 0;
+
+    };
+
+
 
     // Vector 向量
     function Vector(p1, p2) {
@@ -137,64 +195,6 @@ angular.module('moraApp')
       });
 
       return cross;
-    };
-
-
-    // 两条线相连，但不重合（可以延长）
-    Line.prototype.joinWith = function(line) {
-      // 一定只有一个端点相等，且两线不平行(斜率不相等)
-
-      // p1 p2 是有大小的，小的是 p1，大的是 p2，所以不可能出现 this.p1 === line.p2 && this.p2 === line.p1
-      if (this.p1.equal(line.p1) && this.p2.equal(line.p2)) {
-        return false;
-      }
-
-      if (this.p1.equal(line.p2) || this.p2.equal(line.p1)) {
-        return true;
-      }
-
-      // 斜率是否相等
-      var isEqualSlope =  (line.p2.y - line.p1.y)*(this.p2.x - this.p1.x) ===
-                          (this.p2.y - this.p1.y)*(line.p2.x - line.p1.x);
-
-
-      if (this.p1.equal(line.p1) || this.p2.equal(line.p2)) {
-        return !isEqualSlope; // 斜率相等表示两条线重合了
-      }
-
-      return false;
-    };
-
-    // 判断两条线段是否能相交（一条线的一个点在另一条线上面，也算相交；两线重合也算相交）
-    Line.prototype.crossWith = function(line) {
-      // 第一步：矩形法排除：以 l1 为对角线的矩形与以 l2 为对角线的矩形没有任何交点
-      // 或： 另一个方法就是线的两个点都在矩形的四边中的同一边外
-
-      //if (!Rectangle.lineToRectangle(this).crossWith(Rectangle.lineToRectangle(line))) { return false; }
-      if (Math.max(line.p2.x, line.p1.x) < Math.min(this.p2.x, this.p1.x) ||
-          Math.min(line.p2.x, line.p1.x) > Math.max(this.p2.x, this.p1.x) ||
-          Math.max(line.p2.y, line.p1.y) < Math.min(this.p2.y, this.p1.y) ||
-          Math.min(line.p2.y, line.p1.y) > Math.max(this.p2.y, this.p1.y)) {
-        return false;
-      }
-
-      // 第二步：利用向量的叉积
-      // 叉积为正时 ＝>
-      // 叉积为0时 ＝> 两向量同向或反向
-      // 叉积为负时 ＝>
-      var v1 = new Vector(this.p1, this.p2), // P2 - P1
-        v2 = new Vector(line.p1, line.p2),  // Q2 - Q1
-        v3 = new Vector(this.p1, line.p1),  // Q1 - P1
-        v4 = new Vector(this.p1, line.p2),  // Q2 - P1
-        v5 = new Vector(line.p1, this.p1);  // P1 - Q1
-
-      var d1 = v1.multiply(v3),
-        d2 = v4.multiply(v1),
-        d3 = v2.multiply(v5),
-        d4 = v1.multiply(v2);
-
-      return d1 * d2 >= 0 && d3 * d4 >= 0;
-
     };
 
 
