@@ -91,6 +91,10 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
       },
+      jade: {
+        files: ['<%= yeoman.app %>/{,**/}*.jade', '../<%= yeoman.app %>/**.jade'],
+        tasks: ['jade']
+      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -99,7 +103,8 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
+          '<%= yeoman.app %>/{,**/}*.html',
+          '.tmp/{,**/}*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -257,7 +262,7 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
+      html: ['{<%= yeoman.app %>,.tmp}/*.html', '<%= yeoman.app %>/demos/{,**/}*.jade'],
       options: {
         dest: '<%= yeoman.dist %>',
         flow: {
@@ -274,10 +279,28 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: ['<%= yeoman.dist %>/{,**/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>']
+      }
+    },
+
+    // HTML 预处理
+    jade: {
+      options: {
+        pretty: true
+      },
+      dist   : {
+        files: [
+          {
+            expand: true,
+            src   : ['{,**/}*.jade'],
+            cwd   : '<%= yeoman.app %>',
+            dest  : '.tmp',
+            ext   : '.html'
+          }
+        ]
       }
     },
 
@@ -321,7 +344,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html'],
+          src: ['*.html', 'views/{,**/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -360,15 +383,21 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'views/{,*/}*.html',
+            'views/{,**/}*.html',
             'images/{,*/}*.{webp}',
             'fonts/*'
           ]
         }, {
           expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
+          dot: true,
+          cwd: '.tmp',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            'images/generated/*',
+            '*.html',
+            'views/{,**/}*.html',
+            'demos/{,**/}*.html'
+          ]
         }]
       },
       styles: {
@@ -382,12 +411,14 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
+        'jade',
         'compass:server'
       ],
       test: [
         'compass'
       ],
       dist: [
+        'jade',
         'compass:dist',
         'imagemin',
         'svgmin'
