@@ -34,7 +34,7 @@ function getMiddleware(dirs) {
 
 module.exports = function (grunt) {
 
-  grunt.loadTasks( "grunt_plugin/tasks" );
+  grunt.loadTasks( "plugins/grunt/tasks" );
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -210,7 +210,10 @@ module.exports = function (grunt) {
     compass: {
       options: {
         sassDir: '<%= yeoman.app %>/styles',
-        require: ['ceaser-easing'],
+        require: [
+          './plugins/sass/functions.rb',
+          'ceaser-easing' // http://easings.net/zh-cn 缓动库
+        ],
         cssDir: '.tmp/styles',
         generatedImagesDir: '.tmp/images',
         imagesDir: '<%= yeoman.app %>/images',
