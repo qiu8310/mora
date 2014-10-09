@@ -92,7 +92,7 @@ module.exports = function (grunt) {
         tasks: ['compass:server', 'autoprefixer']
       },
       jade: {
-        files: ['<%= yeoman.app %>/{,**/}*.jade', '../<%= yeoman.app %>/**.jade'],
+        files: ['<%= yeoman.app %>/**.jade', '../jade/**.jade'],
         tasks: ['jade']
       },
       gruntfile: {
@@ -262,7 +262,11 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: ['{<%= yeoman.app %>,.tmp}/*.html', '<%= yeoman.app %>/demos/{,**/}*.jade'],
+      html: [
+        '{<%= yeoman.app %>,.tmp}/*.html',
+        '<%= yeoman.app %>/demos/**.jade',
+        '<%= yeoman.app %>/learn/**.jade'
+      ],
       options: {
         dest: '<%= yeoman.dist %>',
         flow: {
@@ -344,7 +348,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,**/}*.html'],
+          src: ['*.html', 'views/**.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -383,7 +387,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'views/{,**/}*.html',
+            'views/**.html',
             'images/{,*/}*.{webp}',
             'fonts/*'
           ]
@@ -395,8 +399,9 @@ module.exports = function (grunt) {
           src: [
             'images/generated/*',
             '*.html',
-            'views/{,**/}*.html',
-            'demos/{,**/}*.html'
+            'views/**.html',
+            'demos/**.html',
+            'learn/**.html'
           ]
         }]
       },

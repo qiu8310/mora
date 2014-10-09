@@ -132,9 +132,8 @@ describe('Service: Algorithm', function () {
     expect(l1.crossWith(new Line(new Point(-1, -1), new Point(-2, -2)))).toBe(false);
     expect(l1.crossWith(new Line(new Point(-4, -4), new Point(-2, -2)))).toBe(false);
 
-    // TODO
-    //expect(l1.crossWith(new Line(new Point(-1, 0.1), new Point(100, 100)))).toBe(false);
-    //expect(l1.crossWith(new Line(new Point(-2.1, 0.1), new Point(-2.1, -0.1)))).toBe(false);
+    expect(l1.crossWith(new Line(new Point(-1, 0.5), new Point(100, 100)))).toBe(false);
+    expect(l1.crossWith(new Line(new Point(-2.1, 0.1), new Point(-2.1, -0.1)))).toBe(false);
 
   });
 

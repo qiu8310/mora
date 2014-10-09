@@ -5,12 +5,23 @@ angular.module('moraApp')
     // 可能用到的常数
     var SQRT_2_DIVISION_2 = Math.sqrt(2) * 0.5; // 2分之根号2，保存它的值
 
+    function getNumber(x) {
+      if (typeof x !== 'number') {
+        x = x.toString && x.toString();
+        if (x.indexOf('.') >= 0) {
+          x = parseFloat(x);
+        } else {
+          x = parseInt(x, 10);
+        }
+      }
+      return x || 0;
+    }
     /*
      点
      */
     function Point(x, y) {
-      this.x = parseInt(x, 10) || 0;
-      this.y = parseInt(y, 10) || 0;
+      this.x = getNumber(x);
+      this.y = getNumber(y);
     }
     Point.prototype.equal = function(p) { return this.x === p.x && this.y === p.y; };
 
