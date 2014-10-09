@@ -20,7 +20,7 @@ function getMiddleware(dirs) {
 
   return function(connect) {
     var result = [
-      modRewrite(['!\\.\\w+$ /index.html [L]']),
+      modRewrite(['!\\.\\w+$ /index.html [L]'])
       //modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
     ];
 
@@ -92,7 +92,7 @@ module.exports = function (grunt) {
         tasks: ['compass:server', 'autoprefixer']
       },
       jade: {
-        files: ['<%= yeoman.app %>/**.jade', '../jade/**.jade'],
+        files: ['<%= yeoman.app %>/{,**/}*.jade', '../jade/{,**/}*.jade'],
         tasks: ['jade']
       },
       gruntfile: {
@@ -264,8 +264,8 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: [
         '{<%= yeoman.app %>,.tmp}/*.html',
-        '<%= yeoman.app %>/demos/**.jade',
-        '<%= yeoman.app %>/learn/**.jade'
+        '<%= yeoman.app %>/demo/{,**/}*.jade',
+        '<%= yeoman.app %>/learn/{,**/}*.jade'
       ],
       options: {
         dest: '<%= yeoman.dist %>',
@@ -348,7 +348,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/**.html'],
+          src: ['*.html', 'views/{,**/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -387,9 +387,11 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'views/**.html',
+            'views/{,**/}*.html',
             'images/{,*/}*.{webp}',
-            'fonts/*'
+            'fonts/*',
+            'learn/**',
+            '!learn/{,**/}*.jade'
           ]
         }, {
           expand: true,
@@ -399,9 +401,9 @@ module.exports = function (grunt) {
           src: [
             'images/generated/*',
             '*.html',
-            'views/**.html',
-            'demos/**.html',
-            'learn/**.html'
+            'views/{,**/}*.html',
+            'demo/{,**/}*.html',
+            'learn/{,**/}*.html'
           ]
         }]
       },
