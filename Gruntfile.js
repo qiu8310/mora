@@ -58,6 +58,9 @@ module.exports = function (grunt) {
       hello: {
         cmd: 'echo "\nHello, you are on: " && pwd'
       },
+      publish: {
+        cmd: 'sh sinaapp/mora/publish.sh'
+      },
       git: {
         options: {
           stdout: false,
@@ -518,4 +521,9 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('publish', function(comment) {
+    var cmd = 'shell:publish' + (comment ? ':' + comment : '');
+    grunt.task.run(cmd);
+  });
 };

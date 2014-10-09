@@ -2,8 +2,9 @@ node_modules
 dist
 .idea
 
-# 这里的文件归 svn 管理
-sinaapp/mora
+# 这里的文件归 svn 管理，但 svn 的 publish.sh 放到 git 里去
+sinaapp/*/*
+!sinaapp/*/publish.sh
 
 .tmp
 .sass-cache

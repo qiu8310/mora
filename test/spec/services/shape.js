@@ -1,31 +1,31 @@
 'use strict';
 
-describe('Service: Algorithm', function () {
+describe('Service: Shape', function () {
 
   // load the service's module
   beforeEach(module('moraApp'));
 
   // instantiate service
-  var Algorithm, Line, Point, Rectangle, Vector;
-  beforeEach(inject(function (_Algorithm_) {
-    Algorithm = _Algorithm_;
-    Line = Algorithm.Line;
-    Point = Algorithm.Point;
-    Rectangle = Algorithm.Rectangle;
-    Vector = Algorithm.Vector;
+  var Shape, Line, Point, Rectangle, Vector;
+  beforeEach(inject(function (_Shape_) {
+    Shape = _Shape_;
+    Line = Shape.Line;
+    Point = Shape.Point;
+    Rectangle = Shape.Rectangle;
+    Vector = Shape.Vector;
   }));
 
 
 
   it('should do supply Point/Line/Rectangle', function () {
-    expect(!!Algorithm).toBe(true);
+    expect(!!Shape).toBe(true);
     expect(!!Point).toBe(true);
     expect(!!Line).toBe(true);
     expect(!!Rectangle).toBe(true);
   });
 
 
-  it('should support Algorithm.Point class', function() {
+  it('should support Shape.Point class', function() {
     var p = new Point(1, 3);
     expect(p.x).toBe(1);
     expect(p.y).toBe(3);
@@ -36,7 +36,7 @@ describe('Service: Algorithm', function () {
   });
 
 
-  it('should support Algorithm.Line class', function() {
+  it('should support Shape.Line class', function() {
     var l1, l2;
 
     l1 = new Line(new Point(1, 3), new Point(6, 3));
@@ -56,7 +56,7 @@ describe('Service: Algorithm', function () {
   });
 
 
-  it('should support Algorithm.Rectangle', function() {
+  it('should support Shape.Rectangle', function() {
     var r = new Rectangle(new Point(0, 0), 10, 6), r1, r2;
 
     expect(r.centerPoint).toEqual(new Point(0, 0));

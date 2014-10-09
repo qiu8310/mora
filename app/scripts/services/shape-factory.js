@@ -1,10 +1,7 @@
 'use strict';
 
 angular.module('moraApp')
-  .factory('Algorithm', function () {
-    // 可能用到的常数
-    var SQRT_2_DIVISION_2 = Math.sqrt(2) * 0.5; // 2分之根号2，保存它的值
-
+  .factory('Shape', function () {
     function getNumber(x) {
       if (typeof x !== 'number') {
         x = x.toString && x.toString();
@@ -238,10 +235,8 @@ angular.module('moraApp')
       Point: Point,
       Line: Line,
       Vector: Vector,
-      Rectangle: Rectangle,
+      Rectangle: Rectangle
 
-      // 常用常数
-      SQRT_2_DIVISION_2: SQRT_2_DIVISION_2
     };
 
   });

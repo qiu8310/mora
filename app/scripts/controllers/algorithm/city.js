@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('moraApp')
-  .controller('AlgorithmCityCtrl', function (Algorithm, $scope) {
+  .controller('AlgorithmCityCtrl', function (Shape, $scope) {
 
     var DEBUG = false;
 
-    var Point = Algorithm.Point,
-      Line = Algorithm.Line,
-      Rectangle = Algorithm.Rectangle;
+    var Point = Shape.Point,
+      Line = Shape.Line,
+      Rectangle = Shape.Rectangle;
 
     var gCrossPoints = {}, gLines = [], gStartCrossPoint, gRSUCrossPoints = [], gEndCrossPoint, gPath = [];
 

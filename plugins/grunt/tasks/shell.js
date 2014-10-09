@@ -1,4 +1,5 @@
 // From https://github.com/sindresorhus/grunt-shell
+// added some new feature for myself
 
 'use strict';
 var exec = require('child_process').exec;
@@ -8,6 +9,9 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('shell', 'Run shell commands', function () {
 
     var cb = this.async();
+
+    var params = [].slice.call(arguments);
+    params = params.length === 0 ? '' : '"' + params.join('" "') + '"';
 
     var options = this.options({
       stdout: true,
@@ -23,6 +27,7 @@ module.exports = function (grunt) {
     }
 
     cmd = grunt.template.process(typeof cmd === 'function' ? cmd.apply(grunt, arguments) : cmd);
+    cmd += ' ' + params;
 
     var cp = exec(cmd, options.execOptions, function (err, stdout, stderr) {
       if (err && options.failOnError) {
