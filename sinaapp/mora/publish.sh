@@ -25,9 +25,6 @@ fi
 
 
 
-echo " Publishe folder: $PUBLISH_FOLDER"
-echo " Publish comment: $PUBLISH_COMMENT"
-
 # 跳转到 SVN 根目录下去
 target_dir=$(dirname $0)
 target_dir=${target_dir/\./$(pwd)}
@@ -37,6 +34,7 @@ if [ -d "$PUBLISH_FOLDER" ]; then
   # 处理 svn st 命令
   svn st | while read line
   do
+    updated=1
     if [ ${line:0:2} == "!" ]; then # svn st 中第一个字符是 ! 表示此文件删除了
       `svn del ${line:1} > /dev/null 2>&1 --quiet`
       #echo "svn del ${line:1} > /dev/null 2>&1 --quiet"
@@ -46,5 +44,11 @@ if [ -d "$PUBLISH_FOLDER" ]; then
     fi
   done
 
-  svn commit -m "$PUBLISH_COMMENT"
+  if [ updated == "1" ]; then
+    echo "Publishe folder: $PUBLISH_FOLDER"
+    echo "Publish comment: $PUBLISH_COMMENT\r\n"
+    svn commit -m "$PUBLISH_COMMENT"
+  else
+    echo "Nothing to publish"
+  fi
 fi
