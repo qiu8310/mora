@@ -1,5 +1,9 @@
 # mora
 
+[![Build Status](https://travis-ci.org/qiu8310/mora.svg?branch=master)](https://travis-ci.org/qiu8310/mora)
+
+[![Coverage Status](https://coveralls.io/repos/qiu8310/mora/badge.png)](https://coveralls.io/r/qiu8310/mora)
+
 
 ## Build tool
 
