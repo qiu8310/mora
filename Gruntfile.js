@@ -74,6 +74,7 @@ module.exports = function (grunt) {
     },
 
     // coverage
+    /* jshint ignore:start */
     coveralls: {
       options: {
         debug: true,
@@ -83,6 +84,7 @@ module.exports = function (grunt) {
         recursive: true
       }
     },
+    /* jshint ignore:end */
 
 
     // Watches files for changes and runs tasks based on the changed files
@@ -92,7 +94,7 @@ module.exports = function (grunt) {
         tasks: ['bowerInstall']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        files: ['<%= yeoman.app %>/scripts/{,**/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
           livereload: true

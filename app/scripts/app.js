@@ -5,10 +5,10 @@ angular
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute',
+    'ui.router',
     'angular-md5'
   ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
     $locationProvider.html5Mode(true).hashPrefix('!');
 
@@ -49,33 +49,37 @@ angular
     */
 
 
-
-    $routeProvider
-      .when('/', {
+    $stateProvider
+      .state('index', {
+        url: '/',
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
-      .when('/home', {
-        redirectTo: '/'
-      })
 
-
-      .when('/signup', {
+      .state('signup', {
+        url: '/signup',
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl'
       })
-      .when('/login', {
+      .state('login', {
+        url: '/login',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
 
-      .when('/algorithm/city', {
+      .state('algorithm/city', {
+        url: '/algorithm/city',
         templateUrl: 'views/algorithm/city.html',
         controller: 'AlgorithmCityCtrl'
-      })
-      .otherwise({
-        redirectTo: function() {
-          window.location.href = '/404.html';
-        }
+      });
+
+
+    // 处理重定向
+    $urlRouterProvider
+      .when('/home', '/')
+      .when('/index', '/')
+      .when('/main', '/')
+      .otherwise(function() {
+        window.location.href = '/404.html';
       });
   });

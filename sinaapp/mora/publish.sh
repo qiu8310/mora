@@ -30,11 +30,17 @@ target_dir=$(dirname $0)
 target_dir=${target_dir/\./$(pwd)}
 cd $target_dir
 
+
 if [ -d "$PUBLISH_FOLDER" ]; then
+
   # 处理 svn st 命令
-  svn st | while read line
+  SVN_STATUS=`svn st`
+  UPDATED="NO"
+
+  # 用 HERE-Document 是为了保证 while 里/外的程序共用 UPDATED 变量，同时避免创建临时文件来保存 SVN_STATUS
+  while read line
   do
-    updated=1
+    UPDATED="YES"
     if [ ${line:0:2} == "!" ]; then # svn st 中第一个字符是 ! 表示此文件删除了
       `svn del ${line:1} > /dev/null 2>&1 --quiet`
       #echo "svn del ${line:1} > /dev/null 2>&1 --quiet"
@@ -42,13 +48,17 @@ if [ -d "$PUBLISH_FOLDER" ]; then
       `svn add ${line:1} > /dev/null 2>&1 --quiet`
       #echo "svn add ${line:1} > /dev/null 2>&1 --quiet"
     fi
-  done
+  done <<EOF
+$SVN_STATUS
+EOF
 
-  if [ updated == "1" ]; then
+
+  if [ "$UPDATED" == "YES" ]; then
     echo "Publishe folder: $PUBLISH_FOLDER"
     echo "Publish comment: $PUBLISH_COMMENT\r\n"
     svn commit -m "$PUBLISH_COMMENT"
   else
     echo "Nothing to publish"
   fi
+
 fi

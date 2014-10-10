@@ -8,8 +8,8 @@
     "angular-resource": "1.3.0-build.3342+sha.feba017",
     "angular-cookies": "1.3.0-build.3342+sha.feba017",
     "angular-sanitize": "1.3.0-build.3342+sha.feba017",
-    "angular-route": "1.3.0-build.3342+sha.feba017",
-    "angular-md5": "~0.1.7"
+    "angular-md5": "~0.1.7",
+    "ui-router": "~0.2.11"
   },
   "devDependencies": {
     "angular-mocks": "1.3.0-build.3342+sha.feba017",

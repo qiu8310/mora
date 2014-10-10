@@ -40,7 +40,10 @@ angular.module('moraApp')
     // 保存到每点的距离的排序
     CrossPoint.prototype.getDistance = function(target) {
       if ((target.name in this.distance) || this === target) { return false; }
-      var distance = Math.round(Math.sqrt(Math.pow(this.point.x - target.point.x, 2) + Math.pow(this.point.y - target.point.y, 2)));
+      var distance = Math.round(
+        Math.sqrt(Math.pow(this.point.x - target.point.x, 2) +
+        Math.pow(this.point.y - target.point.y, 2))
+      );
       this.distance[target.name] = distance;
       target.distance[this.name] = distance;
     };
@@ -145,7 +148,11 @@ angular.module('moraApp')
       }
 
       // 生成 CrossPoint
-      var crossPoints = _.map(points, function(p) { var cp = new CrossPoint(p); gCrossPoints[cp.name] = cp; return cp; });
+      var crossPoints = _.map(points, function(p) {
+        var cp = new CrossPoint(p);
+        gCrossPoints[cp.name] = cp;
+        return cp;
+      });
 
       // 计算每两 CrossPoint 之间的距离
       _.each(crossPoints, function(cp) { _.each(crossPoints, function(target) {cp.getDistance(target); }); });
@@ -186,6 +193,7 @@ angular.module('moraApp')
 
     // 查找最近的 RSU
     $scope.searchNearestRSU = function() {
+      /* jshint loopfunc:true */
       if (!gStartCrossPoint) { return false; }
 
       var distance = {}, // 起点到每个点的最短距离
@@ -200,6 +208,7 @@ angular.module('moraApp')
         finishCPs = {}, // 已经处理过的点
         minDistance, minName;
       while(startCP) {
+        /* falls through */
         finishCPs[startCP.name] = true;
 
         console.groupCollapsed(startCP.name);
@@ -213,6 +222,7 @@ angular.module('moraApp')
             path[name] = path[startCP.name] + ',' + target.name;
           }
         });
+
 
         // 寻找 distance 中最短的一条
         minDistance = Infinity;
@@ -242,7 +252,7 @@ angular.module('moraApp')
       });
 
       if (!nearCP) {
-        alert('没找到最近的 RSU');
+        window.alert('没找到最近的 RSU');
       } else {
         gEndCrossPoint = nearCP;
         gPath = [gStartCrossPoint.point.x, gStartCrossPoint.point.y];
@@ -265,6 +275,7 @@ angular.module('moraApp')
 
     var debug = [];
     function _clickOnCircle() {
+      /*jshint validthis:true */
       var cp = gCrossPoints[this.attrs.name];
       console.log(cp);
       if (debug.length < 2) {
