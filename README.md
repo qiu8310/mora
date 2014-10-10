@@ -11,6 +11,10 @@
 
 [gulp](http://gulpjs.com/)
 
+[travis](https://travis-ci.org/qiu8310/mora/builds)
+
+* 在 git commit 的 message 中加入 `[ci skip]` 可以让 travis 不 build 你本次的提交
+
 
 ## CSS
 

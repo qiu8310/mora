@@ -7,3 +7,7 @@ before_script:
   - 'gem install ceaser-easing --version "=0.7"'
   - 'npm install -g bower grunt-cli'
   - 'bower install'
+
+notifications:
+  email:
+    - mora@liulishuo.com
