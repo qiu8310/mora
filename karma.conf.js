@@ -9,6 +9,11 @@ module.exports = function(config) {
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
+    // 会默认加载所有 karma 开头的插件，不用指定
+    //plugins: [
+    //  'karma-coverage'
+    //],
+
     // list of files / patterns to load in the browser
     files: [
       'app/bower_components/angular/angular.js',
@@ -48,6 +53,17 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['PhantomJS'],
+
+
+    reporters: ['coverage'],
+    preprocessors: {
+      "app/scripts/**/*.js": "coverage"
+    },
+    coverageReporter: {
+      type: "lcov",
+      dir: "test/coverage/"
+    },
+
 
 
     // Continuous Integration mode

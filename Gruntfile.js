@@ -34,7 +34,7 @@ function getMiddleware(dirs) {
 
 module.exports = function (grunt) {
 
-  grunt.loadTasks( "plugins/grunt/tasks" );
+  grunt.loadTasks( 'plugins/grunt/tasks' );
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -72,6 +72,18 @@ module.exports = function (grunt) {
         cmd: 'git st'
       }
     },
+
+    // coverage
+    coveralls: {
+      options: {
+        debug: true,
+        coverage_dir: 'test/coverage',
+        dryRun: false,
+        force: true,
+        recursive: true
+      }
+    },
+
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {

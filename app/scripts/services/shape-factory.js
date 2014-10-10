@@ -92,6 +92,8 @@ angular.module('moraApp')
       }
 
       // 第二步：利用向量的叉积
+      // http://www.cnblogs.com/zhangchaoyang/articles/2668562.html
+      // http://fins.iteye.com/blog/1522259  叉积是两向量组成的平行四边形的向量面积
       // 叉积为正时 ＝>
       // 叉积为0时 ＝> 两向量同向或反向
       // 叉积为负时 ＝>
