@@ -32,6 +32,6 @@ PLATFORMS
 
 DEPENDENCIES
   ceaser-easing
-  compass
+  compass (= 1.0.1)
   oily_png
-  sass
+  sass (= 3.4.5)

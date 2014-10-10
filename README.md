@@ -4,6 +4,8 @@
 [![Coverage Status](https://coveralls.io/repos/qiu8310/mora/badge.png)](https://coveralls.io/r/qiu8310/mora)
 [![Code Climate](https://codeclimate.com/github/qiu8310/mora/badges/gpa.svg)](https://codeclimate.com/github/qiu8310/mora)
 
+[ ![Codeship Status for qiu8310/mora](https://www.codeship.io/projects/f2a97a80-327e-0132-5f38-3ab195f80b5d/status)](https://www.codeship.io/projects/40384)
+
 ## Build tool
 
 [grunt](http://gruntjs.com/)
@@ -32,14 +34,15 @@
 
 * 批量 ignore
 
-    // Code here will be linted with JSHint.
-    /* jshint ignore:start */
-    // Code here will be linted with ignored by JSHint.
-    /* jshint ignore:end */
+    	// Code here will be linted with JSHint.
+    	/* jshint ignore:start */
+    	// Code here will be linted with ignored by JSHint.
+    	/* jshint ignore:end */
      
 * `/* falls through */` 不管是啥，告诉 jshint 这里不要报错
 
 * [所有设置选项](http://jshint.com/docs/options/)
+
 
 ## HTML
 [jade](http://jade-lang.com/reference)
@@ -49,3 +52,14 @@
 ## Test
 
 [jasmine](http://jasmine.github.io/2.0/introduction.html)
+
+[karma](http://karma-runner.github.io/)
+
+[coveralls](https://coveralls.io/r/qiu8310/mora)
+
+* [在 nodejs 中集成 travis 和 coveralls ](http://blog.chrisyip.im/nodejs-travis-ci-and-coveralls)
+
+
+## Code analysis
+
+[codeclimate](https://codeclimate.com/github/qiu8310/mora)
