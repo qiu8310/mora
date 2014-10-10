@@ -1,9 +1,8 @@
 # mora
 
 [![Build Status](https://travis-ci.org/qiu8310/mora.svg?branch=master)](https://travis-ci.org/qiu8310/mora)
-
 [![Coverage Status](https://coveralls.io/repos/qiu8310/mora/badge.png)](https://coveralls.io/r/qiu8310/mora)
-
+[![Code Climate](https://codeclimate.com/github/qiu8310/mora/badges/gpa.svg)](https://codeclimate.com/github/qiu8310/mora)
 
 ## Build tool
 
@@ -27,6 +26,20 @@
 
 ## Javascript
 
+### [JSHint](http://jshint.com/docs/#options)
+
+* `/* exported someVariable */` 告诉 jshint 这个变量只是在本文件中定义，不被本文件使用，避免 jshint 报 `unused` 错误
+
+* 批量 ignore
+
+    // Code here will be linted with JSHint.
+    /* jshint ignore:start */
+    // Code here will be linted with ignored by JSHint.
+    /* jshint ignore:end */
+     
+* `/* falls through */` 不管是啥，告诉 jshint 这里不要报错
+
+* [所有设置选项](http://jshint.com/docs/options/)
 
 ## HTML
 [jade](http://jade-lang.com/reference)

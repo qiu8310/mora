@@ -173,7 +173,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '<%= yeoman.app %>/scripts/{,**/}*.js',
         '!<%= yeoman.app %>/scripts/vendors/{,*/}*.js'
       ],
       test: {
@@ -508,7 +508,8 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma',
+    'coveralls'
   ]);
 
   grunt.registerTask('build', [

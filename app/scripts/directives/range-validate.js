@@ -20,8 +20,8 @@ angular.module('moraApp')
           throw new Error('rangeValidate should be set to something like this: range-validate="4-10"');
         }
 
-        start = parseInt(ranges[1]);
-        end = parseInt(ranges[2]);
+        start = parseInt(ranges[1], 10);
+        end = parseInt(ranges[2], 10);
         op = ranges[3] || false;
 
         model.$parsers.unshift(function(modelValue) {
