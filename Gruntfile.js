@@ -12,27 +12,42 @@ var mountFolder = function(connect, dir) {
 };
 var modRewrite = require('connect-modrewrite');
 
-function getMiddleware(dirs) {
-
-  if (!Array.isArray(dirs)) {
-    dirs = [dirs];
-  }
-
-  return function(connect) {
-    var result = [
-      modRewrite(['!\\.\\w+$ /index.html [L]'])
-      //modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
-    ];
-
-    dirs.forEach(function(dir) {
-      result.push(mountFolder(connect, dir));
-    });
-
-    return result;
-  };
-}
+//console.log(require.cache);
 
 module.exports = function (grunt) {
+
+  function getMiddleware(dirs) {
+
+    if (!Array.isArray(dirs)) { dirs = [dirs]; }
+
+    return function(connect) {
+
+      var result = [
+
+        function (req, res, next) {
+
+          if (false === require('./plugins/node/server')(req, res, grunt)) {
+            res.end();
+          }
+          return next();
+        },
+
+
+        modRewrite(['!\\.\\w+$ /index.html [L]'])
+        //modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
+      ];
+
+      dirs.forEach(function(dir) { result.push(mountFolder(connect, dir)); });
+
+
+      return result;
+    };
+  }
+
+
+
+
+
 
   grunt.loadTasks( 'plugins/grunt/tasks' );
 
@@ -86,6 +101,7 @@ module.exports = function (grunt) {
         dest: '.tmp/styles/main.css'
       }
     },
+
 
     // coverage
     /* jshint ignore:start */
@@ -197,7 +213,8 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         '<%= yeoman.app %>/scripts/{,**/}*.js',
         '!<%= yeoman.app %>/scripts/vendors/{,*/}*.js',
-        'plugins/grunt/tasks/{,*/}*.js'
+        'plugins/grunt/tasks/{,*/}*.js',
+        'plugins/node/*.js'
       ],
       test: {
         options: {

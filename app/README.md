@@ -21,9 +21,8 @@
 
 * CSS中，不支持下划线的 CLASS 名，只能用中划线
 * CSS中，支持定义 `:after` `:before` 或 `::after` `::before` 等类型的伪类及伪元素
-* CSS中，不支持 `media`，不支持多层级的 CLASS，如 `.nav .link`，程序只会匹配 `.nav` 及 `.link`
-* CSS中，如果用了 `.a, .b { ... }` 这种形式，程序只会计算 a，不会计算 b，所以不同的 class 不要写在一起
-* CSS中，一定要用CLASS，如果用了TAG NAME，则会忽略它而取它后面的 CLASS NAME，如 table.text-wrap
+* CSS中，不支持 `media`，不支持多层级的 CLASS，如 `.nav .link`，程序只会把它当作 `.nav`
+* CSS中，主要用CLASS NAME，如果用了TAG NAME，则会忽略它而取它后面的 CLASS NAME，如 table.text-wrap
 * HTML中，如果某个样式`foo`是在动态插入到 HTML 中的话，可以在标签上加个属性 `data-ci-class="foo"`
 * HTML中，一定要避免标签中内嵌标签，如这种形式：`<a href="<<= value >>" class="target"> Link </a>`
 
