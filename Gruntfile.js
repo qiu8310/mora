@@ -73,6 +73,20 @@ module.exports = function (grunt) {
       }
     },
 
+    // 自动注入需要的 class 到 main.css 中
+    classImport: {
+      options: {
+        classFiles: '<%= yeoman.app %>/styles/auto-inject/{,*/}*.css'
+      },
+      dev: {
+        src: [
+          '<%= yeoman.app %>/*.html',
+          '<%= yeoman.app %>/{views,demo}/{,**/}*.html',
+          '.tmp/{,**/}*.html'],
+        dest: '.tmp/styles/main.css'
+      }
+    },
+
     // coverage
     /* jshint ignore:start */
     coveralls: {
@@ -94,11 +108,17 @@ module.exports = function (grunt) {
         tasks: ['bowerInstall']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,**/}*.js'],
+        files: '<%= jshint.all %>',
+        //files: ['<%= yeoman.app %>/scripts/{,**/}*.js', 'plugins/grunt/tasks/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
           livereload: true
         }
+      },
+      classImport: {
+        //files: ['<%= classImport.options.classFiles %>', '<%= classImport.dev.src %>'],
+        files: ['<%= classImport.options.classFiles %>'],
+        tasks: 'classImport'
       },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
@@ -106,7 +126,7 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+        tasks: ['compass:server', 'classImport', 'autoprefixer']
       },
       jade: {
         files: ['<%= yeoman.app %>/{,**/}*.jade', '../jade/{,**/}*.jade'],
@@ -176,7 +196,8 @@ module.exports = function (grunt) {
       all: [
         'Gruntfile.js',
         '<%= yeoman.app %>/scripts/{,**/}*.js',
-        '!<%= yeoman.app %>/scripts/vendors/{,*/}*.js'
+        '!<%= yeoman.app %>/scripts/vendors/{,*/}*.js',
+        'plugins/grunt/tasks/{,*/}*.js'
       ],
       test: {
         options: {
@@ -494,6 +515,7 @@ module.exports = function (grunt) {
       'clean:server',
       'bowerInstall',
       'concurrent:server',
+      'classImport',
       'autoprefixer',
       'connect:livereload',
       'watch'
@@ -508,6 +530,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
+    'classImport',
     'autoprefixer',
     'connect:test',
     'karma',
@@ -519,6 +542,7 @@ module.exports = function (grunt) {
     'bowerInstall',
     'useminPrepare',
     'concurrent:dist',
+    'classImport',
     'autoprefixer',
     'concat',
     'ngmin',

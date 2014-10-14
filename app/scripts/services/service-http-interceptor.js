@@ -1,36 +1,42 @@
 angular.module('moraApp')
-  .service('HttpInterceptor', function ($q, $rootScope) {
+  .service('HttpInterceptor', function ($q, $rootScope, Auth) {
+    var API_BASE = 'http://mora.com/';
+
     return {
 
       // requestError: function(rejection) {}
 
       request: function(request) {
-        request.data = request.data || {};
-        //TODO 往 data 写入 token 相关信息
-
-        // 放行带 . 的 url，主要是请求一些模板类的文件
-        if (request.url.indexOf('.') > 0) {
+        // 放行非 api 开头的请求，主要是请求一些模板类的文件
+        if (request.url.indexOf('api/') !== 0) {
           return request;
         }
 
-        // 处理 user/exist
-        var paths = request.url.split('/'),
-          phpFile = 'http://mora.com/api/' + paths.shift() + '.php?';
+        request.url = API_BASE + request.url;
 
-
-        request.url = phpFile + 'p=' + paths.join('___');
-
-        console.log(request);
+        // 把 token 写入到 header 中
+        var token = Auth.getToken();
+        if (token) {
+          request.headers[['Mora-Authenticate']] = 'Basic token="' + token + '"';
+        }
 
         return request;
       },
 
 
       response: function (response) {
-        // TODO store token
+        if (response.config.url.indexOf(API_BASE + 'api/') !== 0) {
+          return response;
+        }
+
+        // 保存 token 到本地
+        var headers = response.headers();
+
+        Auth.setToken(headers['mora-authenticate']);
 
         return response;
       },
+
 
       responseError: function(response) {
         if (response.status === 401) {

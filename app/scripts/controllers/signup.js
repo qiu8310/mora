@@ -9,15 +9,10 @@ angular.module('moraApp')
       passwordCheck: 'qiu8310'
     };
 
-    $http.post('user', {
-      email: $scope.user.email,
-      nickname: $scope.user.nickname,
-      password: md5.createHash($scope.user.password)
-    });
 
 
     $scope.submit = function() {
-      $http.put('user', {
+      $http.post('api/user', {
         email: $scope.user.email,
         nickname: $scope.user.nickname,
         password: md5.createHash($scope.user.password)

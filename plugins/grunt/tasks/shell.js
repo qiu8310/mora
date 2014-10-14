@@ -29,7 +29,7 @@ module.exports = function (grunt) {
     cmd = grunt.template.process(typeof cmd === 'function' ? cmd.apply(grunt, arguments) : cmd);
     cmd += ' ' + params;
 
-    var cp = exec(cmd, options.execOptions, function (err, stdout, stderr) {
+    var cp = exec(cmd, options.execOptions, function (err, stdout /* , stderr */ ) {
       if (err && options.failOnError) {
         grunt.warn(err);
       }

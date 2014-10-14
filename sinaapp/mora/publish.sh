@@ -73,7 +73,7 @@ fi
 
 # 处理 Git：提交到 github gh-pages 分支上
 cd "$PUBLISH_FOLDER/frontend"
-git checkout gh-pages
+git checkout gh-pages --quiet
 GIT_STATUS=`git status`
 LINE_COUNT=0
 while read line

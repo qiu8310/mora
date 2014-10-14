@@ -6,6 +6,8 @@
 
 [ ![Codeship Status for qiu8310/mora](https://www.codeship.io/projects/f2a97a80-327e-0132-5f38-3ab195f80b5d/status)](https://www.codeship.io/projects/40384)
 
+* [Code standards](http://isobar-idev.github.io/code-standards/)
+
 ## Start
 
 ### Set up
@@ -58,8 +60,7 @@
 
 ### Angular
 
-* [本地实现 html5 模式开发及路径设定](http://jjt.io/2013/11/16/angular-html5mode-using-yeoman-generator-angular/) 
-
+* [本地实现 html5 模式开发及路径设定](http://jjt.io/2013/11/16/angular-html5mode-using-yeoman-generator-angular/)
 * [设置服务器支持 html5 模式](https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode)
 
 * [ui-route github quick reference](https://github.com/angular-ui/ui-router/wiki/Quick-Reference)
@@ -70,9 +71,7 @@
 ### [JSHint](http://jshint.com/docs/#options)
 
 * `/* exported someVariable */` 告诉 jshint 这个变量只是在本文件中定义，不被本文件使用，避免 jshint 报 `unused` 错误
-
 * `/*jshint validthis:true */` 如果 function 不是 controller，则不能用关键字 this，用这个语句可以避免 jshint 报错
-
 * 批量 ignore
 
     	// Code here will be linted with JSHint.
@@ -81,7 +80,6 @@
     	/* jshint ignore:end */
      
 * `/* falls through */` 在 switch case 语句中不加 break 会报错，可以用此命令压制
-
 * [所有设置选项](http://jshint.com/docs/options/)
 
 

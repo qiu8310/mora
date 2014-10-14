@@ -48,6 +48,11 @@
     </div>
 
 
+    <!--
+      TODO 一个比较全的 analytics 工具
+      https://segment.com/docs/libraries/analytics.js/quickstart/
+      https://segment.com/mora/mora-production/setup
+    -->
     <!-- TODO Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        /*
@@ -98,8 +103,14 @@
     <script src="scripts/directives/form-control.js"></script>
 
 
-    <script src="scripts/services/http-interceptor-service.js"></script>
-    <script src="scripts/services/shape-factory.js"></script>
+    <script src="scripts/services/service-http-interceptor.js"></script>
+    <script src="scripts/services/service-auth.js"></script>
+
+    <script src="scripts/services/factory-shape.js"></script>
+    <script src="scripts/services/factory-storage.js"></script>
+
+    <script src="scripts/services/config.js"></script>
+
     <!-- endbuild -->
 </body>
 </html>

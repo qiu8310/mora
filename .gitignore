@@ -9,4 +9,5 @@ sinaapp/*/*
 .tmp
 .sass-cache
 test/coverage
+test/log
 app/bower_components
