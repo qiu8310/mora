@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Text</title>
+
+</head>
+<style attr="foo">
+  a {
+    color: '{% red|unquote %}'
+  }
+
+  .test {
+    background: #EAEAEA;
+    display: block;
+    width: 600px;
+    height: 100px;
+    margin: 0 auto;
+    border: 1px solid #f5f5f5;
+    border-radius: 6px;;
+  }
+
+  .wrap {
+
+    display: inline-table;
+    vertical-align: middle;
+  }
+
+
+
+
+
+</style>
+<script lang="zh" language="JavaScript">
+  console.log('{% tf %}');
+</script>
+<body>
+<div>
+  <h1><span style="color:red;">Yes</span> {% tf %} No</h1>
+  <h2 tf="{% tf %}" title="h2">Sub</h2>
+  <h3>A {%tf%} B {%tf%}</h3>
+  <p>pBoss: {% person.boss %}</p>
+
+  <!--{% tf %} comment  {% tf %}-->
+
+  <textarea>{% tf %}</textarea>
+
+</div>
+
+<div class="mask" style="display: none;">
+  <div class="test">
+    <div class="wrap" contentEditable="true">
+      <span contentEditable="false">Yes </span><span>Text Free</span><span contenteditable="false"> No</span>
+    </div>
+
+    <div class="control">
+      <button class="btn btn-ok">确认</button><button class="btn btn-cancel">取消</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

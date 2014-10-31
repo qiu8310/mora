@@ -7,7 +7,15 @@
 * 可以存放各类文件，但只会处理 `jade`，其它文件都原样拷贝到发布目录
 
 
-### 插件：classImport  文件夹：styles/useful
+### 插件：textFree
+
+**特点**
+
+* 配置文件支持 JSON
+* HTML文字中的 &lt; &gt; 标签尽量转义，要不有可能会出错
+* 在 CSS或JS 中，如果直接用 {% foo %}，很可能会导致编辑器语法报错，这时你可以给它加上引号就可以避免，同时在 foo 上指定 unquote，如：color: "{% foo|unquote %}" => color: red
+
+### 插件：classImport  文件夹：styles/auto-inject
 
 文件夹里的样式会自动注入到你指定的文件中，不需要手动引入到你的HTML文件中
 

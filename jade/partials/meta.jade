@@ -1,12 +1,19 @@
+// Meta 综合介绍
+  http://blog.jobbole.com/78592/
+  http://code.lancepollard.com/complete-list-of-html-meta-tags/
+  https://github.com/audreyr/favicon-cheat-sheet
+
 meta(charset="utf-8")
 
 // 添加到主屏时的标题，如果不设置则默认会取 title 中的内容，但 title 一般都用来 SEO 的
+  Ref: http://msdn.microsoft.com/zh-cn/library/ff723991(v=expression.40).aspx
 meta(name="apple-mobile-web-app-title", content="Mora")
 meta(name="description", content="")
 meta(name="keywords", content="")
 meta(name="author", content="")
 
 // 顺序不可以变，要不360的不使用极速的内核
+  Ref: http://se.360.cn/v6/help/meta.html
 meta(name="renderer", content="webkit")
 meta(name="force-rendering", content="webkit")
 meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
@@ -26,5 +33,32 @@ meta(name="mobile-web-app-capable", content="yes")
   http://www.microsoft.com/typography/whatiscleartype.mspx
 meta(http-equiv="cleartype", content="on")
 
-// SAE 下用不了下面这个 meta
+// 禁止此页面嵌入在 iFrame 中使用
+  SAE 下用不了下面这个 meta
 // meta(http-equiv="X-Frame-Options", content="DENY")
+
+
+//
+  禁止百度转码
+  通过百度手机打开网页时，百度可能会对你的网页进行转码，脱下你的衣服，往你的身上贴狗皮膏药的广告，为此可在 head 内添加
+  Ref: http://m.baidu.com/pub/help.php?pn=22&ssid=0&from=844b&bd_page_type=1
+meta(http-equiv="Cache-Control", content="no-siteapp")
+
+
+// uc强制竖屏
+// meta(name="screen-orientation", content="portrait")
+// QQ强制竖屏
+// meta(name="x5-orientation", content="portrait")
+
+// UC强制全屏
+// meta(name="full-screen", content="yes")
+// QQ强制全屏
+// meta(name="x5-fullscreen", content="true")
+
+// UC应用模式
+meta(name="browsermode", content="application")
+// QQ应用模式
+meta(name="x5-page-mode", content="app")
+
+// windows phone 点击无高光
+meta(name="msapplication-tap-highlight", content="no")

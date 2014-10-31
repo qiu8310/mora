@@ -2,9 +2,7 @@
 
 angular.module('moraApp')
   .controller('HomeCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+    $scope.share = function(url) {
+      location.href = url;
+    }
   });

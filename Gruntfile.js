@@ -24,17 +24,13 @@ module.exports = function (grunt) {
 
       var result = [
 
-        function (req, res, next) {
-
-          if (false === require('./plugins/node/server')(req, res, grunt)) {
-            res.end();
-          }
-          return next();
-        },
+        // text-free
+        require('./plugins/node/server')(grunt, dirs),
 
 
+        // rewrite
         modRewrite(['!\\.\\w+$ /index.html [L]'])
-        //modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
+
       ];
 
       dirs.forEach(function(dir) { result.push(mountFolder(connect, dir)); });
@@ -43,8 +39,6 @@ module.exports = function (grunt) {
       return result;
     };
   }
-
-
 
 
 
@@ -99,6 +93,33 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/{views,demo}/{,**/}*.html',
           '.tmp/{,**/}*.html'],
         dest: '.tmp/styles/main.css'
+      }
+    },
+
+    textFree: {
+      options: {
+        injectScript: 'http://localhost:9999/scripts/text-free.js',
+        postUrl: '/textfree/update',
+        commentStart: 'tfStart',
+        commentEnd: 'tfEnd',
+        injectClassPrefix: '__tf-', // 当用 connect 插件时，会 inject 一些 CSS 样式，让 CSS 样式以此开头
+        editableFileExt: ['html', 'htm'],
+        noComment: false,  // 如果为 true，则不会在 html 文件中注入 comment，在部署的时候可以配置为 true TODO 去掉这个 ？
+        jsonFile: '<%= yeoman.app %>/tf/data.json',
+        jsonFileCycleMinutes: 60, // 60分钟之后就重新写一个新的 jsonFile 文件，只有设置成0才会覆盖最开始的那个文件
+        tplStartTag: '{%',
+        tplEndTag: '%}',
+        filters: [ // TODO 不用写 filters，自动根据 target 获取所有的 文件
+          '<%= yeoman.app %>/demo/tpl.html'
+        ]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: 'demo/*.html',
+          dest: '.tmp'
+        }]
       }
     },
 
@@ -174,7 +195,8 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          open: true,
+          //open: 'http://localhost:9999/demo/tpl.html', // 这里如果设置成 true，默认打开 http://[hostname][:port]/
+          open: false,
           middleware: getMiddleware(['.tmp', yeomanConfig.app])
           /*
           base: [
