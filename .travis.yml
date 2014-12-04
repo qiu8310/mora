@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '0.10'
+before_script:
+  - 'gem install sass --version "=3.4.5"'
+  - 'gem install compass --version "=1.0.1"'
+  - 'gem install ceaser-easing --version "=0.7"'
+  - 'npm install -g bower grunt-cli'
+  - 'bower install'
+
+notifications:
+  email:
+    - mora@liulishuo.com

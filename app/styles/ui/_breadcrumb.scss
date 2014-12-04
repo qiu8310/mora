@@ -1,0 +1,26 @@
+.breadcrumb {
+  font-size: 13px;
+
+  ol {
+    display: inline-block;
+    margin: 0;
+    padding: 13px 34px 11px 0;
+    background: none;
+    vertical-align: top;
+    color: #BBB;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  li + li:before {
+    content: "/\00a0";
+    padding: 0 5px;
+    color: #ccc;
+  }
+
+  li:last-child {
+    color: #E4E4E4;
+  }
+}

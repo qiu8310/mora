@@ -1,0 +1,20 @@
+
+// ====== angular 表单验证错误相关的类 ==========
+
+$form-errors: equal range unique required minlength maxlength email;
+
+.help-block {
+  display: none;
+}
+
+%help-block-show {
+  display: block;
+}
+
+@each $form-error in $form-errors {
+  .has-#{$form-error}-error .on-#{$form-error}-error {
+    @extend %help-block-show;
+  }
+}
+
+// ===========================================

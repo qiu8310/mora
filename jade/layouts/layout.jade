@@ -1,0 +1,33 @@
+doctype html
+
+//html(lang="zh" manifest="manifest.appcache")
+
+<!--[if lt IE 10]>
+<html class="zh ie" lang="zh">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="zh" lang="zh">
+<!--<![endif]-->
+
+head
+  block title
+    title Mora
+  include ../partials/meta
+
+  link(rel="shortcut icon",href="favicon.ico")
+
+  <!--[if lt IE 9]>
+  script(type="text/javascript", src="http://apps.bdimg.com/libs/html5shiv/r29/html5.min.js")
+  <![endif]-->
+
+  block styles
+body
+  block content
+
+  footer
+    block footer
+
+
+  block scripts
+  include ../partials/footer
+</html>

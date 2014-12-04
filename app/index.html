@@ -1,0 +1,137 @@
+<!doctype html>
+<!--[if lt IE 10]><html class="zh ie"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="zh"> <!--<![endif]-->
+  <head>
+
+    <meta charset="utf-8">
+    <title>英语流利说CRM系统</title>
+    <meta name="apple-mobile-web-app-title" content="Mora">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="qiuzhongleiabc@126.com">
+
+    <!--顺序不可以变，要不360的不使用极速的内核-->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimal-ui">
+
+    <!--下面两个不能合并写，要不浏览器就都不支持了-->
+    <meta name="format-detection" content="telephone=no;">
+    <meta name="format-detection" content="address=no;email=no;">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="cleartype" content="on">
+
+    <!-- SAE 下用不了 -->
+    <!--<meta http-equiv="X-Frame-Options" content="DENY">-->
+
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+
+    <!--<link rel="stylesheet" href="styles/vendors/animate.css">-->
+    <link rel="stylesheet" href="http://cdn.staticfile.org/animate.css/3.2.0/animate.min.css">
+
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <base href="/">
+
+  </head>
+  <body ng-app="moraApp" ng-controller="RootCtrl" class="{{ layoutClasses }}">
+
+    <!-- Add your site or application content here -->
+    <div class="view" ui-view=""></div>
+
+
+    <!--
+      TODO 一个比较全的 analytics 工具
+      https://segment.com/docs/libraries/analytics.js/quickstart/
+      https://segment.com/mora/mora-production/setup
+    -->
+    <!-- TODO Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       /*
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+       */
+    </script>
+
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/ui-utils/ui-utils.js"></script>
+    <script src="bower_components/angular-bindonce/bindonce.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/root.js"></script>
+    <script src="scripts/controllers/home.js"></script>
+
+    <script src="scripts/controllers/home/team-detail.js"></script>
+    <script src="scripts/controllers/home/team-all.js"></script>
+
+    <script src="scripts/controllers/home/forum-all.js"></script>
+    <script src="scripts/controllers/home/forum-hot.js"></script>
+    <script src="scripts/controllers/home/forum-essence.js"></script>
+    <script src="scripts/controllers/home/manage.js"></script>
+
+    <script src="scripts/controllers/signup.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+
+    <script src="scripts/directives/unique-validate.js"></script>
+    <script src="scripts/directives/range-validate.js"></script>
+    <script src="scripts/directives/equal-validate.js"></script>
+    <script src="scripts/directives/form-control.js"></script>
+    <script src="scripts/directives/full-screen.js"></script>
+    <script src="scripts/directives/smart-menu.js"></script>
+    <script src="scripts/directives/breadcrumb.js"></script>
+    <script src="scripts/directives/loading.js"></script>
+    <script src="scripts/directives/search-filter.js"></script>
+    <script src="scripts/directives/async-click.js"></script>
+    <script src="scripts/directives/user.js"></script>
+
+
+    <script src="scripts/services/service-http-interceptor.js"></script>
+    <script src="scripts/services/service-auth.js"></script>
+
+    <script src="scripts/services/factory-storage.js"></script>
+    <script src="scripts/services/factory-dialog.js"></script>
+
+    <script src="scripts/services/config.js"></script>
+    <script src="scripts/services/env.js"></script>
+    <!-- endbuild -->
+
+
+    <!-- build:js scripts/templates.js -->
+    <script src="scripts/filters/time.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

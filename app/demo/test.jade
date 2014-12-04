@@ -1,0 +1,24 @@
+extends ../../jade/layouts/layout
+
+block content
+  #container.col
+    if youAreUsingJade
+      p You are amazing
+    else
+      p Get on it!
+    p.
+      Jade is a terse and simple
+      templating language with a
+      strong focus on performance
+      and powerful features.
+
+    form-control.text-uppercase(data-ci-class=" hw-accelerate break-word")
+      input.form-control(
+        required
+        type='email'
+        placeholder='example@example.com'
+        name='email'
+        ng-model='user.email'
+        ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+      )
+

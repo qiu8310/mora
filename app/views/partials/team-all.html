@@ -1,0 +1,134 @@
+<div class="team-all" ng-cloak>
+  <search-filter filters="filters" search="search"></search-filter>
+
+  <div class="no-item" ng-hide="list.length">没有任何小组~~~</div>
+
+
+  <table class="break-word team-list" ng-show="list.length">
+
+    <!-- 暂不支持 -->
+    <tr class="batch-opts hidden">
+      <td><label class="no-select"><input type="checkbox" ng-model="meta.allChecked"/></label></td>
+      <td colspan="9">
+        <div class="btn-group team__status">
+          <label class="btn btn-primary fa fa-angellist" ng-class="{active: meta.allOfficial}" async-click="official()">官方</label>
+          <label class="btn btn-primary fa fa-fire" ng-class="{active: meta.allHot}" async-click="hot()">热门</label>
+        </div>
+
+        <div class="btn-group" style="margin-left: 20px;">
+          <a async-click="dismiss()">解散</a>
+        </div>
+      </td>
+    </tr>
+
+    <tr class="team" ng-repeat="team in list">
+      <td><label class="no-select"><input type="checkbox" ng-checked="team.checked"/></label></td>
+      <td>
+        <div class="team__brand">
+          <div class="brand-img" style="background: url({{team.imageUrl}}); background-size: cover"></div>
+          <a class="author text-ellipsis" user="team.owner"></a>
+          <time class="create-time">{{team.createdAt | time }}</time>
+        </div>
+      </td>
+      <td>
+        <div class="btn-group team__status">
+          <label class="btn btn-primary fa fa-angellist" async-click="official(team)" ng-class="{active: team.isOfficial}">官方</label>
+          <label class="btn btn-primary fa fa-fire" async-click="hot(team)" ng-class="{active: team.isHot}">热门</label>
+        </div>
+
+        <div class="team__desc">
+          <h3 class="title text-ellipsis"><a ui-sref="home.teamDetail({id: team.resourceId})">{{team.title}}</a></h3>
+          <p>
+            <span class="category">{{team.categoryName}}</span>
+            <span class="capacity">{{team.members.length}}/{{team.maxMembers}}</span>
+          </p>
+          <p class="desc">{{ team.description }}</p>
+        </div>
+        <ul class="pull-right team__tags">
+          <li ng-repeat="tag in team.tags"><label class="label label-primary">{{tag}}</label></li>
+        </ul>
+      </td>
+      <td>
+        <ul class="team__ops">
+          <li><a async-click="dismiss(team)" async-confirm="确认解散小组：{{team.title}}">解散</a></li>
+        </ul>
+      </td>
+    </tr>
+
+
+  </table>
+
+  <!--
+按前台每个分类排列，每个分类下有小组列表
+手动设置 热门标签/小组
+热门小组专区
+可踢人，解散小组 功能
+可搜索小组组号，可按标签搜索
+每个小组能看到群成员，群组长，群介绍，群公告，群成员简介
+
+https://p.llsapp.com/D2066,    https://p.llsapp.com/D2116
+
+https://p.llsapp.com/D2066#d02abd19
+
+staging-neo.llsapp.com
+
+                  ops_sessions POST   /ops/sessions(.:format)                   ops/sessions#create
+                   ops_session DELETE /ops/sessions/:id(.:format)               ops/sessions#destroy
+
+              ops_study_groups GET    /ops/study_groups(.:format)               ops/study_groups#index
+           hot_ops_study_group PUT    /ops/study_groups/:id/hot(.:format)       ops/study_groups#hot
+     calm_down_ops_study_group PUT    /ops/study_groups/:id/calm_down(.:format) ops/study_groups#calm_down
+
+   hot_groups_ops_study_groups GET    /ops/study_groups/hot_groups(.:format)    ops/study_groups#hot_groups
+
+       members_ops_study_group DELETE /ops/study_groups/:id/members(.:format)   ops/study_groups#members
+
+     hot_tags_ops_study_groups GET    /ops/study_groups/hot_tags(.:format)      ops/study_groups#hot_tags
+         tags_ops_study_groups GET    /ops/study_groups/tags(.:format)          ops/study_groups#tags
+      hot_tag_ops_study_groups PUT    /ops/study_groups/hot_tag(.:format)       ops/study_groups#hot_tag
+calm_down_tag_ops_study_groups PUT    /ops/study_groups/calm_down_tag(.:format) ops/study_groups#calm_down_tag
+
+
+               ops_study_group GET    /ops/study_groups/:id(.:format)           ops/study_groups#show
+                               DELETE /ops/study_groups/:id(.:format)           ops/study_groups#destroy
+
+
+
+  {
+      'resourceId' => fake_group_id,
+      'title' => 'Awesome group',
+      'imageUrl' => 'http://awesome.pic',
+      'categoryName' => '上班族',
+      'description' => 'This is an awesome group.',
+      'maxMembers' => 20,
+      'isBlocking' => false,
+      'createdAt' => Time.new(2014, 11, 1).to_i,
+      'isOfficial' => false,
+      'announcement' => {
+          'resourceId' => fake_group_id,
+          'text' => 'Study group announcement',
+          'updatedAt' => Time.now.to_i,
+          'author' => {
+              'resourceId' => user.neo_id,
+              'imId' => user.easemob_username,
+              'name' => user.nick,
+              'imageUrl' => user.avatar
+          }
+      },
+      'tags' => ['教育', 'IT', '创业'],
+      'members' => [],
+      'owner' => {
+          'resourceId' => user.neo_id,
+          'imId' => user.easemob_username,
+          'name' => user.nick,
+          'imageUrl' => user.avatar
+      }
+  }
+
+
+  GET /studygroups/hot/groups 获取热门小组
+
+  param : page => 页数 pageSize => 页大小
+  return : { total: , currentPage: , "studyGroups":[...]}
+  -->
+</div>

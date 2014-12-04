@@ -1,0 +1,118 @@
+/*
+
+.block {}
+.block__element {}
+.block--modifier {}
+
+.person {}
+.person__hand {}
+.person--female {}
+.person--female__hand {}
+.person__hand--left {}
+
+=========================================
+example:
+
+@include B(block) {
+  color: #000;
+
+  @include M(red) {
+    color: red;
+
+    @include E(header) {
+      position: absolute;
+      top: 0;
+    }
+
+    @include BE(header) {
+      margin: 0;
+
+      @include BE(back) {
+        padding: 0;
+      }
+    }
+  }
+}
+
+=> compile to:
+
+.block {
+  color: #000;
+}
+.block--red {
+  color: red;
+}
+.block--red__header {
+  position: absolute;
+  top: 0;
+}
+.block--red .block__header {
+  margin: 0;
+}
+.block--red .block__header .block__back {
+  padding: 0;
+}
+
+
+*/
+
+
+
+$element-separator: "__";
+$modifier-separator: "--";
+
+@function bem-selector-block($selector) {
+  $selector: inspect($selector); //cast to string
+  $selector: str-slice($selector, 2, -2); //remove brackets
+
+  $element-index: str-index($selector, $element-separator);
+  $modifier-index: str-index($selector, $modifier-separator);
+
+  $index: false;
+
+  @if $element-index and $modifier-index {
+    $index: min($element-index, $modifier-index);
+  } @else if $element-index {
+    $index: $element-index;
+  } @else if $modifier-index {
+    $index: $modifier-index;
+  }
+
+  @return if($index, str-slice($selector, 1, $index - 1), $selector);
+}
+
+@mixin B($block) {
+  .#{$block} {
+    @content;
+  }
+}
+@mixin E($element) {
+  @at-root {
+    #{&}#{$element-separator + $element} {
+      @content;
+    }
+  }
+}
+@mixin M($modifier) {
+  @at-root {
+    #{&}#{$modifier-separator + $modifier} {
+      @content;
+    }
+  }
+}
+
+@mixin BE($element) {
+  $block: bem-selector-block(&);
+  & #{$block + $element-separator + $element} {
+    @content;
+  }
+}
+
+@mixin BM($modifier) {
+  $block: bem-selector-block(&);
+  & #{$block + $modifier-separator + $modifier} {
+    @content;
+  }
+}
+
+

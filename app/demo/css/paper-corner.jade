@@ -1,0 +1,66 @@
+extends ../../../jade/layouts/layout
+
+block title
+  title CSS 折纸效果 - Mora
+
+
+block content
+  div.paper(data-paper-bottom=50, data-peper-right=100)
+
+
+
+
+
+block styles
+  style.
+    .paper {
+      position: relative;
+      width: 300px;
+      height: 400px;
+
+      background: linear-gradient(
+              to top,
+              rgba(30,87,153, 0) 0px,
+              rgba(30,87,153, 0) 100px,
+              rgba(30,87,153, 1) 101px,
+              rgba(30,87,153, 1) 100%
+      );
+    }
+
+    .paper:before, .paper:after {
+      display: block;
+      content: ' ';
+    }
+
+    .paper::before {
+      position: absolute;
+      width: 250px;
+      height: 100px;
+      bottom: 0;
+      left: 0;
+      background-color: rgb(30,87,153);
+    }
+
+    .paper::after {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 50px;
+      height: 100px;
+      background-color: red;
+
+      background: linear-gradient(
+              -63.44deg,
+              rgba(30,87,153, 0) 0px,
+              rgba(30,87,153, 0) 50%,
+              gray 51%,
+              gray 100%
+      );
+    }
+
+
+
+
+block scripts
+  script.
+    console.log(123);

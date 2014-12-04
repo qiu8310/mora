@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Text</title>
+
+</head>
+<body>
+  <div>
+    <h1>{% tf %}</h1>
+  </div>
+  <p class="text-free">
+    abde <!-- tf start -->Strive to create func<>tions<!-- tf end --> which<!-- no use --> <span a="b>b" c='d"d'>can be</span> <!-- tf start -->generalized<!-- tf end -->a
+  </p>
+
+  <script>
+
+
+    var tfStart = '<' + '!-- tf start -->', // 这里还要注入对应的 JSON 字段的 keys
+        tfEnd = '<' + '!-- tf end -->';
+
+    /**
+     * 取出 tf 字段，去除所有 html 标签
+     * @param html [String]
+     * @returns {origin: [String], striped: [String], texts: [Array]}
+     *
+     * 在浏览器上，会把 <、> 等符号转义成 &lt;、&gt;，注意展示给用户编辑的时候要取消转义
+     */
+    function textFree(html) {
+      var data = { origin: html };
+
+      // 去除首尾换行
+      html = html.trim();
+
+      // 把 html 标签中的所有引号及其内容去掉 （因为标签属性可能包含 < 或 > 字符）
+      // html 中不支持反斜线（\）转义
+      // 引号前后如果出现了 < ，表示是在标签内，就把引号内及其内的内容全去掉
+      var run = true;
+      while(run) {
+        run = false;
+        html = html.replace(/(<\w[^"']+)(?:(?:"[^"]*")|(?:'[^']*'))/g, function() {
+          run = true;
+          return arguments[1];
+        });
+      }
+
+      // 将所有 html 标签去掉
+      html = html.replace(/<\/?[\w][^>]*>/g, '');
+
+      // 把非 tf 注释去掉
+      html = html.replace(/<\!\-\-.*?\-\->/g, function(word) {
+        return word === tfStart || word === tfEnd ? word : '';
+      });
+
+      // 该处理的都处理了，现在把 html 分段
+      var result = [],
+          index = 0,
+          htmlLength = html.length;
+      html.replace(/<\!\-\-.*?\-\->/g, function(word, i) {
+        if (word === tfStart) {
+          if (index !== i) {
+            result.push({
+              text: html.substring(index, i),
+              type: 'normal'
+            });
+          }
+
+        } else if (word === tfEnd) {
+          if (index !== i) {
+            result.push({
+              text: html.substring(index, i),
+              type: 'tf'
+            });
+          }
+        }
+
+        index = i + word.length;
+
+        return '';
+      });
+
+
+      if (index < htmlLength) {
+        result.push({
+          text: html.substr(index),
+          type: 'normal'
+        })
+      }
+
+      data.striped = html;
+      data.texts = result;
+
+      return data;
+    }
+
+
+
+
+
+
+
+    //var html = 'abc ' + tfStart + 'Strive "to" create ' + tfEnd + ' functions <> which<'+'!-- no use --> <span a="b>b" c=\'d"d\'>can be</span> '+tfStart+' generalized' + tfEnd;
+    var html = document.querySelector('.text-free').innerHTML;
+    console.log(textFree(html));
+
+
+    document.querySelector('.text-free').addEventListener('click', function(e) {
+      var el = e.target;
+
+    }, false);
+
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<div class="search-filter-form">
+  <form class="filter-form" bindonce="filters">
+    <div class="col-xs-12 form-group">
+      <div ng-repeat="filter in filters" class="col-xs-3 filter-item">
+        <select class="form-control" ng-model="filter.activeItem" ng-options="item.name for item in filter.list">
+        </select>
+      </div>
+    </div>
+  </form>
+
+
+  <form class="search-form row" bindonce="search" bo-class="{'has-keyword-classify': search.classify}">
+
+    <div class="wrap form-group col-md-8">
+      <div class="wrap__keyword">
+        <input type="search" ng-model="search.keyword" placeholder="{{search.placeholder}}" class="form-control search" autocomplete="off" name="keyword">
+        <i class="clear no-select" ng-show="search.keyword" ng-click="search.keyword = ''">x</i>
+        <div class="dropdown keyword-classify" bo-if="search.classify">
+          <button class="btn btn-default dropdown-toggle" type="button" id="keywords-classify-dropdown" data-toggle="dropdown" aria-expanded="true">
+            {{ search.classify.activeItem.name }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="keywords-classify-dropdown">
+            <li role="presentation" ng-repeat="item in search.classify.list"><a role="menuitem" tabindex="-1" ng-click="search.classify.activeItem = item" bo-text="item.name"></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wrap__btn">
+        <button class="btn btn-primary" type="submit"
+                async-click="searchFn($event)" async-target="{{::search.async.target}}"
+                async-text="{{::search.async.text}}" async-class="{{::search.async.class}}">搜索</button>
+      </div>
+    </div>
+
+    <div class="col-md-4 visible-md-block visible-lg-block latest-search">
+      <a class="btn btn-link text-ellipsis" ng-repeat="keyword in searchHistory" ng-click="quickSearch(keyword)">{{keyword}}</a>
+    </div>
+
+  </form>
+</div>

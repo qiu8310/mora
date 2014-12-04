@@ -1,0 +1,112 @@
+.team-list {
+  min-width: 800px;
+  td {
+    vertical-align: top;
+    padding: 5px 10px;
+  }
+
+  td:first-child {
+    padding: 0;
+    label {
+      padding: 0 10px 5px;
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      @include selector-modifier(1 append '.team') {
+        padding-bottom: 90px;
+      }
+    }
+  }
+
+  .batch-opts {
+    td:first-child {
+      label {
+        padding-top: 8px;
+      }
+    }
+  }
+}
+
+
+@include B(team) {
+  background: #ffffff;
+  &:hover {
+    background: #f5f5f5;;
+  }
+
+  border-bottom: 1px solid #b3b3b3;
+  border-top: 1px solid #b3b3b3;
+
+  & > td {
+    padding-top: 20px !important;
+  }
+
+  @include E(brand) {
+    .brand-img {
+      @include size(100px, block, 6px);
+      border: 2px solid gray;
+      overflow: hidden;
+    }
+    .author, .create-time {
+      display: block;
+      text-align: center;
+      max-width: 100px;
+      padding: 1px 0;
+    }
+  }
+
+  @include E(desc) {
+    min-width: 600px;
+
+    .title {
+      margin: 0;
+      line-height: 30px;
+      max-width: 350px;
+    }
+
+    .title + p {
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      min-height: 40px;
+      max-height: 60px;
+      overflow: hidden;
+    }
+  }
+
+  @include E(status) {
+    @include parent-modifier('.team') {
+      float: right;
+    }
+    .btn {
+      &:not(.active):hover {
+        background-color: #428bca;
+        box-shadow: inset -1px -1px 8px #285e8e, inset 1px 1px 8px #285e8e;
+      }
+      &::before {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  @include E(tags) {
+    margin-top: 15px;
+    li {
+      display: inline-block;
+      margin-left: 3px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+
+  @include E(ops) {
+    min-width: 60px;
+    margin-left: 20px;
+    margin-top: 40px;
+  }
+
+}

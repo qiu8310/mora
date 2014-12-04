@@ -1,0 +1,28 @@
+{
+  "node": true,
+  "browser": true,
+  "esnext": true,
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "indent": false,
+  "latedef": "nofunc",
+  "newcap": true,
+  "noarg": true,
+  "quotmark": "single",
+  "regexp": true,
+  "undef": true,
+  "unused": "nofunc",
+  "strict": false, /* js hint 检查差不多就包括了 strict，省的每个文件都写 use strict */
+  "trailing": true,
+  "smarttabs": true,
+  "maxlen": 120,
+  "globals": {
+    "angular": false,
+    "_": false,
+    "Kinetic": false
+  }
+}
+

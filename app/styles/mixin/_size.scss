@@ -1,0 +1,14 @@
+@mixin size($size, $display: false, $radius: false) {
+  width: nth($size, 1);
+  height: if(length($size) == 2, nth($size, 2), nth($size, 1));
+
+  @if $display and $display != '' {
+    display: $display;
+  }
+
+  @if $radius == true {
+    border-radius: 50%;
+  } @else if $radius {
+    border-radius: $radius;
+  }
+}

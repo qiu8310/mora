@@ -1,0 +1,8 @@
+<div class="form-group form-control-group has-feedback" ng-class="controlStatusClass()">
+  <label class="control-label col-sm-{{::layout[0]}}">{{::label}}</label>
+  <div class="col-sm-{{::layout[1]}}">
+    <span ng-show="isSuccessStatus()" class="glyphicon glyphicon-ok form-control-feedback"></span>
+    <span ng-show="isErrorStatus()" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    <div class="form-control-wrap" ng-transclude></div>
+  </div>
+</div>

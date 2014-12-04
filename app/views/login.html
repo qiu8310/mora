@@ -1,0 +1,42 @@
+
+
+<form class="col-sm-6 col-sm-offset-3 form-horizontal" style="padding-top: 100px;"
+      name="login"
+      ng-submit="submit($event)">
+
+  <form-control label="邮箱" ref="email">
+    <input type="email" class="form-control" placeholder="example@example.com" autocomplete="off"
+           name="email"
+           ng-model="user.email"
+           ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+           required/>
+  </form-control>
+
+
+  <form-control label="密码" ref="password">
+    <input type="password" class="form-control" placeholder="请输入您的密码"
+           name="password"
+           ng-model="user.password"
+           ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+           range-validate="6-20"
+           required/>
+    <p class="help-block on-range-error">密码只能是6-20个字符</p>
+  </form-control>
+
+  <form-control>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"
+               ng-model="user.remember_me"
+               ng-true-value="1"
+               ng-false-value="0"
+            /> Remember me
+      </label>
+    </div>
+  </form-control>
+
+  <form-control>
+    <button type="submit" name="submitBtn" class="btn btn-primary" ng-disabled="login.$invalid">登录</button>
+  </form-control>
+
+</form>
