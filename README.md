@@ -40,6 +40,8 @@
 
 [grunt](http://gruntjs.com/)
 
+如果自己的 grunt 插件出错了，默认是不会报什么地方出错的，可以运行 `grunt yourTask --stack`，则会报出具体什么地方出错
+
 [gulp](http://gulpjs.com/)
 
 [travis](https://travis-ci.org/qiu8310/mora/builds)
@@ -81,6 +83,32 @@
      
 * `/* falls through */` 在 switch case 语句中不加 break 会报错，可以用此命令压制
 * [所有设置选项](http://jshint.com/docs/options/)
+* .jshintrc
+  
+  
+      {
+        "node": true,
+        "browser": true,
+        "esnext": true,
+        "bitwise": true,
+        "camelcase": true,
+        "curly": true,
+        "eqeqeq": true,
+        "immed": true,
+        "indent": false,
+        "latedef": "nofunc",
+        "newcap": true,
+        "noarg": true,
+        "quotmark": "single",
+        "undef": true,
+        "unused": "vars",
+        "strict": false,
+        "trailing": true,
+        "smarttabs": true,
+        "globals": {
+          "angular": false
+        }
+      }
 
 
 ## HTML

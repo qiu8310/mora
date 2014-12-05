@@ -40,11 +40,19 @@ angular
         controller: 'LoginCtrl'
       })
 
+      .state('demo/wechat', {
+        url: '/demo/wechat',
+        templateUrl: 'views/demo/wechat.html',
+        controller: 'DemoWechatCtrl'
+      })
+
       .state('algorithm/city', {
         url: '/algorithm/city',
         templateUrl: 'views/algorithm/city.html',
         controller: 'AlgorithmCityCtrl'
       });
+
+
 
 
     // 处理重定向

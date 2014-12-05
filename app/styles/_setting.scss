@@ -1,0 +1,8 @@
+
+$data-types: number string color bool null list map;
+
+$number-suffixes: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+
+
+// 还可以在属性后面加 !important 等
+$display-values: none inherit inline block list-item inline-block inline-table ;

@@ -1,0 +1,215 @@
+// fix footer => clearspeech-website
+
+/*
+.mobile, .tablet, .touch, .desktop, .no-mobile {
+  display: none;
+}
+.mobile {
+  @include mobile {
+    display: block;
+  }
+}
+.no-mobile {
+  @include no-mobile {
+    display: block;
+  }
+}
+.tablet {
+  @include tablet {
+    display: block;
+  }
+}
+.touch {
+  @include touch {
+    display: block;
+  }
+}
+.desktop {
+  @include desktop {
+    display: block;
+  }
+}
+*/
+
+
+.no-select {
+  -webkit-user-select: none; // 禁止用户选择文字，不禁止的话，用户在手机上点击的话
+  -moz-user-select: none; // 很容易选择上上面的文字
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
+// 定位
+@mixin position($pos, $val: false) {
+  position: $pos;
+
+  $len: length($val);
+
+  $first: false;
+  $second: false;
+  $third: false;
+  $forth: false;
+
+  @if $len >= 1 {
+    $first:   nth($val, 1);
+  }
+  @if $len >= 2 {
+    $second:  nth($val, 2);
+  }
+  @if $len >= 3 {
+    $third:   nth($val, 3);
+  }
+  @if $len >= 4 {
+    $forth:   nth($val, 4);
+  }
+
+
+  @if $len == 1 {
+    @if $first != false {
+      top:    $first;
+      right:  $first;
+      bottom: $first;
+      left:   $first;
+    }
+
+  } @else if $len == 2 {
+    @if $first != false {
+      top:    $first;
+      bottom: $first;
+    }
+    @if $second != false {
+      right:  $second;
+      left:   $second;
+    }
+
+  } @else if $len == 3 {
+    @if $first != false {
+      top:    $first;
+    }
+    @if $second != false {
+      right:  $second;
+      left:   $second;
+    }
+    @if $third != false {
+      bottom: $third;
+    }
+
+  } @else if $len == 4 {
+    @if $first != false {
+      top:    $first;
+    }
+    @if $second != false {
+      right:  $second;
+    }
+    @if $third != false {
+      bottom: $third;
+    }
+    @if $forth != false {
+      left:   $forth;
+    }
+  }
+
+}
+
+
+
+$_sprites: ();
+$_sprites-call: ();
+$_sprite-default-dir: sp;
+
+@function map-set($map, $key, $val) {
+  @if map-has-key($map, $key) {
+    $map: map-remove($map, $key);
+  }
+  $map: map-merge($map, ($key: $val));
+  @return $map;
+}
+
+@function get-sprite-map($folder) {
+  $sprite-map: null;
+  @if map-has-key($_sprites, $folder) {
+    $sprite-map: map-get($_sprites, $folder);
+
+    $call-time: map-get($_sprites-call, $folder);
+    $_sprites-call: map-set($_sprites-call, $folder, $call-time + 1) !global;
+
+  } @else {
+    $sprite-map: sprite-map("#{$folder}/*.png", $layout: smart, $spacing: 2px);
+    $_sprites: map-set($_sprites, $folder, $sprite-map) !global;
+    $_sprites-call: map-set($_sprites-call, $folder, 1) !global;
+  }
+  @return $sprite-map;
+}
+
+
+
+
+@mixin sprite($icon, $folder: $_sprite-default-dir, $size: true, $ratio: 1) {
+
+  @if type-of($folder) != string {
+    $ratio: $size;
+    $size: $folder;
+    $folder: $_sprite-default-dir;
+  }
+
+  $sprite-map: get-sprite-map($folder);
+  $sprite-path: sprite-path($sprite-map);
+  $icon-path: "#{$folder}/#{$icon}.png";
+
+  background-image: sprite-url($sprite-map);
+
+  @if type-of($size) == number {
+    $ratio: image-width($icon-path) / $size;
+  }
+
+  @if $ratio > 1 {
+    background-size: round(image-width($sprite-path) / $ratio) auto;
+  }
+
+  $pos: sprite-position($sprite-map, $icon);
+  $posx: round(nth($pos, 1) / $ratio);
+  $posy: round(nth($pos, 2) / $ratio);
+
+  background-position: $posx $posy;
+
+  @if $size {
+    display: block;
+    width: round(image-width($icon-path) / $ratio);
+    height: round(image-height($icon-path) / $ratio);
+  }
+
+}
+
+@mixin sprite-2x($icon, $folder: $_sprite-default-dir, $size: true) {
+  @include sprite($icon, $folder, $size, 2);
+}
+
+
+@function image-width-ratio($icon, $ratio: 1) {
+  $icon-path: "#{$icon}.png";
+  @return image-width($icon-path) / $ratio;
+}
+@function image-height-ratio($icon, $ratio: 1) {
+  $icon-path: "#{$icon}.png";
+  @return image-height($icon-path) / $ratio;
+}
+
+@mixin image-size-ratio($icon, $ratio: 1) {
+  width: image-width-ratio($icon, $ratio);
+  height: image-height-ratio($icon, $ratio);
+}
+
+@mixin bg-ratio($icon, $ratio: 1) {
+  $width: image-width-ratio($icon, $ratio);
+  $height: image-height-ratio($icon, $ratio);
+
+  background-image: image-url("#{$icon}.png");
+  background-size: $width $height;
+  width: $width;
+  height: $height;
+
+}
+
+

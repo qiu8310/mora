@@ -12,8 +12,6 @@ var mountFolder = function(connect, dir) {
 };
 var modRewrite = require('connect-modrewrite');
 
-//console.log(require.cache);
-
 module.exports = function (grunt) {
 
   function getMiddleware(dirs) {
@@ -363,7 +361,7 @@ module.exports = function (grunt) {
       html: ['<%= yeoman.dist %>/{,**/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>']
+        dirs: ['<%= yeoman.dist %>']
       }
     },
 
@@ -388,7 +386,8 @@ module.exports = function (grunt) {
     // The following *-min tasks produce minified files in the dist folder
     cssmin: {
       options: {
-        root: '<%= yeoman.app %>'
+        root: '<%= yeoman.app %>',
+        noRebase: true
       }
     },
 

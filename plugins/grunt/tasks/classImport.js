@@ -104,8 +104,8 @@ module.exports = function(grunt) {
         destContent = destContent.substr(0, startIndex) + destContent.substr(endIndex + tplEnd.length);
       }
 
-      grunt.log.ok('write to ' + destFile + ' ok');
       grunt.file.write(destFile, destContent + content);
+      grunt.log.ok('write to ' + destFile + ' ok');
 
     }
 
