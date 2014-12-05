@@ -4,59 +4,73 @@
   <div class="no-item" ng-hide="list.length">没有任何小组~~~</div>
 
 
-  <table class="break-word team-list" ng-show="list.length">
+  <div ng-show="list.length">
 
-    <!-- 暂不支持 -->
-    <tr class="batch-opts hidden">
-      <td><label class="no-select"><input type="checkbox" ng-model="meta.allChecked"/></label></td>
-      <td colspan="9">
-        <div class="btn-group team__status">
-          <label class="btn btn-primary fa fa-angellist" ng-class="{active: meta.allOfficial}" async-click="official()">官方</label>
-          <label class="btn btn-primary fa fa-fire" ng-class="{active: meta.allHot}" async-click="hot()">热门</label>
-        </div>
+    <pagination class=""
+                total-items="pager.total" items-per-page="pager.pageSize"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="pager.page"></pagination>
 
-        <div class="btn-group" style="margin-left: 20px;">
-          <a async-click="dismiss()">解散</a>
-        </div>
-      </td>
-    </tr>
+    <table class="table team-list">
 
-    <tr class="team" ng-repeat="team in list">
-      <td><label class="no-select"><input type="checkbox" ng-checked="team.checked"/></label></td>
-      <td>
-        <div class="team__brand">
-          <div class="brand-img" style="background: url({{team.imageUrl}}); background-size: cover"></div>
-          <a class="author text-ellipsis" user="team.owner"></a>
-          <time class="create-time">{{team.createdAt | time }}</time>
-        </div>
-      </td>
-      <td>
-        <div class="btn-group team__status">
-          <label class="btn btn-primary fa fa-angellist" async-click="official(team)" ng-class="{active: team.isOfficial}">官方</label>
-          <label class="btn btn-primary fa fa-fire" async-click="hot(team)" ng-class="{active: team.isHot}">热门</label>
-        </div>
+      <!-- 暂不支持 -->
+      <tr class="batch-opts hidden">
+        <td><label class="no-select"><input type="checkbox" ng-model="meta.allChecked"/></label></td>
+        <td colspan="9">
+          <div class="btn-group team__status">
+            <label class="btn btn-primary fa fa-angellist" ng-class="{active: meta.allOfficial}" async-click="official()">官方</label>
+            <label class="btn btn-primary fa fa-fire" ng-class="{active: meta.allHot}" async-click="hot()">热门</label>
+          </div>
 
-        <div class="team__desc">
-          <h3 class="title text-ellipsis"><a ui-sref="home.teamDetail({id: team.resourceId})">{{team.title}}</a></h3>
-          <p>
-            <span class="category">{{team.categoryName}}</span>
-            <span class="capacity">{{team.members.length}}/{{team.maxMembers}}</span>
-          </p>
-          <p class="desc">{{ team.description }}</p>
-        </div>
-        <ul class="pull-right team__tags">
-          <li ng-repeat="tag in team.tags"><label class="label label-primary">{{tag}}</label></li>
-        </ul>
-      </td>
-      <td>
-        <ul class="team__ops">
-          <li><a async-click="dismiss(team)" async-confirm="确认解散小组：{{team.title}}">解散</a></li>
-        </ul>
-      </td>
-    </tr>
+          <div class="btn-group" style="margin-left: 20px;">
+            <a async-click="dismiss()">解散</a>
+          </div>
+        </td>
+      </tr>
 
+      <tr class="team" ng-repeat="team in list">
+        <td><label class="no-select"><input type="checkbox" ng-checked="team.checked"/></label></td>
+        <td>
+          <div class="team__brand">
+            <div class="brand-img" style="background: url({{team.imageUrl}}); background-size: cover"></div>
+            <a class="author text-ellipsis" user="team.owner"></a>
+            <time class="create-time">{{team.createdAt | time }}</time>
+          </div>
+        </td>
+        <td>
+          <div class="btn-group item__status">
+            <label class="btn btn-primary fa fa-angellist" async-click="official(team)" ng-class="{active: team.isOfficial}">官方</label>
+            <label class="btn btn-primary fa fa-fire" async-click="hot(team)" ng-class="{active: team.isHot}">热门</label>
+          </div>
 
-  </table>
+          <div class="team__desc">
+            <h3 class="title text-ellipsis"><a ui-sref="home.teamDetail({id: team.resourceId})">{{team.title}}</a></h3>
+            <p>
+              <span class="category">{{team.categoryName}}</span>
+              <span class="capacity">{{team.members.length}}/{{team.maxMembers}}</span>
+            </p>
+            <p class="desc">{{ team.description }}</p>
+          </div>
+          <ul class="pull-right team__tags">
+            <li ng-repeat="tag in team.tags"><label class="label label-primary">{{tag}}</label></li>
+          </ul>
+        </td>
+        <td>
+          <ul class="team__ops">
+            <li><a async-click="dismiss(team)" async-confirm="确认解散小组：{{team.title}}">解散</a></li>
+          </ul>
+        </td>
+      </tr>
+
+    </table>
+
+    <pagination class=""
+                total-items="pager.total" items-per-page="pager.pageSize"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="pager.page"></pagination>
+
+  </div>
+
 
   <!--
 按前台每个分类排列，每个分类下有小组列表
@@ -81,7 +95,12 @@ staging-neo.llsapp.com
 
    hot_groups_ops_study_groups GET    /ops/study_groups/hot_groups(.:format)    ops/study_groups#hot_groups
 
+
+
        members_ops_study_group DELETE /ops/study_groups/:id/members(.:format)   ops/study_groups#members
+
+
+
 
      hot_tags_ops_study_groups GET    /ops/study_groups/hot_tags(.:format)      ops/study_groups#hot_tags
          tags_ops_study_groups GET    /ops/study_groups/tags(.:format)          ops/study_groups#tags

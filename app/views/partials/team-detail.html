@@ -44,7 +44,7 @@
 
   <form-control label="小组标签">
     <div class="form-inline">
-      <div class="form-group" ng-repeat="tag in detail.tags"><input class="form-control" ng-model="tag"></div>
+      <div class="form-group" ng-repeat="tag in detail.tags"><input disabled class="form-control" ng-model="tag"></div>
     </div>
   </form-control>
 
@@ -57,7 +57,10 @@
   <form-control label="小组成员">
     <div class="form-control-text" ng-hide="detail.members.length">此小组暂时还没有成员</div>
     <ul ng-show="detail.members.length">
-      <li class="inline-block" ng-repeat="member in detail.members"><a user="member" data-avatar></a></li>
+      <li class="inline-block" ng-repeat="member in detail.members">
+        <a user="member" data-avatar></a>
+        <a class="btn btn-primary btn-xs kick-member" async-confirm="确认踢掉 “{{member.name}}” 吗" async-click="kickMember(member, $index)">踢掉TA</a>
+      </li>
     </ul>
   </form-control>
 

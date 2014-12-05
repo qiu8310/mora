@@ -9,27 +9,40 @@ angular.module('moraApp')
       allHot: false
     };
 
-    function getList(params) {
-      params = params || {category: defaultCategory};
-      var hot = params.hot === 'yes' ? '/hot_groups' : '';
-      return $http.get('api' + hot + '?' + $.param(params)).success(function(data) {
-        $scope.list = data.studyGroups;
-      });
+    function getList() {
+      var query, params;
+      params = $scope.search.params();
+      query = $.param(_.assign({}, params.classify, params.filters, $scope.pager || {}));
+
+      var isHot = params.filters.hot === 'yes';
+      return $http.get('api/' + (isHot ? 'hot_groups' : '') + '?' + query)
+        .success(function(data) {
+          $scope.pager.total = data.total;
+          $scope.list = _.map(data.studyGroups, function(team) {
+            team.isHot = isHot;
+            return team;
+          });
+        });
     }
 
+
+    $scope.$watch('pager.page', _.ignoreFirstCall(getList));
+    $scope.$on('search:init:finished', getList);
+
+
     $scope.filters = [
+      {
+        key: 'hot',
+        active: 'all',
+        list: [
+          {all: '所有小组'},
+          {yes: '热门小组'}
+        ]
+      },
       {
         key: 'category',
         active: defaultCategory,
         list: _.cloneDeep(C.team.categories)
-      },
-      {
-        key: 'hot',
-        active: 'no',
-        list: [
-          {yes: '热门小组'},
-          {no: '非热门小组'}
-        ]
       }
     ];
 
@@ -40,15 +53,12 @@ angular.module('moraApp')
       },
       keyword: '',
       placeholder: '搜索小组',
-      searchFn: function(e, keyword, filters) {
-        if (keyword) {
+      searchFn: function(e, params) {
+        if (params.keyword) {
           Dialog.alert('暂不支持关键字搜索');
           $scope.search.keyword = '';
         }
-
-        var params = _.cloneDeep(filters.classify);
-        _.assign.apply(_, [params].concat(filters.filters));
-        return getList(params);
+        return getList();
       },
 
       classify: {
@@ -62,6 +72,9 @@ angular.module('moraApp')
         ]
       }
     };
+
+
+
 
 
     // 全选 或 反选
@@ -93,8 +106,5 @@ angular.module('moraApp')
     $scope.official = function(team) {
       Dialog.alert('后台暂不支持!');
     };
-
-
-    getList();
 
   });

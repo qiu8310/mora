@@ -1,5 +1,5 @@
 angular.module('moraApp')
-  .directive('searchFilter', function (_, $, Storage, C) {
+  .directive('searchFilter', function (_, $, Storage, C, $rootScope) {
 
     function updateListGroup(group) {
       if (group) {
@@ -15,13 +15,13 @@ angular.module('moraApp')
     }
 
     function getFilterParams(filters) {
-      return _.map(filters, function(filter) {
-        var obj = {};
+      var obj = {};
+      _.each(filters, function(filter) {
         if (filter) {
           obj[filter.key] = filter.activeItem.key;
         }
-        return obj;
       });
+      return obj;
     }
 
 
@@ -37,8 +37,17 @@ angular.module('moraApp')
         _.each(scope.filters, updateListGroup);
         updateListGroup(scope.search.classify);
 
-        var history = Storage.get('searchHistory', []);
+        scope.search.params = function() {
+          return {
+            keyword: $.trim(scope.search.keyword),
+            filters: getFilterParams(scope.filters),
+            classify: getFilterParams([scope.search.classify])
+          };
+        };
 
+        $rootScope.$broadcast('search:init:finished');
+
+        var history = Storage.get('searchHistory', []);
         scope.searchHistory = history;
 
         scope.quickSearch = function(keyword) {
@@ -47,14 +56,12 @@ angular.module('moraApp')
 
         scope.searchFn = function(e) {
           e.preventDefault();
-          var promise;
+          var promise, keyword, params;
           if (scope.search.searchFn) {
-            var keyword = $.trim(scope.search.keyword);
+            params = scope.search.params();
+            keyword = params.keyword;
 
-            promise = scope.search.searchFn(e, keyword, {
-              filters: getFilterParams(scope.filters),
-              classify: getFilterParams([scope.search.classify]).shift()
-            });
+            promise = scope.search.searchFn(e, params);
 
             if (keyword) {
               // 保存历史记录

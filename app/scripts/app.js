@@ -54,6 +54,17 @@ angular
       });
     }});
 
+    _.mixin({ignoreFirstCall: function(fn) {
+      var cb = null;
+      return function() {
+        if (cb) {
+          cb.apply(null, arguments);
+        } else {
+          cb = fn;
+        }
+      };
+    }});
+
 
     (function registerAsyncClickToLoDash() {
       function isTextNode(el) {
@@ -101,7 +112,6 @@ angular
         function start() {
           textNode.text(asyncText);
           element.addClass(asyncClass);
-
           if (asyncTarget) {
             spinElement = $('<div class="async-loading"><i class="fa fa-spinner fa-2x fa-spin"></i></div>');
             var style = {
@@ -116,7 +126,7 @@ angular
 
 
             asyncTarget.fadeOut(300, function() {
-              asyncTarget.parent().append(spinElement);
+              asyncTarget.before(spinElement);
             });
           }
         }
@@ -126,6 +136,7 @@ angular
           element.removeClass(asyncClass);
           if (asyncTarget) {
             spinElement.remove();
+            spinElement = null;
             asyncTarget.fadeIn(500);
           }
         }
@@ -138,9 +149,7 @@ angular
         var promiseFn = promise && (promise.always || promise.finally);
         if (typeof promiseFn === 'function') {
           start();
-          promiseFn.call(promise, function() {
-            finish();
-          });
+          promiseFn.call(promise, finish);
         }
 
       }});

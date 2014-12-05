@@ -1,0 +1,30 @@
+<div class="team-tags">
+  <search-filter filters="filters" search="search"></search-filter>
+
+
+  <div class="no-item" ng-hide="list.length">没有任何标签~~~</div>
+
+  <div ng-show="list.length">
+    <pagination class=""
+                total-items="pager.total" items-per-page="pager.pageSize"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="pager.page"></pagination>
+
+    <table class="table tag-list">
+      <tr class="tag" ng-repeat="tag in list">
+        <td><label class="no-select"><input type="checkbox" ng-checked="tag.checked"/></label></td>
+        <td><label class="label label-primary">{{tag.name}}</label></td>
+        <td>
+          <div class="btn-group item__status">
+            <label class="btn btn-primary fa fa-fire" async-click="hot(tag)" ng-class="{active: tag.isHot}">热门</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <pagination class=""
+                total-items="pager.total" items-per-page="pager.pageSize"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="pager.page"></pagination>
+  </div>
+</div>

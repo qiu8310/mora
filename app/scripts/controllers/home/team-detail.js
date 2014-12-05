@@ -7,4 +7,12 @@ angular.module('moraApp')
       $scope.detail = data;
     });
 
+
+    $scope.kickMember = function(member, index) {
+      return $http.delete('api/' + $scope.detail.resourceId + '/members?userId=' + member.resourceId)
+        .success(function() {
+          $scope.detail.members.splice(index, 1);
+        });
+    };
+
   });

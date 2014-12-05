@@ -53,8 +53,11 @@ angular.module('moraApp')
 
 
 
-    $scope.userLink = function(user) {
-      return '<a>link</a>';
+    // 分页参数
+    $scope.pager = {
+      page: 1,
+      total: 0,
+      pageSize: 5
     };
 
 
