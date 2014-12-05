@@ -176,9 +176,14 @@ angular
     'pasvaz.bindonce',
     'vendors'
   ])
-  .config(function (C, _, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+  .config(function (C, _, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $sceDelegateProvider) {
 
     $locationProvider.html5Mode(false).hashPrefix('!');
+
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',
+      'http://llss.qiniudn.com/**'
+    ]);
 
     $httpProvider.interceptors.push('HttpInterceptor');
 

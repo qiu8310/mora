@@ -10,9 +10,9 @@
 }
 
 
-.inline-block {
-  display: inline-block !important;
-}
+.inline-block { display: inline-block !important; }
+.block { display: block !important; }
+.inline { display: inline !important; }
 
 
 /*

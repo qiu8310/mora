@@ -6,11 +6,13 @@
   font-size: 20px;
 }
 
-.item__status {
-  @include parent-modifier('.team') {
+
+.team, .thread {
+  .item__status {
     float: right;
   }
-
+}
+.item__status {
   .btn {
     &:not(.active):hover {
       background-color: #428bca;
@@ -25,6 +27,11 @@
 
 .table {
   min-width: 800px;
+
+  .title {
+    margin: 0;
+    line-height: 30px;
+  }
 
   .batch-opts {
     td:first-child {

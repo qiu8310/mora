@@ -5,7 +5,7 @@ angular.module('moraApp').service('Env', function () {
     params = {};
 
 
-  Env.isStaging = host.indexOf('staging') >= 0;
+  Env.isStaging = host.indexOf('staging') >= 0 || host.indexOf('qiniudn.com') > 0;
 
   // localhost 可能会带有端口号，所以不能用全等
   Env.isLocal = host.indexOf('localhost') === 0 || ['192', '172', '127'].indexOf(host.split('.').shift()) > -1;

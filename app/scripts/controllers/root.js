@@ -8,8 +8,7 @@ angular.module('moraApp')
       $state.go('login');
     });
     $scope.$on('HTTPError', function(e, msg) {
-      //Dialog.alert(msg);
-      console.error(msg);
+      Dialog.alert(msg);
     });
 
     var redirect = null;
@@ -34,7 +33,7 @@ angular.module('moraApp')
 
 
     $scope.$on('$stateChangeSuccess', function(e, current, params, prev, prevParams) {
-      if (!redirect || !redirect[2]) {
+      if ((!redirect || !redirect[2]) && prev.name) {
         redirect = [prev.name, prevParams];
       }
 
@@ -57,7 +56,7 @@ angular.module('moraApp')
     $scope.pager = {
       page: 1,
       total: 0,
-      pageSize: 5
+      pageSize: 10
     };
 
 

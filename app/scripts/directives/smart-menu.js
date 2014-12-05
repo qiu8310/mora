@@ -102,7 +102,7 @@ angular.module('moraApp')
         // 判断 menu 是否是最新的
         var allMenuStatus = walkMenus(function(menu, parentMenu) {
           var key = parentMenu ? parentMenu.key + '.' + menu.key : menu.key;
-          menu.isNew = !menu.hasChildren && _.indexOf(storedMenuKeys, key) < 0 && !isNewTagExpired;
+          menu.isNew = !menu.hasChildren && _.indexOf(storedMenuKeys, key) < 0;
           if (menu.isNew && parentMenu) {
             parentMenu.newCount++;
           }

@@ -18,7 +18,8 @@
 angular.module('moraApp')
   .constant('C', {
     res: {
-      defaultAvatar: 'http://llss.qiniudn.com/avatar_default.png'
+      defaultAvatar: 'http://llss.qiniudn.com/avatar_default.png',
+      audioPrefix: '?avthumb/mp3/ab/36'
     },
 
     search: {
@@ -30,7 +31,7 @@ angular.module('moraApp')
     },
 
     menu: {
-      newTagMaxAge: 24 * 3600 * 1000 // 菜单项上的 `new` 标签保留的时长
+      newTagMaxAge: 6 * 3600 * 1000 // 菜单项上的 `new` 标签保留的时长
     },
 
     team: {
@@ -74,16 +75,6 @@ angular.module('moraApp')
             key: 'all',
             title: '所有帖',
             templateUrl: 'forum-all.html'
-          },
-          {
-            key: 'hot',
-            title: '热门帖',
-            templateUrl: 'forum-hot.html'
-          },
-          {
-            key: 'essence',
-            title: '精华帖',
-            templateUrl: 'forum-essence.html'
           }
         ]
       },

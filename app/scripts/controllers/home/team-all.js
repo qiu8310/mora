@@ -20,6 +20,7 @@ angular.module('moraApp')
           $scope.pager.total = data.total;
           $scope.list = _.map(data.studyGroups, function(team) {
             team.isHot = isHot;
+            team.imageUrl = team.imageUrl || C.res.defaultAvatar;
             return team;
           });
         });

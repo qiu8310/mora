@@ -1,21 +1,17 @@
 'use strict';
 
 angular.module('moraApp')
-  .controller('LoginCtrl', function ($scope, _, $http, $rootScope, Env) {
+  .controller('LoginCtrl', function ($scope, _, $http, $rootScope, Storage) {
 
-    if (Env.isTest) {
-      $scope.user = {
-        email: 'mora@liulishuo.com',
-        password: '123qweasd'
-      };
-    }
-
-
+    $scope.user = Storage.get('loginUser', {});
 
     $scope.submit = function(e) {
+      var user = $scope.user;
+      Storage.set('loginUser', user.rememberMe ? user : {});
+
       _.asyncClickOn(e.target.submitBtn, function() {
         return $http
-          .post('api/login', $scope.user)
+          .post('api/login', user)
           .success(function() {
             $rootScope.$broadcast('login:success');
           });

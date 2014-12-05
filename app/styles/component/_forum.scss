@@ -1,0 +1,43 @@
+@include B(thread) {
+  & > td {
+    padding-top: 20px !important;
+
+    &:first-child {
+      width: 60px;
+      label {
+        padding-bottom: 120px !important;
+      }
+    }
+  }
+
+
+  .detail {
+    position: relative;
+    padding-bottom: 20px;
+  }
+  .detail.box-fade {
+    height: 120px;
+  }
+
+
+  .box-fade {
+    overflow: hidden;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 60%);
+    }
+  }
+
+  .fade-toggle {
+    @include position(absolute, null 0 0);
+    text-align: center;
+    z-index: 2;
+  }
+
+}

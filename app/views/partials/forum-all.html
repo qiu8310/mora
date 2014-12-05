@@ -1,3 +1,78 @@
-<div class="thread" ng-cloak>
+<div class="forum-all" ng-cloak>
+
+
+  <search-filter filters="filters" search="search"></search-filter>
+
+  <div class="no-item" ng-hide="list.length">没有任何帖子~~~</div>
+
+  <div ng-show="list.length">
+
+    <pagination class=""
+                total-items="pager.total" items-per-page="pager.pageSize"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="pager.page"></pagination>
+
+    <table class="table thread-list">
+      <tr class="thread" ng-repeat="thread in list">
+        <td><label class="no-select"><input type="checkbox" ng-checked="thread.checked"/></label></td>
+        <td>
+          <div class="btn-group item__status">
+            <label class="btn btn-primary fa fa-fire" async-click="hot(thread)" ng-class="{active: thread.isHot}">热门</label>
+            <label class="btn btn-primary fa fa-trash-o" async-click="del(thread, $index)" async-confirm="确认删除“{{thread.title}}”？" ng-class="{active: thread.isDeleted}">删除</label>
+          </div>
+
+          <h3 class="title text-ellipsis">
+            <a>{{thread.title}}</a>
+              <span class="icons" style="font-size: .7em">
+                <i class="fa fa-play-circle-o" ng-show="thread.audioUrl"></i>
+                <i class="fa fa-font" ng-show="thread.body"></i>
+                <i class="fa fa-image" ng-show="thread.attachedImg"></i>
+              </span>
+          </h3>
+          <div class="detail" fade>
+            <div class="detail-content">
+              <audio controls class="block" ng-show="thread.audioUrl" ng-src="{{thread.audioUrl}}"></audio>
+              <p class="text" ng-show="thread.body">{{thread.body}}</p>
+              <img class="block" style="padding: 10px 0; max-width: 500px;" ng-show="thread.attachedImg" ng-src="{{thread.attachedImg}}">
+            </div>
+          </div>
+        </td>
+        <td width="200px">
+          <a class="center-block block" user="thread" data-avatar></a>
+          <p class="text-center">Posted at {{thread.createdAt | time}}</p>
+        </td>
+      </tr>
+    </table>
+    <!--
+    appVersion: "1.14dev"
+    attachedImg: "http://llss.qiniudn.com/forum/image/NzI4MWQwMDAwMDAwMDVjYQ==_1417585250.jpg"
+    audioLength: 6
+    audioUrl: "http://llss.qiniudn.com/forum/audio/NzI4MWQwMDAwMDAwMDVjYQ==_1417585251_16k_128k.m4a"
+    body: ""
+    bodyLength: 0
+    createdAt: 1417585150
+    followsCount: 0
+    id: "NzI4MDgwMDAwMDAwMDQwYw=="
+    isFollowed: false
+    isLiked: false
+    likesCount: 0
+    os: "iOS 8.0.2"
+    platform: 1
+    read: true
+    repliedAt: 1417585150
+    repliesCount: 0
+    title: "图片和音频"
+    type: 0
+    userAnswerBadgeLevel: 0
+    userAvatar: "http://llss.qiniudn.com/user_images/58DE9EAC-7AA2-4D3E-8A58-4815145EA940_1381557857.jpg"
+    userId: "NzI4MWQwMDAwMDAwMDVjYQ=="
+    userName: "c"
+    -->
+
+    <pagination class=""
+                total-items="pager.total" items-per-page="pager.pageSize"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="pager.page"></pagination>
+  </div>
 
 </div>

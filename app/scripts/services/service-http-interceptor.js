@@ -1,7 +1,7 @@
 angular.module('moraApp')
-  .service('HttpInterceptor', function (_, $q, $rootScope, Auth) {
+  .service('HttpInterceptor', function (_, $q, $rootScope, Auth, Env) {
 
-    var API_BASE = 'http://staging-neo.llsapp.com/',
+    var API_BASE = Env.isTest ? 'http://staging-neo.llsapp.com/' : 'http://crm.llsapp.com',
       PREFIX = 'api';
 
     return {
@@ -20,6 +20,9 @@ angular.module('moraApp')
           case 'login':
           case 'logout':
             url = url.replace(PREFIX + '/' + identifier, 'ops/sessions');
+            break;
+          case 'forum':
+            url = 'ops/forum_topics' + url.substr((PREFIX + '/' + identifier).length);
             break;
           default:
             url = 'ops/study_groups' + url.substr(PREFIX.length);

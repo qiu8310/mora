@@ -45,6 +45,7 @@ module.exports = function (grunt) {
     deployAsset: {
       options: {
         dry: false,
+        deleteUploaded: false,
         uploader: 'qiniu',
         qiniu: {
           accessKey: 'MojRHbkKO0KqF3WLj_boOvUtM-IUI28jAApDJcHt',

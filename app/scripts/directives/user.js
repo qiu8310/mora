@@ -11,10 +11,11 @@ angular.module('moraApp')
           if (user) {
             destroy();
 
-            var username = user.name,
-              avatar = user.imageUrl || C.res.defaultAvatar;
+            var username = user.name || user.userName || '',
+              id = user.resourceId || user.userId,
+              avatar = user.imageUrl || user.userAvatar || C.res.defaultAvatar;
 
-            element.attr('href', $state.href('home.userDetail', {id: user.resourceId}));
+            element.attr('href', $state.href('home.userDetail', {id: id}));
             element.attr('title', username);
             if ('avatar' in attrs) {
               element.addClass('user user--avatar');
