@@ -25,9 +25,9 @@ angular.module('moraApp')
         .success(function(data) {
           $scope.pager.total = data.total;
           $scope.list = _.map(data.topics || data, function(thread) {
+            thread.isHot = isHot;
             if (thread.audioUrl) {
               thread.audioUrl += C.res.audioPrefix;
-              thread.isHot = isHot;
             }
             return thread;
           });
