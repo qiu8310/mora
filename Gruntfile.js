@@ -36,6 +36,11 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  var qiniuConfig = {
+    accessKey: 'MojRHbkKO0KqF3WLj_boOvUtM-IUI28jAApDJcHt',
+    secretKey: 'F4kKZbKzuSJjYkAlQel8zgL5k28NnYb99uggj_tz'
+  };
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -52,8 +57,8 @@ module.exports = function (grunt) {
         assetMapJsonFile: '<%= yeoman.dist %>/asset-map.json',
         uploader: 'qiniu',
         qiniu: {
-          accessKey: 'MojRHbkKO0KqF3WLj_boOvUtM-IUI28jAApDJcHt',
-          secretKey: 'F4kKZbKzuSJjYkAlQel8zgL5k28NnYb99uggj_tz',
+          accessKey: qiniuConfig.accessKey,
+          secretKey: qiniuConfig.secretKey,
           bucket: 'liulishuo',
           prefix: 't-'
         },
@@ -81,13 +86,21 @@ module.exports = function (grunt) {
         '<%= yeoman.dist %>/scripts/*scripts.js'
       ],
 
-      meta: {
+      bootstrap: {
         options: {
           mapUpload: true,
-          overwrite: true
+          overwrite: true,
+
+          uploader: 'qiniu',
+          qiniu: {
+            accessKey: qiniuConfig.accessKey,
+            secretKey: qiniuConfig.secretKey,
+            bucket: 'design-res'
+          }
         },
         files: {
-          'spa-meta-of-crm.json': '<%= yeoman.dist %>/asset-map.json'
+          'bootstrap.js': '<%= yeoman.app %>/bootstrap.js',
+          'bootstrap.min.js': '<%= yeoman.dist %>/bootstrap.min.js'
         }
       }
     },
@@ -669,8 +682,11 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('deploy', ['build', 'deployAsset']);
-  grunt.registerTask('publish', ['build', 'deployAsset', 'spaBootstrap:crmTest']);
+  grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
+  grunt.registerTask('deployBootstrap', ['uglify:bootstrap', 'deployAsset:bootstrap']);
+
+  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmTest']);
+
 
   //grunt.registerTask('publish', function(comment) {
   //  var cmd = 'shell:publish' + (comment ? ':' + comment : '');
