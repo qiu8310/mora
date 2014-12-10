@@ -36,6 +36,9 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  var qiniuConfig = require(process.env.HOME + '/qiniu.json'),
+    secretConfig = require(process.env.HOME + '/.secret.json');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -52,8 +55,8 @@ module.exports = function (grunt) {
         assetMapJsonFile: '<%= yeoman.dist %>/asset-map.json',
         uploader: 'qiniu',
         qiniu: {
-          accessKey: 'MojRHbkKO0KqF3WLj_boOvUtM-IUI28jAApDJcHt',
-          secretKey: 'F4kKZbKzuSJjYkAlQel8zgL5k28NnYb99uggj_tz',
+          accessKey: qiniuConfig.accessKey,
+          secretKey: qiniuConfig.secretKey,
           bucket: 'liulishuo',
           prefix: 't-'
         },
@@ -79,31 +82,26 @@ module.exports = function (grunt) {
         '<%= yeoman.dist %>/views/**/*.html',
         '<%= yeoman.dist %>/styles/**/*.css',
         '<%= yeoman.dist %>/scripts/*scripts.js'
-      ],
-
-      meta: {
-        options: {
-          mapUpload: true,
-          overwrite: true
-        },
-        files: {
-          'spa-meta-of-crm.json': '<%= yeoman.dist %>/asset-map.json'
-        }
-      }
+      ]
     },
 
     spaBootstrap: {
+      options: {
+        token: secretConfig.spaBootstrapCrmToken
+        //api: function(m) {
+        //  return 'http://mora.com/spa-bootstrap.php?m=' + m;
+        //}
+      },
       crmTest: {
         options: {
-          index: '<%= yeoman.dist %>/index.html',
+          //index: '<%= yeoman.dist %>/index.html',
           app: 'crm_test',
-          //bootstrapJs: 'http://localhost:9999/bootstrap.js',
           bootstrap: '<%= yeoman.dist %>/bootstrap_test.html'
         }
       },
       crmDevelopment: {
         options: {
-          app: 'crm',
+          app: 'crm_dev',
           bootstrap: '<%= yeoman.dist %>/bootstrap.html'
         }
       }
@@ -447,14 +445,6 @@ module.exports = function (grunt) {
       }
     },
 
-    uglify: {
-      bootstrap: {
-        files: {
-          '<%= yeoman.dist %>/bootstrap.min.js': '<%= yeoman.app %>/bootstrap.js'
-        }
-      }
-    },
-
     imagemin: {
       dist: {
         files: [{
@@ -606,8 +596,7 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true
+        configFile: 'karma.conf.js'
       }
     }
   });
@@ -669,8 +658,12 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('deploy', ['build', 'deployAsset']);
-  grunt.registerTask('publish', ['build', 'deployAsset', 'spaBootstrap:crmTest']);
+  grunt.registerTask('bootstrap', 'spaBootstrap:crmTest');
+
+  grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
+
+  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmTest']);
+
 
   //grunt.registerTask('publish', function(comment) {
   //  var cmd = 'shell:publish' + (comment ? ':' + comment : '');

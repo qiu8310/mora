@@ -14,17 +14,23 @@ module.exports = function(config) {
     //  'karma-coverage'
     //],
 
-    // list of files / patterns to load in the browser
     files: [
+      'app/bower_components/jquery/dist/jquery.js',
+      'app/bower_components/bootstrap/dist/js/bootstrap.js',
+      'app/bower_components/lodash/dist/lodash.compat.js',
       'app/bower_components/angular/angular.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-resource/angular-resource.js',
       'app/bower_components/angular-cookies/angular-cookies.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',
-      'app/bower_components/ui-router/release/angular-ui-router.js',
+      'app/bower_components/angular-touch/angular-touch.js',
       'app/bower_components/angular-md5/angular-md5.js',
-      'app/scripts/*.js',
+      'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'app/bower_components/ui-utils/ui-utils.js',
+      'app/bower_components/angular-bindonce/bindonce.js',
+      'app/bower_components/ui-router/release/angular-ui-router.js',
       'app/scripts/**/*.js',
+      'app/scripts/*.js',
       //'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
@@ -68,6 +74,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true
   });
 };
