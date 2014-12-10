@@ -7,7 +7,7 @@
   <div ng-show="list.length">
 
     <pagination class=""
-                total-items="pager.total" items-per-page="pager.pageSize"
+                total-items="pager.total" items-per-page="pager.pageSize" max-size="pager.maxSize"
                 previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
                 ng-model="pager.page"></pagination>
 
@@ -65,7 +65,7 @@
     </table>
 
     <pagination class=""
-                total-items="pager.total" items-per-page="pager.pageSize"
+                total-items="pager.total" items-per-page="pager.pageSize" max-size="pager.maxSize"
                 previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
                 ng-model="pager.page"></pagination>
 

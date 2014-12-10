@@ -1,17 +1,16 @@
 'use strict';
 
 angular.module('moraApp')
-  .controller('LoginCtrl', function ($scope, _, $http, $rootScope, Storage) {
+  .controller('LoginCtrl', function ($scope, _, $http, $rootScope, Auth) {
 
-    $scope.user = Storage.get('loginUser', {});
+    $scope.user = Auth.getLoginUser(true);
 
     $scope.submit = function(e) {
-      var user = $scope.user;
-      Storage.set('loginUser', user.rememberMe ? user : {});
+      Auth.setLoginUser($scope.user);
 
       _.asyncClickOn(e.target.submitBtn, function() {
         return $http
-          .post('api/login', user)
+          .post('api/login', $scope.user)
           .success(function() {
             $rootScope.$broadcast('login:success');
           });

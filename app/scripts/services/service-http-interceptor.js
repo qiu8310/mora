@@ -1,7 +1,7 @@
 angular.module('moraApp')
   .service('HttpInterceptor', function (_, $q, $rootScope, Auth, Env) {
 
-    var API_BASE = Env.isTest ? 'http://staging-neo.llsapp.com/' : 'http://crm.llsapp.com',
+    var API_BASE = Env.isTest ? 'http://staging-neo.llsapp.com/' : 'http://crm.llsapp.com/',
       PREFIX = 'api';
 
     return {

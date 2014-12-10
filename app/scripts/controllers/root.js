@@ -56,7 +56,8 @@ angular.module('moraApp')
     $scope.pager = {
       page: 1,
       total: 0,
-      pageSize: 10
+      pageSize: 10,
+      maxSize: 10
     };
 
 

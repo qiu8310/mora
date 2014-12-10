@@ -11,14 +11,14 @@ angular.module('moraApp')
     }
 
     function currentTopMenuKey() {
-      return $state.current && $state.current.url.split('/').shift();
+      return $state.current && $state.current.url.split('/')[1];
     }
 
     return {
       templateUrl: 'views/tpls/smart-menu.html',
       replace: true,
       restrict: 'E',
-      controller: function($scope, $state) {
+      controller: function($scope, $timeout) {
         $scope.toggleMenu = function(e, menu){
           var target = $(e.target),
             subMenuEl = (target.is('a') ? target : target.parentsUntil('li')).next();
@@ -42,10 +42,12 @@ angular.module('moraApp')
         };
 
         // 记录最顶层 active 的 Menu 的 key，用于设置对应的 DOM 的 class 为 active
-        $scope.activeMenu = currentTopMenuKey();
-        $scope.$on('$stateChangeSuccess', function() {
+        $timeout(function() {
           $scope.activeMenu = currentTopMenuKey();
-        });
+          $scope.$on('$stateChangeSuccess', function() {
+            $scope.activeMenu = currentTopMenuKey();
+          });
+        }, 0);
       },
 
 

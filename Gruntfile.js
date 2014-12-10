@@ -15,14 +15,14 @@ module.exports = function (grunt) {
 
   function getConnectMiddleWares(webRootDirs) {
     return TF.connectHelper(grunt, webRootDirs, function() {
-      this.push(modRewrite(['!\\.\\w+$ /index.html [L]']));
+      this.push(modRewrite(['!\\.\\w+([#\\?].*)?$ /index.html [L]']));
     });
   }
 
 
 
 
-  grunt.loadTasks( 'plugins/grunt/tasks' );
+  grunt.loadTasks('plugins/grunt/tasks');
   grunt.loadNpmTasks('text-free');
 
   // Load grunt tasks automatically
@@ -46,37 +46,69 @@ module.exports = function (grunt) {
       options: {
         dry: false,
         deleteUploaded: false,
+
+        // tpls/incs 文件夹里的模板使用 ngtemplates 压缩，所以可以忽略它们
+        ignoreUploadAssets: ['<%= yeoman.dist %>/views/{tpls,incs}/*.html'],
+        assetMapJsonFile: '<%= yeoman.dist %>/asset-map.json',
         uploader: 'qiniu',
         qiniu: {
           accessKey: 'MojRHbkKO0KqF3WLj_boOvUtM-IUI28jAApDJcHt',
           secretKey: 'F4kKZbKzuSJjYkAlQel8zgL5k28NnYb99uggj_tz',
           bucket: 'liulishuo',
-          prefix: 'c-'
+          prefix: 't-'
         },
 
         angularTplTransform: function(tplPath, tplCalledBy) {
           tplPath = tplPath.replace('scripts/', '');
           if (!require('fs').existsSync(tplPath)) {
             var parts = tplPath.split('/');
-            parts.splice(-1, 0, 'views/partials');
+            parts.splice(-1, 0, 'views/partials'); // 给模板加上前缀
             tplPath = parts.join('/');
           }
 
-          // tpls 文件夹里的模板使用 ngtemplates 压缩，所以不用去单独加载 html
-          if (tplPath.indexOf('/tpls/') >= 0) {
-            return false;
-          }
+          //if (tplPath.indexOf('/tpls/') >= 0) {
+          ////if (/\/(?:tpls|incs)\//.test(tplPath)) {
+          //  return false;
+          //}
 
           return tplPath;
         }
       },
       dist: [
-        '<%= yeoman.dist %>/*.html',
+        '<%= yeoman.dist %>/index.html',
         '<%= yeoman.dist %>/views/**/*.html',
         '<%= yeoman.dist %>/styles/**/*.css',
         '<%= yeoman.dist %>/scripts/*scripts.js'
-      ]
+      ],
+
+      meta: {
+        options: {
+          mapUpload: true,
+          overwrite: true
+        },
+        files: {
+          'spa-meta-of-crm.json': '<%= yeoman.dist %>/asset-map.json'
+        }
+      }
     },
+
+    spaBootstrap: {
+      crmTest: {
+        options: {
+          index: '<%= yeoman.dist %>/index.html',
+          app: 'crm_test',
+          //bootstrapJs: 'http://localhost:9999/bootstrap.js',
+          bootstrap: '<%= yeoman.dist %>/bootstrap_test.html'
+        }
+      },
+      crmDevelopment: {
+        options: {
+          app: 'crm',
+          bootstrap: '<%= yeoman.dist %>/bootstrap.html'
+        }
+      }
+    },
+
 
     ngtemplates: {
       options: {
@@ -415,6 +447,14 @@ module.exports = function (grunt) {
       }
     },
 
+    uglify: {
+      bootstrap: {
+        files: {
+          '<%= yeoman.dist %>/bootstrap.min.js': '<%= yeoman.app %>/bootstrap.js'
+        }
+      }
+    },
+
     imagemin: {
       dist: {
         files: [{
@@ -630,9 +670,10 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('deploy', ['build', 'deployAsset']);
+  grunt.registerTask('publish', ['build', 'deployAsset', 'spaBootstrap:crmTest']);
 
-  grunt.registerTask('publish', function(comment) {
-    var cmd = 'shell:publish' + (comment ? ':' + comment : '');
-    grunt.task.run(cmd);
-  });
+  //grunt.registerTask('publish', function(comment) {
+  //  var cmd = 'shell:publish' + (comment ? ':' + comment : '');
+  //  grunt.task.run(cmd);
+  //});
 };

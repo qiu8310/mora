@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('moraApp')
-  .controller('HomeCtrl', function ($scope) {
-    $scope.test = 'test str';
+  .controller('HomeCtrl', function ($scope, Auth) {
+    $scope.user = Auth.getLoginUser();
+
+
 
   });
