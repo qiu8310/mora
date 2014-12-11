@@ -659,8 +659,8 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('bootstrap', 'spaBootstrap:crmTest');
-
   grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
+
 
   grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmTest']);
 
