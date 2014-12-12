@@ -23,8 +23,8 @@ module.exports = function(config) {
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/ui-router/release/angular-ui-router.js',
       'app/bower_components/angular-md5/angular-md5.js',
-      'app/scripts/*.js',
-      'app/scripts/**/*.js',
+      'app/scripts/app.js',
+      'app/scripts/*/**/*.js',
       //'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
