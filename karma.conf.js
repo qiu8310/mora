@@ -1,6 +1,15 @@
 // Karma configuration
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
+/*
+ karma-chrome-launcher                0.1.5        0.1.7    0.1.7  karma-chrome-launcher
+ karma-ng-html2js-preprocessor        0.1.0        0.1.2    0.1.2  karma-ng-html2js-preprocessor
+ karma-jasmine                        0.2.2        0.2.3    0.3.2  karma-jasmine
+ karma-coverage                       0.2.6        0.2.7    0.2.7  karma-coverage
+ grunt-karma-coveralls                2.5.2        2.5.3    2.5.3  grunt-karma-coveralls
+ karma                                0.12.24      0.12.28  0.12.28  karma
+ */
+
 module.exports = function(config) {
   config.set({
     // base path, that will be used to resolve files and exclude
@@ -37,7 +46,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
 
 
     // enable / disable watching file and executing tests whenever any file changes

@@ -34,7 +34,7 @@
     "karma-chrome-launcher": "^0.1.4",
     "karma-phantomjs-launcher": "^0.1",
     "karma-jasmine": "0.2.x",
-    "karma": "^0.12.24",
+    "karma": "^0.12.28",
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "connect-modrewrite": "^0.7.9",
     "grunt-karma-coveralls": "~2.5.0",

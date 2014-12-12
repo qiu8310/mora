@@ -55,7 +55,7 @@ if [ -d "$PUBLISH_FOLDER" ]; then
   done <<EOF
 $SVN_STATUS
 EOF
-  if [ "$LINE_COUNT" -gt "1" ]; then
+  if [ "$LINE_COUNT" -gt "0" ]; then
     echo "Publishe folder: $PUBLISH_FOLDER"
     echo "Publish comment: $PUBLISH_COMMENT\r\n"
     svn commit -m "$PUBLISH_COMMENT"
