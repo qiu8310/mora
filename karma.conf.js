@@ -30,6 +30,7 @@ module.exports = function(config) {
       'app/bower_components/angular-resource/angular-resource.js',
       'app/bower_components/angular-cookies/angular-cookies.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',
+      'app/bower_components/angular-touch/angular-touch.js',
       'app/bower_components/ui-router/release/angular-ui-router.js',
       'app/bower_components/angular-md5/angular-md5.js',
       'app/scripts/app.js',
@@ -39,14 +40,16 @@ module.exports = function(config) {
     ],
 
     // list of files / patterns to exclude
-    exclude: [],
+    exclude: [
+      'app/scripts/text-free.js'
+    ],
 
     // web server port
     port: 8080,
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -54,19 +57,20 @@ module.exports = function(config) {
 
 
     // Start these browsers, currently available:
-    // - Chrome
-    // - ChromeCanary
-    // - Firefox
-    // - Opera
-    // - Safari (only Mac)
-    // - PhantomJS
-    // - IE (only Windows)
+    // - Chrome (comes installed with Karma)
+    // - ChromeCanary (comes installed with Karma)
+    // - Firefox (requires karma-firefox-launcher plugin)
+    // - Opera (requires karma-opera-launcher plugin)
+    // - Safari (only Mac, requires karma-safari-launcher plugin)
+    // - PhantomJS (comes installed with Karma)
+    // - IE (only Windows, requires karma-ie-launcher plugin)
     browsers: ['PhantomJS'],
 
 
-    reporters: ['coverage'],
+    reporters: ['progress', 'coverage'],
+
     preprocessors: {
-      "app/scripts/**/*.js": "coverage"
+      "app/scripts/*/**/*.js": "coverage"
     },
     coverageReporter: {
       type: "lcov",
@@ -77,6 +81,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true
   });
 };
