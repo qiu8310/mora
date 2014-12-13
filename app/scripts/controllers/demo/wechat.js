@@ -103,7 +103,7 @@ angular.module('moraApp')
     };
 
     $scope.shareAsyn = function() {
-      Wechat.share(function(cb) {
+      Wechat.share(function() {
         setTimeout(function() {
           return {
             desc: '同步分享异步',
@@ -111,7 +111,7 @@ angular.module('moraApp')
             img: img,
             link: link
           };
-        }, 500)
+        }, 500);
       });
       Wechat.shareTip();
     };

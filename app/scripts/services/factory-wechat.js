@@ -253,7 +253,7 @@ angular.module('moraApp')
         'background: rgba(0, 0, 0, .8) url("http://wechat-professor.qiniudn.com/wechat_top_right_share_arrow.png") ' +
         'no-repeat 95% 2%;' +
         'background-size: 100px 100px';
-        wrap.innerHTML = '<p style="color:white;padding-top:110px;font-size:24px;text-align:center;line-height:38px;">' +
+        wrap.innerHTML = '<p style="color:white;padding-top:110px;font-size:24px;text-align:center;line-height:38px">'+
         '请点击右上角<br/>再点击【分享到朋友圈】</p>';
 
         document.body.appendChild(wrap);

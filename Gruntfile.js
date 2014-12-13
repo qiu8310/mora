@@ -7,41 +7,41 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 var LIVERELOAD_PORT = 35999;
-var mountFolder = function(connect, dir) {
-  return connect.static(require('path').resolve(dir));
-};
+
 var modRewrite = require('connect-modrewrite');
 
 module.exports = function (grunt) {
 
-  function getMiddleware(dirs) {
+  // NOTE 不要删除了，留下来参考 connect 插件是怎么注入的
+  //var mountFolder = function(connect, dir) {
+  //  return connect.static(require('path').resolve(dir));
+  //};
+  //function getMiddleware(dirs) {
+  //  if (!Array.isArray(dirs)) { dirs = [dirs]; }
+  //  return function(connect) {
+  //    var result = [
+  //      // text-free
+  //      require('./plugins/node/server')(grunt, dirs),
+  //      // rewrite
+  //      modRewrite(['!\\.\\w+$ /index.html [L]'])
+  //    ];
+  //
+  //    dirs.forEach(function(dir) { result.push(mountFolder(connect, dir)); });
+  //
+  //    return result;
+  //  };
+  //}
 
-    if (!Array.isArray(dirs)) { dirs = [dirs]; }
+  var TF = require('text-free');
+  grunt.loadNpmTasks('text-free');
+  grunt.loadTasks( 'plugins/grunt/tasks' );
 
-    return function(connect) {
-
-      var result = [
-
-        // text-free
-        require('./plugins/node/server')(grunt, dirs),
-
-
-        // rewrite
-        modRewrite(['!\\.\\w+$ /index.html [L]'])
-
-      ];
-
-      dirs.forEach(function(dir) { result.push(mountFolder(connect, dir)); });
-
-
-      return result;
-    };
+  function getMiddleware(webRootDirs) {
+    return TF.connectHelper(grunt, webRootDirs, function() {
+      this.push(modRewrite(['!\\.\\w+$ /index.html [L]']));
+    });
   }
 
-
-
-
-  grunt.loadTasks( 'plugins/grunt/tasks' );
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);

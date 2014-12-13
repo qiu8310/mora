@@ -1,6 +1,6 @@
 {
   "name": "mora",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
     "chalk": "~0.5.0",
@@ -38,7 +38,8 @@
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "connect-modrewrite": "^0.7.9",
     "grunt-karma-coveralls": "~2.5.0",
-    "karma-coverage": "^0.2.6"
+    "karma-coverage": "^0.2.6",
+    "text-free": "^0.1.2"
   },
   "engines": {
     "node": ">=0.10.0"
