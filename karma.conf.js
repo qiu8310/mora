@@ -32,7 +32,7 @@ module.exports = function(config) {
       'app/scripts/**/*.js',
       'app/scripts/*.js',
       //'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/services/*.js'
     ],
 
     // list of files / patterns to exclude
@@ -61,7 +61,7 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
 
 
-    reporters: ['coverage'],
+    reporters: ['coverage', 'progress'],
     preprocessors: {
       "app/scripts/**/*.js": "coverage"
     },

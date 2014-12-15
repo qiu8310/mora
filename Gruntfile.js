@@ -87,21 +87,24 @@ module.exports = function (grunt) {
 
     spaBootstrap: {
       options: {
+        api: function(m) {
+          return 'http://mora.sinaapp.com/spa-bootstrap.php?m=' + m;
+          //return 'http://mora.com/spa-bootstrap.php?m=' + m;
+        },
         token: secretConfig.spaBootstrapCrmToken
-        //api: function(m) {
-        //  return 'http://mora.com/spa-bootstrap.php?m=' + m;
-        //}
       },
       crmTest: {
         options: {
-          //index: '<%= yeoman.dist %>/index.html',
+          index: '<%= yeoman.dist %>/index.html',
           app: 'crm_test',
+          secureCode: secretConfig.spaBootstrapCrmTestSecure,
           bootstrap: '<%= yeoman.dist %>/bootstrap_test.html'
         }
       },
       crmDevelopment: {
         options: {
           app: 'crm_dev',
+          secureCode: secretConfig.spaBootstrapCrmDevSecure,
           bootstrap: '<%= yeoman.dist %>/bootstrap.html'
         }
       }
