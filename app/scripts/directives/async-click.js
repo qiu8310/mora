@@ -18,7 +18,8 @@ angular.module('moraApp')
         var clickHandler = $parse(attrs.asyncClick);
 
         element.on('click', function(event) {
-
+          attrs = attrs || {};
+          attrs.asyncConfirm = element.attr('async-confirm');
           _.asyncClickOn(element, function() {
             return clickHandler(scope, {$event: event});
           }, attrs);

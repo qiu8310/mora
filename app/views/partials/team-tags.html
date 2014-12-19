@@ -5,11 +5,9 @@
   <div class="no-item" ng-hide="list.length">没有任何标签~~~</div>
 
   <div ng-show="list.length">
-    <pagination class=""
-                total-items="pager.total" items-per-page="pager.pageSize" max-size="pager.maxSize"
-                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                ng-model="pager.page"></pagination>
-
+    <div class="clearfix table-top">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
     <table class="table tag-list">
       <tr class="tag" ng-repeat="tag in list">
         <td><label class="no-select"><input type="checkbox" ng-checked="tag.checked"/></label></td>
@@ -21,10 +19,8 @@
         </td>
       </tr>
     </table>
-
-    <pagination class=""
-                total-items="pager.total" items-per-page="pager.pageSize" max-size="pager.maxSize"
-                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                ng-model="pager.page"></pagination>
+    <div class="clearfix table-bottom">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
   </div>
 </div>

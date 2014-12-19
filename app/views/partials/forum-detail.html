@@ -1,0 +1,74 @@
+<!--
+
+
+        essence_ops_forum_node GET    /ops/forum_nodes/:id/essence(.:format)    ops/forum_nodes#essence
+      recommend_ops_forum_node GET    /ops/forum_nodes/:id/recommend(.:format)  ops/forum_nodes#recommend
+               ops_forum_nodes GET    /ops/forum_nodes(.:format)                ops/forum_nodes#index
+                ops_forum_node GET    /ops/forum_nodes/:id(.:format)            ops/forum_nodes#sho
+
+
+              ops_forum_topics GET    /ops/forum_topics(.:format)               ops/forum_topics#index
+          edit_ops_forum_topic GET    /ops/forum_topics/:id/edit(.:format)      ops/forum_topics#edit
+               ops_forum_topic GET    /ops/forum_topics/:id(.:format)           ops/forum_topics#show
+
+
+       restore_ops_forum_reply PUT    /ops/forum_replies/:id/restore(.:format)  ops/forum_replies#restore
+             ops_forum_replies GET    /ops/forum_replies(.:format)              ops/forum_replies#index
+               ops_forum_reply DELETE /ops/forum_replies/:id(.:format)          ops/forum_replies#destroy
+
+
+-->
+
+<div class="forum-detail detail">
+
+  <table class="table">
+    <tr class="thread">
+      <td class="no-select"><label>楼主</label></td>
+      <td class="avatar"><a user="thread" avatar></a></td>
+      <td>
+        <h1>{{thread.title}}<a class="fa fa-edit quick-edit" ng-click="editThread(thread)">编辑</a></h1>
+        <div post="thread"></div>
+      </td>
+      <td class="opts">
+        <time>{{thread.createdAt | time}}</time>
+      </td>
+    </tr>
+  </table>
+
+  <div class="no-item" ng-hide="Reply.replies.length">没有任何回复~~~</div>
+
+  <div ng-show="Reply.replies.length">
+    <div class="clearfix table-top">
+      <div class="btn-group pull-left">
+        <label class="btn btn-primary" ng-model="Reply.type" btn-radio="'default'">未删除的回复</label>
+        <label class="btn btn-primary" ng-model="Reply.type" btn-radio="'deleted'">删除的回复</label>
+        <label class="btn btn-primary" ng-model="Reply.type" btn-radio="'all'">所有回复</label>
+      </div>
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+
+    <table class="table reply-list reply-list--{{Reply.type}}">
+      <tr class="reply animate-repeat" ng-repeat="reply in Reply.replies">
+        <td class="no-select"><label><input type="checkbox"></label></td>
+        <td class="avatar">
+          <a user="reply" avatar></a>
+        </td>
+        <td>
+          <div post="reply"></div>
+        </td>
+        <td class="opts">
+          <time>{{reply.createdAt | time}}</time>
+          <div class="btns">
+            <button class="btn btn-info btn-sm btn-restore" async-click="restore(reply)" async-confirm="确认恢复吗？">恢复</button>
+            <button class="btn btn-danger btn-sm btn-delete" async-click="remove(reply)" async-confirm="确认删除吗？">删除</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="clearfix table-bottom">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+  </div>
+
+</div>

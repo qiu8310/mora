@@ -41,7 +41,12 @@ angular.module('moraApp')
           return {
             keyword: $.trim(scope.search.keyword),
             filters: getFilterParams(scope.filters),
-            classify: getFilterParams([scope.search.classify])
+            classify: getFilterParams([scope.search.classify]),
+            toQuery: function() {
+              var paramsObj = _.assign({}, this.filters, this.classify, {keyword: this.keyword}, scope.$parent.pager);
+              _.assign.apply(_, [paramsObj].concat([].slice.call(arguments)));
+              return $.param(paramsObj);
+            }
           };
         };
 

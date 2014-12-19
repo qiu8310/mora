@@ -30,10 +30,6 @@ angular.module('moraApp')
         $scope.$on('$stateChangeSuccess', function(e, current) {
           getBreadcrumb(current.url);
         });
-      },
-
-      link: function postLink(scope) {
-
       }
     };
 

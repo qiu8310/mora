@@ -1,4 +1,30 @@
-@include B(thread) {
+.quick-edit {
+  font-size: 10px;
+  margin-left: 8px;
+}
+
+
+@include B(post-detail) {
+  @include E(audio) {
+    display: block;
+    margin: 10px 0;
+  }
+
+  @include E(text) {
+    margin: 10px 0;
+    color: #333;
+  }
+
+  @include E(img) {
+    margin: 10px 0;
+    max-width: 300px;
+    max-height: 400px;
+  }
+}
+
+
+.forum-all .thread {
+
   & > td {
     padding-top: 20px !important;
 
@@ -29,8 +55,8 @@
       bottom: 0;
       right: 0;
       left: 0;
-      height: 50%;
-      background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 60%);
+      height: 100%;
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 60%);
     }
   }
 
@@ -40,4 +66,42 @@
     z-index: 2;
   }
 
+}
+
+
+.forum-detail {
+  time {
+    float: right;
+    padding: 0;
+    margin-top: 10px;
+    color: #AFAFAF;
+    font-size: 10px;
+  }
+  .opts {
+    width: 136px;
+    .btn {
+      width: 60px;
+      margin-top: 10px;
+      margin-left: 30px;
+    }
+  }
+  .reply-list--all { .btns .btn {  display: none;  } }
+  .reply-list--default { .btn-restore { display: none;} }
+  .reply-list--deleted { .btn-delete { display: none; } }
+
+
+  .thread, .reply {
+    td:first-child {
+      width: 50px;
+      color: #AFAFAF;
+      label {
+        padding-top: 6px;
+        padding-bottom: 30px;
+      }
+    }
+    .avatar {
+      width: 80px;
+      padding: 10px;
+    }
+  }
 }

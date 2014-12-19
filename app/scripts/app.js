@@ -47,6 +47,13 @@ angular
       });
     }});
 
+    _.mixin({lineCase: function(obj, deep) {
+      return work(obj, deep, function(str) {
+        // 如果第一个字符是大写的，则不要在它前面加下划线，直接小写就行了
+        return str.replace(/[A-Z]/g, function(letter, index) { return (index ? '-' : '') + letter.toLowerCase(); });
+      });
+    }});
+
     _.mixin({underscoreCase: function(obj, deep) {
       return work(obj, deep, function(str) {
         // 如果第一个字符是大写的，则不要在它前面加下划线，直接小写就行了
@@ -167,8 +174,8 @@ angular
 
 angular
   .module('moraApp', [
+    'ngAnimate',
     'ngCookies',
-    'ngResource',
     'ngSanitize',
     'ui.router',
     'ui.bootstrap',
@@ -218,6 +225,9 @@ angular
           };
         if (hasChildren) {
           _.each(menu.children, function(subMenu) {
+            if (subMenu.manual) {
+              return true;
+            }
             var keys = [menu.key, subMenu.key];
             $stateProvider.state(state + _.capitalize(subMenu.key), {
               url: '/' + keys.join('/'),
@@ -227,12 +237,14 @@ angular
             });
           });
         } else {
-          $stateProvider.state(state, {
-            url: '/' + menu.key,
-            templateUrl:  tpl(menu.templateUrl || menu.key + '.html'),
-            template: menu.template,
-            controller: menu.controller || _.capitalize(menu.key) + 'Ctrl'
-          });
+          if (!menu.manual) {
+            $stateProvider.state(state, {
+              url: '/' + menu.key,
+              templateUrl:  tpl(menu.templateUrl || menu.key + '.html'),
+              template: menu.template,
+              controller: menu.controller || _.capitalize(menu.key) + 'Ctrl'
+            });
+          }
         }
       });
     })();
@@ -268,9 +280,35 @@ angular
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
+      .state('home.forumAll', {
+        url: '/forum/all',
+        templateUrl: 'views/partials/forum-all.html',
+        controller: 'ForumAllCtrl',
+        resolve: {
+          NodeData: function(ForumSer) {
+            return ForumSer.nodes();
+          }
+        }
+      })
       .state('home.userDetail', {
         url: '/user/detail/{id}',
-        controller: 'UserDetailCtrl'
+        templateUrl: 'views/partials/user-detail.html',
+        controller: 'UserDetailCtrl',
+        resolve: {
+          UserData: function(UserSer, $stateParams) {
+            return UserSer.detail($stateParams.id);
+          }
+        }
+      })
+      .state('home.forumDetail', {
+        url: '/forum/detail/{id}',
+        templateUrl: 'views/partials/forum-detail.html',
+        controller: 'ForumDetailCtrl',
+        resolve: {
+          Thread: function(ForumSer, $stateParams) {
+            return ForumSer.thread($stateParams.id);
+          }
+        }
       })
       .state('home.teamDetail', {
         url: '/team/detail/{id}',

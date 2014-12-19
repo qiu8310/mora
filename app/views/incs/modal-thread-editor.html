@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h3 class="modal-title">编辑帖子</h3>
+</div>
+<div class="modal-body">
+
+  <form class="clearfix form-horizontal">
+    <form-control label="标题">
+      <input type="text" class="form-control"
+             name="title"
+             ng-model="thread.title"/>
+    </form-control>
+
+    <form-control label="内容">
+      <textarea class="form-control"
+                name="body"
+                ng-model="thread.body"></textarea>
+    </form-control>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="cancel()">取消</button>
+  <button class="btn btn-primary" async-click="save()">保存</button>
+</div>

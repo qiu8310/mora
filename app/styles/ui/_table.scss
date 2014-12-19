@@ -24,9 +24,25 @@
   }
 }
 
+.table-top, .table-bottom {
+  & > div {
+    display: inline-block;
+    margin: 0;
+  }
+  .pagination {
+    margin: 0;
+  }
+}
+.table-top {
+  margin-top: 20px;
+}
+.table-bottom {
+  margin-bottom: 20px;
+}
 
 .table {
   min-width: 800px;
+  margin-bottom: 0;
 
   .title {
     margin: 0;

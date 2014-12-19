@@ -18,9 +18,10 @@ angular.module('moraApp')
             return $(el).height() + sum;
           }, 0);
 
-          var hideMore = contentHeight > viewHeight;
+          var hideMore = contentHeight > viewHeight || element.find('img').length;
 
-          element.toggleClass(cls, hideMore);
+          element[hideMore ? 'addClass' : 'removeClass'](cls);
+          //element.toggleClass(cls, hideMore);
 
           if (hideMore) {
             element.append('<a class="text-center fade-toggle">Show more</a>');

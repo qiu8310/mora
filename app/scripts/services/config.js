@@ -74,7 +74,13 @@ angular.module('moraApp')
           {
             key: 'all',
             title: '所有帖',
+            manual: true, // 手动注册 state
             templateUrl: 'forum-all.html'
+          },
+          {
+            key: 'hot',
+            title: '热门贴',
+            templateUrl: 'forum-hot.html'
           }
         ]
       },

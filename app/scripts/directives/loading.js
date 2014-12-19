@@ -26,7 +26,8 @@ angular.module('moraApp')
 
         var isStateGo = false;
 
-        animateForStart = function(e, to, toParams) {
+        animateForStart = function(e, to, toParams, from, fromParams) {
+          //console.log('start to: ' + to.name);
           // 跳转到其它页面，直接退出
           if (to.name.indexOf('home') !== 0) {
             return false;
@@ -48,7 +49,8 @@ angular.module('moraApp')
             $timeout(function() {
               element.addClass('active');
               isStateGo = true;
-              $state.go(to.name, toParams);
+              console.info('=>', to, toParams, from, fromParams);
+              $state.go(to.name, toParams, {location: true});
             }, animateLength);
 
           } else {

@@ -95,7 +95,7 @@ module.exports = function (grunt) {
       },
       crmTest: {
         options: {
-          index: '<%= yeoman.dist %>/index.html',
+          //index: '<%= yeoman.dist %>/index.html',
           app: 'crm_test',
           secureCode: secretConfig.spaBootstrapCrmTestSecure,
           bootstrap: '<%= yeoman.dist %>/bootstrap_test.html'

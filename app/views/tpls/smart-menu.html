@@ -12,6 +12,7 @@
 
       <ul class="menu__child-ul animated speed-2" bo-if="menu.hasChildren" bo-hide="!menu.isOpen">
         <li ng-repeat="subMenu in menu.children" ui-sref-active="active">
+        <!--<li ng-repeat="subMenu in menu.children" ng-class="{active: subMenu.key == activeSubMenu && menu.key == activeMenu}">-->
           <a ui-sref="{{::subMenu.sref}}">{{::subMenu.title}}
             <span bo-if="subMenu.isNew" class="badge pull-right bg-red">new</span>
           </a>

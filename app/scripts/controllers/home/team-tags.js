@@ -9,7 +9,7 @@ angular.module('moraApp')
       var query = $.param(_.assign({}, params.classify, params.filters, $scope.pager || {}));
 
       var isHot = params.filters.hot === 'yes';
-      return $http.get('api/' + (isHot ? 'hot_tags' : 'tags') + '?' + query).success(function(data) {
+      return $http.get('api/team/' + (isHot ? 'hot_tags' : 'tags') + '?' + query).success(function(data) {
         $scope.list = _.map(data.tags, function(tag) {
           return {name: tag, isHot: isHot};
         });
@@ -51,7 +51,7 @@ angular.module('moraApp')
 
 
     $scope.hot = function(tag) {
-      return $http.put('api/' + (tag.isHot ? 'calm_down' : 'hot') + '_tag?tag=' + tag.name).success(function() {
+      return $http.put('api/team/' + (tag.isHot ? 'calm_down' : 'hot') + '_tag?tag=' + tag.name).success(function() {
         tag.isHot = !tag.isHot;
       });
     };

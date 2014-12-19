@@ -10,22 +10,28 @@ angular.module('moraApp')
 
       request: function(request) {
         // 放行非 api 开头的请求，主要是请求一些模板类的文件
-        var url = request.url, identifier;
+        var url = request.url, identifier, suffix;
         if (url.indexOf(PREFIX) !== 0) {
           return request;
         }
 
         identifier = url.split('/')[1];
+        suffix = url.substr((PREFIX + '/' + identifier).length);
         switch (identifier) {
           case 'login':
           case 'logout':
             url = url.replace(PREFIX + '/' + identifier, 'ops/sessions');
             break;
+          case 'reply':
+            url = 'ops/forum_replies' + suffix; break;
           case 'forum':
-            url = 'ops/forum_topics' + url.substr((PREFIX + '/' + identifier).length);
-            break;
+            url = 'ops/forum_topics' + suffix; break;
+          case 'node':
+            url = 'ops/forum_nodes' + suffix; break;
+          case 'team':
+            url = 'ops/study_groups' + suffix; break;
           default:
-            url = 'ops/study_groups' + url.substr(PREFIX.length);
+            url = 'ops/' + identifier + suffix;
         }
 
         request.url = API_BASE + url;

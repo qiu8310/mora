@@ -65,8 +65,6 @@ angular.module('moraApp')
 
 
 
-
-
     // layout 相关的配置
     $scope.layoutOptions = Storage.get('layoutOptions', {
       fixHeader: true,

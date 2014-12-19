@@ -15,7 +15,7 @@ angular.module('moraApp')
       query = $.param(_.assign({}, params.classify, params.filters, $scope.pager || {}));
 
       var isHot = params.filters.hot === 'yes';
-      return $http.get('api/' + (isHot ? 'hot_groups' : '') + '?' + query)
+      return $http.get('api/team/' + (isHot ? 'hot_groups' : '') + '?' + query)
         .success(function(data) {
           $scope.pager.total = data.total;
           $scope.list = _.map(data.studyGroups, function(team) {
@@ -86,7 +86,7 @@ angular.module('moraApp')
 
     // 删除指定的小组
     $scope.dismiss = function(team) {
-      return $http.delete('api/' + team.resourceId).success(function() {
+      return $http.delete('api/team/' + team.resourceId).success(function() {
         var index = _.findIndex($scope.list, function(item) { return item.resourceId === team.resourceId; });
         if (index !== -1) {
           $scope.list.splice(index, 1);
@@ -97,7 +97,7 @@ angular.module('moraApp')
     // 将指定的小组 设置或取消 热门
     $scope.hot = function(team) {
       var base = team.isHot ? '/calm_down' : '/hot';
-      return $http.put('api/' + team.resourceId + base).success(function() {
+      return $http.put('api/team/' + team.resourceId + base).success(function() {
         team.isHot = !team.isHot;
       });
     };

@@ -6,11 +6,9 @@
 
   <div ng-show="list.length">
 
-    <pagination class=""
-                total-items="pager.total" items-per-page="pager.pageSize" max-size="pager.maxSize"
-                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                ng-model="pager.page"></pagination>
-
+    <div class="clearfix table-top">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
     <table class="table team-list">
 
       <!-- 暂不支持 -->
@@ -63,11 +61,9 @@
       </tr>
 
     </table>
-
-    <pagination class=""
-                total-items="pager.total" items-per-page="pager.pageSize" max-size="pager.maxSize"
-                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                ng-model="pager.page"></pagination>
+    <div class="clearfix table-bottom">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
 
   </div>
 
