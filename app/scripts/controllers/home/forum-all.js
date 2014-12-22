@@ -1,5 +1,5 @@
 angular.module('moraApp')
-  .controller('ForumAllCtrl', function($scope, $q, $http, _, C, $modal, NodeData) {
+  .controller('ForumAllCtrl', function($scope, $q, $http, _, C, $modal, NodeData, $window) {
 
     /*
      essence_ops_forum_node GET    /ops/forum_nodes/:id/essence(.:format)    ops/forum_nodes#essence
@@ -23,8 +23,9 @@ angular.module('moraApp')
           api += category;
         }
       } else {
-        if (params.filters.type === 'deleted') {
-          isDeleted = true;
+        if (params.filters.type !== 'visible' || params.filters.category !== 'all') {
+          $window.alert('请先选择版块');
+          return false;
         }
         api = 'api/forum/';
       }
@@ -92,13 +93,6 @@ angular.module('moraApp')
         return getList();
       }
     };
-
-
-
-
-
-
-
 
 
 

@@ -30,7 +30,7 @@ angular.module('moraApp')
           if (typeof body !== 'undefined') {
             element.find('.post-detail__text').text(body);
           }
-        })
+        });
 
       }
     };

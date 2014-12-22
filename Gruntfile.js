@@ -101,7 +101,7 @@ module.exports = function (grunt) {
           bootstrap: '<%= yeoman.dist %>/bootstrap_test.html'
         }
       },
-      crmDevelopment: {
+      crmDev: {
         options: {
           app: 'crm_dev',
           secureCode: secretConfig.spaBootstrapCrmDevSecure,
@@ -661,11 +661,11 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('bootstrap', 'spaBootstrap:crmTest');
+  grunt.registerTask('bootstrap', 'spaBootstrap:crmDev');
   grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
 
 
-  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmTest']);
+  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmDev']);
 
 
   //grunt.registerTask('publish', function(comment) {
