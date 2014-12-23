@@ -49,7 +49,7 @@ angular.module('moraApp')
             $timeout(function() {
               element.addClass('active');
               isStateGo = true;
-              console.info('=>', to, toParams, from, fromParams);
+              //console.info('=>', to, toParams, from, fromParams);
               $state.go(to.name, toParams, {location: true});
             }, animateLength);
 

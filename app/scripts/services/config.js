@@ -17,9 +17,24 @@
  */
 angular.module('moraApp')
   .constant('C', {
+    constants: {
+      BANNER_TYPE: {
+        ACTIVITY: 'activity',
+        TEAM: 'study_group',
+        COURSE: 'course',
+        THREAD: 'topic'
+      }
+    },
+
+    app: {
+      html5Mode: false,
+      hashPrefix: '!'
+    },
+
     res: {
       defaultAvatar: 'http://llss.qiniudn.com/avatar_default.png',
-      audioPrefix: '?avthumb/mp3/ab/36'
+      audioPrefix: '?avthumb/mp3/ab/36',
+      uploader: 'http://mora.sinaapp.com/utils/uploader.php'
     },
 
     search: {
@@ -47,6 +62,23 @@ angular.module('moraApp')
     },
 
     smartMenu: [
+      {
+        key: 'front',
+        title: '首页',
+        fa: 'home',
+        children: [
+          {
+            key: 'banner',
+            title: '轮播图',
+            templateUrl: 'front-banner.html'
+          },
+          {
+            key: 'stream',
+            title: '瀑布流',
+            templateUrl: 'front-stream.html'
+          }
+        ]
+      },
       {
         key: 'team',
         title: '学习小组',

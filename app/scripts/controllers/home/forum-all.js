@@ -30,7 +30,7 @@ angular.module('moraApp')
       }
       api += '?' + params.toQuery();
 
-      $http.get(api)
+      return $http.get(api)
         .success(function(data) {
           $scope.search.keyword = '';
           $scope.pager.total = data.total;
@@ -92,15 +92,5 @@ angular.module('moraApp')
         return getList();
       }
     };
-
-
-
-
-
-
-
-
-
-
 
   });

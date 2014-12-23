@@ -43,7 +43,7 @@ angular.module('moraApp')
             filters: getFilterParams(scope.filters),
             classify: getFilterParams([scope.search.classify]),
             toQuery: function() {
-              var paramsObj = _.assign({}, this.filters, this.classify, {keyword: this.keyword}, scope.$parent.pager);
+              var paramsObj = _.assign({}, this.filters, this.classify, {query: this.keyword}, scope.$parent.pager);
               _.assign.apply(_, [paramsObj].concat([].slice.call(arguments)));
               return $.param(paramsObj);
             }
@@ -57,6 +57,13 @@ angular.module('moraApp')
 
         scope.quickSearch = function(keyword) {
           scope.search.keyword = keyword;
+        };
+
+        scope.clean = function() {
+          scope.search.keyword = '';
+          if (scope.search.cleanFn) {
+            scope.search.cleanFn();
+          }
         };
 
         scope.searchFn = function(e) {

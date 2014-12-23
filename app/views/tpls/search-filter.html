@@ -11,10 +11,10 @@
 
   <form class="search-form row" bindonce="search" bo-class="{'has-keyword-classify': search.classify}">
 
-    <div class="wrap form-group col-md-8">
+    <div class="wrap form-group col-md-{{search.options.hideLatestSearch ? 12 : 8}}">
       <div class="wrap__keyword">
         <input type="search" ng-model="search.keyword" placeholder="{{search.placeholder}}" class="form-control search" autocomplete="off" name="keyword">
-        <i class="clear no-select" ng-show="search.keyword" ng-click="search.keyword = ''">x</i>
+        <i class="clear no-select" ng-show="search.keyword" ng-click="clean()">x</i>
         <div class="dropdown keyword-classify" bo-if="search.classify">
           <button class="btn btn-default dropdown-toggle" type="button" id="keywords-classify-dropdown" data-toggle="dropdown" aria-expanded="true">
             {{ search.classify.activeItem.name }}
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="col-md-4 visible-md-block visible-lg-block latest-search">
+    <div class="col-md-4 visible-md-block visible-lg-block latest-search" ng-hide="search.options.hideLatestSearch">
       <a class="btn btn-link text-ellipsis" ng-repeat="keyword in searchHistory" ng-click="quickSearch(keyword)">{{keyword}}</a>
     </div>
 

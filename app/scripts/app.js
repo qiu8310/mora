@@ -178,6 +178,7 @@ angular
     'ngCookies',
     'ngSanitize',
     'ui.router',
+    'ui.utils',
     'ui.bootstrap',
     'angular-md5',
     'pasvaz.bindonce',
@@ -185,7 +186,7 @@ angular
   ])
   .config(function (C, _, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $sceDelegateProvider) {
 
-    $locationProvider.html5Mode(false).hashPrefix('!');
+    $locationProvider.html5Mode(C.app.html5Mode).hashPrefix(C.app.hashPrefix);
 
     $sceDelegateProvider.resourceUrlWhitelist([
       'self',

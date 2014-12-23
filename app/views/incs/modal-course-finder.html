@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <h3 class="modal-title">选择课程</h3>
+</div>
+<div class="modal-body">
+  <search-filter search="search"></search-filter>
+  <div class="no-item" ng-hide="list.length">没有任何课程~~~</div>
+  <div ng-show="list.length">
+    <h2 class="modal-list-title">{{listTitle}}</h2>
+    <ul class="modal-course-list modal-list">
+      <li class="modal-item row" ng-repeat="course in list">
+        <div class="col-sm-{{course.attachedImg ? 10 : 11}}">
+          <h3>
+            <a class="title text-ellipsis" title="{{course.title}}" ui-sref="home.forumDetail({id: course.id})" m-blank>{{course.title}}</a>
+            <a class="author text-ellipsis" title="{{course.userName}}" ui-sref="home.userDetail({id: course.userId})" m-blank>{{course.userName}}</a>
+          </h3>
+          <p class="desc text-ellipsis">{{course.body}}</p>
+
+        </div>
+        <div class="col-sm-1" ng-if="course.attachedImg">
+          <img ng-src="{{course.attachedImg}}?imageView2/5/w/50/h/50" width="50" height="50">
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-info btn-xs pull-right" ng-click="select(course)">选择</button>
+        </div>
+      </li>
+    </ul>
+    <div class="clearfix">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+  </div>
+
+</div>

@@ -1,4 +1,22 @@
 angular.module('moraApp')
+  .directive('mBlank', function(C, $location) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        if (C.app.html5Mode) {
+          element.attr('target', '_blank');
+        } else {
+          element.on('click', function(e) {
+            var hash = '#' + (C.app.hashPrefix || '') + element.attr('href');
+            window.open($location.$$absUrl.replace(/#.*$/, '') + hash);
+            e.preventDefault();
+          });
+        }
+      }
+    };
+  })
+
+
   .directive('post', function() {
     return {
       restrict: 'A',
@@ -30,7 +48,7 @@ angular.module('moraApp')
           if (typeof body !== 'undefined') {
             element.find('.post-detail__text').text(body);
           }
-        })
+        });
 
       }
     };

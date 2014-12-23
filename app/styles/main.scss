@@ -8,7 +8,9 @@
 .no-padding-left {
   padding-left: 0 !important;
 }
-
+.no-padding-right {
+  padding-right: 0 !important;
+}
 
 .animate-repeat.ng-move,
 .animate-repeat.ng-enter,
@@ -33,6 +35,16 @@
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+
+.settled {
+  @for $i from 1 through 12 {
+    .col-sm-#{$i} {
+      width: unquote(($i / 12 * 100) + '% !important');
+      float: left !important;
+    }
+  }
 }
 
 .animated.speed-5 { animation-duration: .5s; }

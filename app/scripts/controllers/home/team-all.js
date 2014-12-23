@@ -76,8 +76,6 @@ angular.module('moraApp')
 
 
 
-
-
     // 全选 或 反选
     $scope.$watch('meta.allChecked', function(val) {
       _.each($scope.list, function(team) { team.checked = val; });
