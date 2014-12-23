@@ -33,7 +33,7 @@ angular.module('moraApp')
 
       $http.get(api)
         .success(function(data) {
-          $scope.search.keyword = '';
+          //$scope.search.keyword = '';
           $scope.pager.total = data.total;
           $scope.list = _.map(data.topics || data, function(thread) {
             if (isDeleted) {
