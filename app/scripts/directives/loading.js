@@ -49,7 +49,7 @@ angular.module('moraApp')
             $timeout(function() {
               element.addClass('active');
               isStateGo = true;
-              //console.info('=>', to, toParams, from, fromParams);
+
               $state.go(to.name, toParams, {location: true});
             }, animateLength);
 
@@ -73,7 +73,6 @@ angular.module('moraApp')
             target.show();
           }
         };
-
 
         destroyForStart = $rootScope.$on('$stateChangeStart', animateForStart);
         destroyForError = $rootScope.$on('$stateChangeError', animateForEnd);

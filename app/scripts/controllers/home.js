@@ -83,9 +83,9 @@ angular.module('moraApp')
     };
 
     $scope.recommendThread = function(thread) {
-      var op = thread.isRecommend ? 'delete' : 'post';
+      var op = thread.isRecommended ? 'delete' : 'post';
       return $http[op]('api/forum/' + thread.id + '/recommend').success(function() {
-        thread.isRecommend = !thread.isRecommend;
+        thread.isRecommended = !thread.isRecommended;
       });
     };
 

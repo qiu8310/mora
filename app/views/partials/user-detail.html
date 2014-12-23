@@ -48,8 +48,8 @@
   </form-control>
 
   <form-control label="">
-    <button class="btn btn-danger" async-click="forbid(user)" ng-hide="user.blocked">封号</button>
-    <button class="btn btn-danger disabled" ng-show="user.blocked">此号已被封</button>
+    <button class="btn btn-danger" async-click="forbid(user)" ng-hide="user.isBlocked">封号</button>
+    <button class="btn btn-danger disabled" ng-show="user.isBlocked">此号已被封</button>
   </form-control>
 
 </form>

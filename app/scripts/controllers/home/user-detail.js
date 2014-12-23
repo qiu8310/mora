@@ -7,7 +7,7 @@ angular.module('moraApp')
 
     $scope.forbid = function(user) {
       return UserSer.forbid(user.id).then(function() {
-        user.blocked = true;
+        user.isBlocked = true;
       });
     };
 

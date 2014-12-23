@@ -286,9 +286,9 @@ angular
         templateUrl: 'views/partials/forum-all.html',
         controller: 'ForumAllCtrl',
         resolve: {
-          NodeData: function(ForumSer) {
+          NodeData: ['ForumSer', function(ForumSer) {
             return ForumSer.nodes();
-          }
+          }]
         }
       })
       .state('home.userDetail', {
@@ -296,9 +296,9 @@ angular
         templateUrl: 'views/partials/user-detail.html',
         controller: 'UserDetailCtrl',
         resolve: {
-          UserData: function(UserSer, $stateParams) {
+          UserData: ['UserSer', '$stateParams', function(UserSer, $stateParams) {
             return UserSer.detail($stateParams.id);
-          }
+          }]
         }
       })
       .state('home.forumDetail', {
@@ -306,9 +306,9 @@ angular
         templateUrl: 'views/partials/forum-detail.html',
         controller: 'ForumDetailCtrl',
         resolve: {
-          Thread: function(ForumSer, $stateParams) {
+          Thread: ['ForumSer', '$stateParams', function(ForumSer, $stateParams) {
             return ForumSer.thread($stateParams.id);
-          }
+          }]
         }
       })
       .state('home.teamDetail', {
