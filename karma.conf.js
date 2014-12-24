@@ -28,6 +28,7 @@ module.exports = function(config) {
       'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/bower_components/ui-utils/ui-utils.js',
       'app/bower_components/angular-bindonce/bindonce.js',
+      'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/ui-router/release/angular-ui-router.js',
       'app/scripts/**/*.js',
       'app/scripts/*.js',
