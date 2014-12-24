@@ -4,11 +4,10 @@
   <head>
 
     <meta charset="utf-8">
-    <title>英语流利说CRM系统</title>
-    <meta name="apple-mobile-web-app-title" content="Mora">
+    <title>测试</title>
+    <meta name="apple-mobile-web-app-title" content="车来了">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <meta name="author" content="qiuzhongleiabc@126.com">
 
     <!--顺序不可以变，要不360的不使用极速的内核-->
     <meta name="renderer" content="webkit">
@@ -32,11 +31,11 @@
     <!-- SAE 下用不了 -->
     <!--<meta http-equiv="X-Frame-Options" content="DENY">-->
 
-    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.3.0/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">-->
 
     <!--<link rel="stylesheet" href="styles/vendors/animate.css">-->
-    <link rel="stylesheet" href="http://cdn.staticfile.org/animate.css/3.2.0/animate.min.css">
+    <!--<link rel="stylesheet" href="http://cdn.staticfile.org/animate.css/3.2.0/animate.min.css">-->
 
 
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -46,10 +45,10 @@
     <base href="/">
 
   </head>
-  <body ng-app="moraApp" ng-controller="RootCtrl" class="{{ layoutClasses }}">
+  <body ng-app="cheApp" ng-controller="RootCtrl" class="{{ layoutClasses }}">
 
     <!-- Add your site or application content here -->
-    <div class="view" ui-view=""></div>
+    <div class="view" ng-view autoscroll></div>
 
 
     <!--
@@ -72,82 +71,34 @@
 
     <!--<script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>-->
     <!--<script src="http://cdn.staticfile.org/twitter-bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
-
-    <!-- build:js scripts/lib.js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <!-- endbuild -->
+    <!--<script src="bower_components/jquery/dist/jquery.js"></script>-->
+    <!--<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>-->
+    <!--<script src="bower_components/lodash/dist/lodash.compat.js"></script>-->
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-md5/angular-md5.js"></script>
-    <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/ui-utils/ui-utils.js"></script>
-    <script src="bower_components/angular-bindonce/bindonce.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
     <script src="scripts/controllers/root.js"></script>
-    <script src="scripts/controllers/home.js"></script>
-
-    <script src="scripts/controllers/home/user-detail.js"></script>
-    <script src="scripts/controllers/home/front.js"></script>
-
-    <script src="scripts/controllers/home/team-detail.js"></script>
-    <script src="scripts/controllers/home/team-all.js"></script>
-    <script src="scripts/controllers/home/team-tags.js"></script>
-
-    <script src="scripts/controllers/home/forum-all.js"></script>
-    <script src="scripts/controllers/home/forum-hot.js"></script>
-    <script src="scripts/controllers/home/forum-detail.js"></script>
-    <script src="scripts/controllers/home/manage.js"></script>
-
-    <script src="scripts/controllers/signup.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-
-    <script src="scripts/directives/unique-validate.js"></script>
-    <script src="scripts/directives/range-validate.js"></script>
-    <script src="scripts/directives/equal-validate.js"></script>
-    <script src="scripts/directives/form-control.js"></script>
-    <script src="scripts/directives/full-screen.js"></script>
-    <script src="scripts/directives/smart-menu.js"></script>
-    <script src="scripts/directives/breadcrumb.js"></script>
-    <script src="scripts/directives/loading.js"></script>
-    <script src="scripts/directives/search-filter.js"></script>
-    <script src="scripts/directives/async-click.js"></script>
-    <script src="scripts/directives/extend-attrs.js"></script>
-    <script src="scripts/directives/user.js"></script>
-    <script src="scripts/directives/fade.js"></script>
-    <script src="scripts/directives/uploader.js"></script>
-
 
     <script src="scripts/services/service-http-interceptor.js"></script>
     <script src="scripts/services/service-auth.js"></script>
-
     <script src="scripts/services/factory-storage.js"></script>
     <script src="scripts/services/factory-dialog.js"></script>
 
     <script src="scripts/services/config.js"></script>
     <script src="scripts/services/env.js"></script>
-    <script src="scripts/resources/ser-suit.js"></script>
-    <script src="scripts/resources/ui-suit.js"></script>
-    <script src="scripts/resources/modal-suit.js"></script>
 
-    <script src="scripts/filters/time.js"></script>
     <!-- endbuild -->
 
 
-    <!-- build:js scripts/templates.js -->
-    <!-- endbuild -->
 </body>
 </html>

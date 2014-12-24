@@ -3,7 +3,6 @@
 @import "lib/bootstrap";
 @import "mixin/bootstrap";
 @import "ui/bootstrap";
-@import "component/bootstrap";
 
 .no-padding-left {
   padding-left: 0 !important;
@@ -38,27 +37,6 @@
 }
 
 
-.radio-btn-group-types {
-  margin: 4px 0;
-
-  & > div {
-    display: none;
-  }
-
-  &.type-a > .type-a,
-  &.type-b > .type-b,
-  &.type-c > .type-c,
-  &.type-d > .type-d { display: block; }
-}
-
-.settled {
-  @for $i from 1 through 12 {
-    .col-sm-#{$i} {
-      width: unquote(($i / 12 * 100) + '% !important');
-      float: left !important;
-    }
-  }
-}
 
 .animated.speed-5 { animation-duration: .5s; }
 .animated.speed-4 { animation-duration: .4s; }

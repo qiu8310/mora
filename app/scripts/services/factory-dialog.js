@@ -1,4 +1,4 @@
-angular.module('moraApp')
+angular.module('cheApp')
   .factory('Dialog', function($window, Env) {
 
     return {

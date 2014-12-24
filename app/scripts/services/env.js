@@ -1,4 +1,4 @@
-angular.module('moraApp').service('Env', function () {
+angular.module('cheApp').service('Env', function () {
 
   var Env = this,
     host = location.host,

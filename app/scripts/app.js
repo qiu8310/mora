@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 angular
   .module('vendors', [])
 
@@ -170,27 +170,21 @@ angular
   .factory('$', function() {
     return window.$;
   });
-
+*/
 
 angular
-  .module('moraApp', [
+  .module('cheApp', [
     'ngAnimate',
-    'ngCookies',
-    'ngSanitize',
-    'ui.router',
-    'ui.utils',
-    'ui.bootstrap',
-    'angular-md5',
-    'pasvaz.bindonce',
-    'vendors'
+    'ngTouch',
+    'ngRoute'
   ])
-  .config(function (C, _, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $sceDelegateProvider) {
+  .config(function (C, $locationProvider, $httpProvider, $sceDelegateProvider, $routeProvider) {
 
     $locationProvider.html5Mode(C.app.html5Mode).hashPrefix(C.app.hashPrefix);
 
     $sceDelegateProvider.resourceUrlWhitelist([
       'self',
-      'http://llss.qiniudn.com/**'
+      'http://*.qiniudn.com/**'
     ]);
 
     $httpProvider.interceptors.push('HttpInterceptor');
@@ -201,125 +195,18 @@ angular
       //'Mora-Version': 'v1'
     });
 
-
-    /*
-      自动注册 smart-menu 的 state
-
-     .state('home.forumThread', {
-       url: 'forum/thread',
-       templateUrl: 'views/partials/forum-thread.html',
-       controller: 'ForumThreadCtrl'
-     })
-
-     .state('home.manage', {
-       url: 'manage',
-       templateUrl: 'views/partials/manage.html',
-       controller: 'ManageCtrl'
-     })
-     */
-    (function smartMenuAutoState() {
-      _.each(C.smartMenu, function(menu) {
-        var hasChildren = menu.children && menu.children.length > 0,
-          state = 'home.' + menu.key,
-          tpl = function(key) {
-            return !key ? null : key.indexOf('http://') === 0 ? key : 'views/partials/' + key;
-          };
-        if (hasChildren) {
-          _.each(menu.children, function(subMenu) {
-            if (subMenu.manual) {
-              return true;
-            }
-            var keys = [menu.key, subMenu.key];
-            $stateProvider.state(state + _.capitalize(subMenu.key), {
-              url: '/' + keys.join('/'),
-              templateUrl: tpl(subMenu.templateUrl || keys.join('-') + '.html'),
-              template: subMenu.template,
-              controller: subMenu.controller || _.capitalize(menu.key) + _.capitalize(subMenu.key) + 'Ctrl'
-            });
-          });
-        } else {
-          if (!menu.manual) {
-            $stateProvider.state(state, {
-              url: '/' + menu.key,
-              templateUrl:  tpl(menu.templateUrl || menu.key + '.html'),
-              template: menu.template,
-              controller: menu.controller || _.capitalize(menu.key) + 'Ctrl'
-            });
-          }
-        }
-      });
-    })();
-
-
-    $stateProvider
-      .state('index', {
-        url: '/',
-        templateUrl: 'views/index.html',
-        data: {
-          noNeedLogin: true
-        }
+    $routeProvider
+      .when('/switchCity', {
+        controller: 'SwitchCityCtrl',
+        templateUrl: 'views/switchCity.html'
       })
-      .state('signup', {
-        url: '/signup',
-        templateUrl: 'views/signup.html',
-        controller: 'SignupCtrl',
-        data: {
-          noNeedLogin: true
-        }
-      })
-      .state('login', {
-        url: '/login',
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl',
-        data: {
-          noNeedLogin: true
-        }
-      })
+      .when('/lineSearch', {})
+      .when('/lineAround', {})
+      .when('/choseStation', {})
+      .when('/myFavicon', {})
 
-      .state('home', {
-        url: '/crm',
-        templateUrl: 'views/home.html',
-        controller: 'HomeCtrl'
-      })
-      .state('home.forumAll', {
-        url: '/forum/all',
-        templateUrl: 'views/partials/forum-all.html',
-        controller: 'ForumAllCtrl',
-        resolve: {
-          NodeData: ['ForumSer', function(ForumSer) {
-            return ForumSer.nodes();
-          }]
-        }
-      })
-      .state('home.userDetail', {
-        url: '/user/detail/{id}',
-        templateUrl: 'views/partials/user-detail.html',
-        controller: 'UserDetailCtrl',
-        resolve: {
-          UserData: ['UserSer', '$stateParams', function(UserSer, $stateParams) {
-            return UserSer.detail($stateParams.id);
-          }]
-        }
-      })
-      .state('home.forumDetail', {
-        url: '/forum/detail/{id}',
-        templateUrl: 'views/partials/forum-detail.html',
-        controller: 'ForumDetailCtrl',
-        resolve: {
-          Thread: ['ForumSer', '$stateParams', function(ForumSer, $stateParams) {
-            return ForumSer.thread($stateParams.id);
-          }]
-        }
-      })
-      .state('home.teamDetail', {
-        url: '/team/detail/{id}',
-        templateUrl: 'views/partials/team-detail.html',
-        controller: 'TeamDetailCtrl'
-      });
+      .otherwise('/switchCity');
 
 
-    // 处理重定向
-    $urlRouterProvider
-      .when('/main', '/')
-      .otherwise('/');
+
   });

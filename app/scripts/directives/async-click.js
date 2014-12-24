@@ -9,22 +9,22 @@
  */
 
 
-angular.module('moraApp')
-  .directive('asyncClick', function ($parse, $) {
+angular.module('cheApp')
+  .directive('asyncClick', function ($parse) {
 
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
-        var clickHandler = $parse(attrs.asyncClick);
-
-        element.on('click', function(event) {
-          attrs = attrs || {};
-          attrs.asyncConfirm = element.attr('async-confirm');
-          _.asyncClickOn(element, function() {
-            return clickHandler(scope, {$event: event});
-          }, attrs);
-
-        });
+        //var clickHandler = $parse(attrs.asyncClick);
+        //
+        //element.on('click', function(event) {
+        //  attrs = attrs || {};
+        //  attrs.asyncConfirm = element.attr('async-confirm');
+        //  _.asyncClickOn(element, function() {
+        //    return clickHandler(scope, {$event: event});
+        //  }, attrs);
+        //
+        //});
       }
     };
   });

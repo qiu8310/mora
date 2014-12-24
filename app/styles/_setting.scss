@@ -7,7 +7,7 @@ $number-units:    1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  
 
 
 //== font related
-$root-font-size: 16px !default; // root-font-size 不能小于 11px，否则设置 height/width 等非 font-size 的属性时，用 rem 时无效
+$root-font-size: 14px !default; // root-font-size 不能小于 11px，否则设置 height/width 等非 font-size 的属性时，用 rem 时无效
 $root-paragraph-height: 20px; // 段落高度基本是 20 px 了
 
 $root-line-height: $root-paragraph-height / $root-font-size;
@@ -22,12 +22,10 @@ $tablet-max-width: 899px !default;
 $mobile-max-width: 539px !default;
 
 
+
 //== user defined
 
 $z-indexes: (
   header: 905,
-  aside-fixed: 904,
-  aside-hidden: 903,
-  footer-fixed: 901,
-  breadcrumb: 901
+  footer: 904
 )

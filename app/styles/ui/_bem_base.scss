@@ -1,0 +1,15 @@
+// 这里的模块都是小的 BEM 模块，一般是嵌入在其它 BEM 模块内用
+// 所以当不嵌入其它模块时尽量少给这些模块设置属性
+
+/*
+  list 模块:
+  list__item list__item--disabled list__item--active
+  list__item__link
+
+  @example:
+  <ul class="list">
+    <li class="list__item list__item--active">
+      <a class="list__item__link">Link</a>
+    </li>
+  </ul>
+*/

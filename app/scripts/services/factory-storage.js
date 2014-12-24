@@ -1,10 +1,9 @@
-'use strict';
 
-angular.module('moraApp')
+angular.module('cheApp')
   .factory('Storage', function () {
     // https://github.com/marcuswestin/store.js 支持跨域
     var Storage = window.localStorage,
-      STORAGE_PREFIX = '_v1_';
+      STORAGE_PREFIX = 'che_v1_';
 
     function call(fn) {
       if (Storage) {

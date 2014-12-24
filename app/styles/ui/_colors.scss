@@ -34,12 +34,22 @@ $cadetblue:   cadetblue !default;
 
 
 
+$color-3: #333;
+$color-6: #666;
+$color-9: #999;
+$color-a: #aaa;
+$color-c: #ccc;
+
+$border-color: $color-c;
 
 // my defined
 $colors: (
   yellow: $yellow,
   red: $red,
-  white: $white
+  white: $white,
+  skyblue: #3498DB,
+  pink: #f76caf,
+  gray: #aaa
 );
 @each $key, $val in $colors {
   .bg-#{$key} {

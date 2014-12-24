@@ -1,10 +1,8 @@
 @import "reset";
 @import "colors";
-
-@import "form";
 @import "layout";
-@import "header-and-footer";
-@import "aside";
-@import "breadcrumb";
-@import "search";
-@import "table";
+@import "bem_base";
+
+@import "page-switch-city";
+
+

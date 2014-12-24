@@ -1,5 +1,5 @@
-angular.module('moraApp')
-  .service('HttpInterceptor', function (_, $q, $rootScope, Auth, Env) {
+angular.module('cheApp')
+  .service('HttpInterceptor', function ($q, $rootScope, Auth, Env) {
 
     var API_BASE = Env.isTest ? 'http://staging-neo.llsapp.com/' : 'http://crm.llsapp.com/',
       PREFIX = 'api';
@@ -47,8 +47,8 @@ angular.module('moraApp')
         // 从驼峰式的参数变成下划线式的，与后台风格统一
         //request.params = _.assign(_.underscoreCase(request.params) || {}, token);
         //request.data   = _.assign(_.underscoreCase(request.data) || {}, token);
-        request.params = _.assign(request.params || {}, token);
-        request.data   = _.assign(request.data || {}, token);
+        //request.params = _.assign(request.params || {}, token);
+        //request.data   = _.assign(request.data || {}, token);
 
         return request;
       },
