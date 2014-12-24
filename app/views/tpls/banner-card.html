@@ -1,0 +1,17 @@
+<div class="banner-card">
+  <div ng-if="(banner.type || type) === TYPE.ACTIVITY">
+    <a href="{{banner.data.url || banner.url}}" target="_blank">{{banner.data.title || data.title}}</a>
+  </div>
+
+  <div ng-if="(banner.type || type) === TYPE.THREAD">
+    <a ui-sref="home.forumDetail({id: banner.data.id || data.id})" m-blank>{{banner.data.title || data.title}}</a>
+  </div>
+
+  <div ng-if="(banner.type || type) === TYPE.TEAM">
+    <a ui-sref="home.teamDetail({id: banner.data.resourceId || data.resourceId})" m-blank>{{banner.data.title || data.title}}</a>
+  </div>
+
+  <div ng-if="(banner.type || type) === TYPE.COURSE">
+    <a href="{{cmsBaseUrl}}courses/{{banner.data.id || data.id}}/units" target="_blank">{{banner.data.title || data.title}}</a>
+  </div>
+</div>

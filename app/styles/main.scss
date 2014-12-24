@@ -38,6 +38,19 @@
 }
 
 
+.radio-btn-group-types {
+  margin: 4px 0;
+
+  & > div {
+    display: none;
+  }
+
+  &.type-a > .type-a,
+  &.type-b > .type-b,
+  &.type-c > .type-c,
+  &.type-d > .type-d { display: block; }
+}
+
 .settled {
   @for $i from 1 through 12 {
     .col-sm-#{$i} {

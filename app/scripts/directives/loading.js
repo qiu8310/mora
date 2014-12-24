@@ -74,15 +74,15 @@ angular.module('moraApp')
           }
         };
 
-        destroyForStart = $rootScope.$on('$stateChangeStart', animateForStart);
-        destroyForError = $rootScope.$on('$stateChangeError', animateForEnd);
-        destroyForEnd = $rootScope.$on('$viewContentLoaded', animateForEnd);
-
-        element.on('$destroy', function() {
-          destroyForStart();
-          destroyForEnd();
-          destroyForError();
-        });
+        //destroyForStart = $rootScope.$on('$stateChangeStart', animateForStart);
+        //destroyForError = $rootScope.$on('$stateChangeError', animateForEnd);
+        //destroyForEnd = $rootScope.$on('$viewContentLoaded', animateForEnd);
+        //
+        //element.on('$destroy', function() {
+        //  destroyForStart();
+        //  destroyForEnd();
+        //  destroyForError();
+        //});
       }
     };
 

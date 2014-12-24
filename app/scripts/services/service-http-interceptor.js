@@ -30,6 +30,8 @@ angular.module('moraApp')
             url = 'ops/forum_nodes' + suffix; break;
           case 'team':
             url = 'ops/study_groups' + suffix; break;
+          case 'stream':
+            url = 'ops/timeline' + suffix; break;
           default:
             url = 'ops/' + identifier + suffix;
         }
@@ -77,17 +79,18 @@ angular.module('moraApp')
 
 
       responseError: function(response) {
-
-        if (response.status === 401) {
-          $rootScope.$broadcast('login:required');
-        } else if (response.status === 403) {
-          $rootScope.$broadcast('HTTPError', 'You are not allowed to access this page!!');
-        } else if (response.status >= 400 && response.status < 500) {
-          $rootScope.$broadcast('HTTPError',
-            'Server was unable to find what you were looking for... Sorry!!');
-        } else if (response.status >= 500 && response.status < 600) {
-          $rootScope.$broadcast('HTTPError',
-            'There is something wrong with the server, please contact the administrator!!');
+        if (response && response.config && response.config.url.indexOf('?ignoreError') < 0) {
+          if (response.status === 401) {
+            $rootScope.$broadcast('login:required');
+          } else if (response.status === 403) {
+            $rootScope.$broadcast('HTTPError', 'You are not allowed to access this page!!');
+          } else if (response.status >= 400 && response.status < 500) {
+            $rootScope.$broadcast('HTTPError',
+              'Server was unable to find what you were looking for... Sorry!!');
+          } else if (response.status >= 500 && response.status < 600) {
+            $rootScope.$broadcast('HTTPError',
+              'There is something wrong with the server, please contact the administrator!!');
+          }
         }
         return $q.reject(response);
       }

@@ -9,18 +9,15 @@
     <h2 class="modal-list-title">{{listTitle}}</h2>
     <ul class="modal-course-list modal-list">
       <li class="modal-item row" ng-repeat="course in list">
-        <div class="col-sm-{{course.attachedImg ? 10 : 11}}">
+        <div class="col-sm-{{course.coverUrl ? 8 : 10}}">
           <h3>
-            <a class="title text-ellipsis" title="{{course.title}}" ui-sref="home.forumDetail({id: course.id})" m-blank>{{course.title}}</a>
-            <a class="author text-ellipsis" title="{{course.userName}}" ui-sref="home.userDetail({id: course.userId})" m-blank>{{course.userName}}</a>
+            <banner-card data="course" type="BANNER_TYPE.COURSE"></banner-card>
           </h3>
-          <p class="desc text-ellipsis">{{course.body}}</p>
-
         </div>
-        <div class="col-sm-1" ng-if="course.attachedImg">
-          <img ng-src="{{course.attachedImg}}?imageView2/5/w/50/h/50" width="50" height="50">
+        <div class="col-sm-2" ng-if="course.coverUrl">
+          <img ng-src="{{course.coverUrl}}?imageView2/5/w/50/h/50" width="50" height="50">
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
           <button class="btn btn-info btn-xs pull-right" ng-click="select(course)">选择</button>
         </div>
       </li>

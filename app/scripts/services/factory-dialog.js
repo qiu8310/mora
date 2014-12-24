@@ -9,7 +9,7 @@ angular.module('moraApp')
           $window.alert(msg);
         }
       },
-      confirm:  function(msg) { $window.confirm(msg); },
-      prompt:   function(msg, defaultValue) { $window.prompt(msg, defaultValue); }
+      confirm:  function(msg) { return $window.confirm(msg); },
+      prompt:   function(msg, defaultValue) { return $window.prompt(msg, defaultValue); }
     };
   });

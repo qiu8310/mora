@@ -1,11 +1,17 @@
 .banner {
-  &, & img {
+  & img {
     overflow: hidden;
     border: none;
     width: 190px;
     height: 100px;
   }
-  & img {
-    padding: 4px;
+  &.banner-small img {
+    width: 80px;
+    height: 42px;
   }
+}
+
+
+.form-control-text {
+  line-height: 30px;
 }

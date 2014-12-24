@@ -40,15 +40,7 @@
 
 
 .banner-editor-modal {
-  .img-uploader-types {
-    margin-top: 4px;
-
-    & input {
-      display: none;
-    }
-
-    &.type-local input[type=file], &.type-url input[type=url] {
-      display: block;
-    }
+  .btn-group, .radio-btn-group-types {
+    margin: 4px 0;
   }
 }

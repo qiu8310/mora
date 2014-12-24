@@ -16,6 +16,23 @@ angular.module('moraApp')
     };
   })
 
+  .directive('bannerCard', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        data: '=', // banner = {data: '', type: ''}
+        banner: '=',
+        type: '='
+      },
+      templateUrl: 'views/tpls/banner-card.html',
+      controller: function($scope, C, Env) {
+        $scope.TYPE = C.constants.BANNER_TYPE;
+        $scope.cmsBaseUrl = Env.isTest ? 'http://cms-staging.liulishuo.com/' : 'http://cms.liulishuo.com/';
+      }
+    };
+  })
+
 
   .directive('post', function() {
     return {

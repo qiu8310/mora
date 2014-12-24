@@ -23,6 +23,12 @@ angular.module('moraApp')
         TEAM: 'study_group',
         COURSE: 'course',
         THREAD: 'topic'
+      },
+      STREAM_TYPE: {
+        THREAD: 'topic',
+        COURSE_SET: 'course_set',
+        TEAM_SET: 'study_group_set',
+        SMALL_BANNER: 'small_banner'
       }
     },
 

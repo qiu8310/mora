@@ -1,0 +1,88 @@
+<form class="clearfix form-horizontal">
+
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title">{{((isCreate ? '创建 ' : '编辑 ') + type)|inflector:humanize}}</h3>
+  </div>
+
+  <div class="modal-body" bindonce>
+
+    <div bo-if="type === TYPE.SMALL_BANNER">
+      <form-control ng-repeat="no in [1, 2]" label="No. {{no}}">
+        <div class="col-sm-9 no-padding-left">
+          <banner-card class="form-control-text" banner="stream.data[$index]"></banner-card>
+        </div>
+        <div class="col-sm-3 no-padding-right">
+          <a ng-show="stream.data.length >= no" class="btn btn-info btn-sm pull-right" ng-click="editBanner(stream.data[$index])">更换</a>
+          <div ng-show="stream.data.length === $index" class="btn-group pull-right" dropdown>
+            <button type="button" class="btn btn-info btn-sm dropdown-toggle" dropdown-toggle>
+              添加 &nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-repeat="(key, label) in BANNER_TYPE"><a ng-click="createBanner(label, stream.data, false)">{{label | inflector:humanize}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </form-control>
+    </div>
+
+
+    <div bo-if="type === TYPE.THREAD">
+      <form-control label="帖子">
+        <div class="col-sm-9 no-padding-left">
+          <banner-card class="form-control-text" banner="stream"></banner-card>
+        </div>
+        <div class="col-sm-3 no-padding-right">
+          <a class="btn btn-info btn-sm pull-right" ng-click="findThread(stream)">{{stream.data.title ? '更换帖子' : '选择帖子'}}</a>
+        </div>
+      </form-control>
+    </div>
+
+
+    <div bo-if="type === TYPE.TEAM_SET">
+      <form-control ng-repeat="no in [1, 2, 3]" label="No. {{no}}">
+        <div class="col-sm-9 no-padding-left">
+          <banner-card class="form-control-text" banner="stream.data[$index]"></banner-card>
+        </div>
+        <div class="col-sm-3 no-padding-right">
+          <a ng-show="stream.data.length >= $index" ng-click="findTeam(stream.data, $index)"
+             class="btn btn-info btn-sm pull-right">{{stream.data.length === $index ? '选择小组' : '更换小组'}}</a>
+        </div>
+      </form-control>
+    </div>
+
+
+    <div bo-if="type === TYPE.COURSE_SET">
+      <form-control ng-repeat="no in [1, 2, 3]" label="No. {{no}}">
+        <div class="col-sm-9 no-padding-left">
+          <banner-card class="form-control-text" banner="stream.data[$index]"></banner-card>
+        </div>
+        <div class="col-sm-3 no-padding-right">
+          <a ng-show="stream.data.length >= $index" ng-click="findCourse(stream.data, $index)"
+             class="btn btn-info btn-sm pull-right">{{stream.data.length === $index ? '选择课程' : '更换课程'}}</a>
+        </div>
+      </form-control>
+    </div>
+
+
+    <form-control label="定时">
+      <div class="btn-group" ng-init="publishType='a'">
+        <label class="btn btn-default btn-sm" ng-model="publishType" btn-radio="'a'">立即发布</label>
+        <label class="btn btn-default btn-sm" ng-model="publishType" btn-radio="'b'">定时发布</label>
+      </div>
+      <div class="radio-btn-group-types type-{{publishType}}">
+        <div class="type-a" style="line-height: 34px">{{stream.publishAt|date:'yyyy/MM/dd HH:mm'}}</div>
+        <div class="type-b">
+          <input class="form-control" type="datetime" value="{{stream.publishAt|date:'yyyy/MM/dd HH:mm'}}">
+        </div>
+      </div>
+    </form-control>
+
+  </div>
+
+  <div class="modal-footer">
+    <a class="btn btn-default" ng-click="cancel()">取消</a>
+    <a class="btn btn-primary" ng-click="save()" ng-disabled="!isValid()">保存</a>
+  </div>
+
+</form>

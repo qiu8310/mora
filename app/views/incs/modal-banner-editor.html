@@ -10,21 +10,28 @@
       <div class="banner">
         <img id="bannerImg" ng-src="{{banner.img}}"/>
       </div>
-      <div class="btn-group" ng-init="uploaderType='local'">
-        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'url'">填写图片URL</label>
-        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'local'">上传本地图片</label>
+      <div class="btn-group" ng-init="uploaderType='a'">
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'a'">填写图片URL</label>
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'b'">上传本地图片</label>
       </div>
-      <div class="img-uploader-types type-{{uploaderType}}">
-        <input class="form-control" uploader="banner.img" type="file">
-        <input class="form-control" type="url"
-               ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }"
-               ng-model="banner.img">
+      <div class="radio-btn-group-types type-{{uploaderType}}">
+        <div class="type-a">
+          <input class="form-control" type="url"
+                 ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }"
+                 ng-model="banner.img">
+        </div>
+        <div class="type-b">
+          <input class="form-control" uploader="banner.img" type="file">
+        </div>
       </div>
     </form-control>
 
     <div bo-if="type === TYPE.ACTIVITY">
+      <form-control label="活动名称">
+        <input class="form-control" ng-required type="text" ng-model="banner.data.title"/>
+      </form-control>
       <form-control label="活动链接">
-        <input class="form-control" ng-required type="url" ng-model="banner.url"/>
+        <input class="form-control" ng-required type="url" ng-model="banner.data.url"/>
       </form-control>
     </div>
 
@@ -32,10 +39,10 @@
     <div bo-if="type === TYPE.THREAD">
       <form-control label="帖子信息">
         <div class="col-sm-9 no-padding-left">
-          <a style="line-height: 30px;" ui-sref="home.forumDetail({id: banner.data.id})" m-blank>{{banner.data.title}}</a>
+          <banner-card banner="banner" class="form-control-text"></banner-card>
         </div>
         <div class="col-sm-3 no-padding-right">
-          <a class="btn btn-info btn-sm pull-right" ng-click="findThread()">{{banner.data.title ? '更换帖子' : '选择帖子'}}</a>
+          <a class="btn btn-info btn-sm pull-right" ng-click="findThread(banner)">{{banner.data.title ? '更换帖子' : '选择帖子'}}</a>
         </div>
       </form-control>
     </div>
@@ -44,10 +51,9 @@
     <div bo-if="type === TYPE.TEAM">
       <form-control label="小组信息">
         <div class="col-sm-9 no-padding-left">
-          <a style="line-height: 30px;" ui-sref="home.teamDetail({id: banner.data.resourceId})" m-blank>{{banner.data.title}}</a>
-        </div>
+          <banner-card banner="banner" class="form-control-text"></banner-card>        </div>
         <div class="col-sm-3 no-padding-right">
-          <a class="btn btn-info btn-sm pull-right" ng-click="findTeam()">{{banner.data.title ? '更换小组' : '选择小组'}}</a>
+          <a class="btn btn-info btn-sm pull-right" ng-click="findTeam(banner)">{{banner.data.title ? '更换小组' : '选择小组'}}</a>
         </div>
       </form-control>
     </div>
@@ -56,10 +62,10 @@
     <div bo-if="type === TYPE.COURSE">
       <form-control label="课程信息">
         <div class="col-sm-9 no-padding-left">
-          <span style="line-height: 30px;">{{banner.data.title}}</span>
+          <banner-card banner="banner" class="form-control-text"></banner-card>
         </div>
         <div class="col-sm-3 no-padding-right">
-          <a class="btn btn-info btn-sm pull-right" ng-click="findCourse()">{{banner.data.title ? '更换课程' : '选择课程'}}</a>
+          <a class="btn btn-info btn-sm pull-right" ng-click="findCourse(banner)">{{banner.data.title ? '更换课程' : '选择课程'}}</a>
         </div>
       </form-control>
     </div>
@@ -67,7 +73,7 @@
 
   <div class="modal-footer">
     <a class="btn btn-default" ng-click="cancel()">取消</a>
-    <a class="btn btn-primary" ng-click="save()" ng-disabled="!banner.img || !banner.data.title">保存</a>
+    <a class="btn btn-primary" ng-click="save()" ng-disabled="!isValid()">{{isCreate ? '添加' : '更新'}}</a>
   </div>
 
 </form>
