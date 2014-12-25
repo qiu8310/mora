@@ -43,10 +43,26 @@ angular.module('moraApp')
   })
 
 
+  .controller('FrontCourseCtrl', function($scope, $rootScope, $http, Dialog) {
+    var courseType = $rootScope.BANNER_TYPE.COURSE;
+    $scope.list = [{type: courseType, data: {}}, {type: courseType, data: {}}];
+
+    $scope.save = function() {
+      var data = $rootScope.frontCardToBack({type: $rootScope.STREAM_TYPE.SMALL_BANNER, data: $scope.list});
+      return $http.post('api/banners/?position=courses_library', data).success(function() {
+        Dialog.alert('保存成功!');
+      });
+    };
+
+    $scope.sortableOptions = {
+      accept: function() { return true; },
+      dragEnd: function() {}
+    };
+  })
+
 
   .controller('FrontStreamCtrl', function($scope, $rootScope, C, $modal, _, $http, $){
     $scope.TYPE = C.constants.STREAM_TYPE;
-
 
 
     function getList() {

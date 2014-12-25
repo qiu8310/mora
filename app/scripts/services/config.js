@@ -75,13 +75,18 @@ angular.module('moraApp')
         children: [
           {
             key: 'banner',
-            title: '轮播图',
+            title: '主首页轮播图',
             templateUrl: 'front-banner.html'
           },
           {
             key: 'stream',
-            title: '瀑布流',
+            title: '主首页瀑布流',
             templateUrl: 'front-stream.html'
+          },
+          {
+            key: 'course',
+            title: '课程首页Banner',
+            templateUrl: 'front-course.html'
           }
         ]
       },

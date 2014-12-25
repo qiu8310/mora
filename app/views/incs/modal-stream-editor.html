@@ -67,13 +67,15 @@
 
     <form-control label="定时">
       <div class="btn-group" ng-init="publishType='a'">
-        <label class="btn btn-default btn-sm" ng-model="publishType" btn-radio="'a'">立即发布</label>
+        <label class="btn btn-default btn-sm" ng-model="publishType" ng-click="setPublishAtNow()" btn-radio="'a'">立即发布</label>
         <label class="btn btn-default btn-sm" ng-model="publishType" btn-radio="'b'">定时发布</label>
       </div>
       <div class="radio-btn-group-types type-{{publishType}}">
-        <div class="type-a" style="line-height: 34px">{{stream.publishAt|date:'yyyy/MM/dd HH:mm'}}</div>
-        <div class="type-b">
-          <input class="form-control" type="datetime" value="{{stream.publishAt|date:'yyyy/MM/dd HH:mm'}}">
+        <div class="col-sm-5 no-padding-left block">
+          <div style="line-height: 34px">{{stream.publishAt|date:'yyyy/MM/dd HH:mm'}}</div>
+        </div>
+        <div class="col-sm-6 type-b no-padding-left">
+          <input class="form-control" type="datetime" date-format="yyyy/MM/dd HH:mm" ng-model="stream.publishAtFormat">
         </div>
       </div>
     </form-control>

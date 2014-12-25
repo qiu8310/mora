@@ -9,7 +9,7 @@
     <h2 class="modal-list-title">{{listTitle}}</h2>
     <ul class="modal-thread-list modal-list">
       <li class="modal-item row" ng-repeat="thread in list">
-        <div class="col-sm-{{thread.attachedImg ? 10 : 11}}">
+        <div class="col-sm-{{thread.attachedImg ? 9 : 10}}">
           <h3>
             <a class="title text-ellipsis" title="{{thread.title}}" ui-sref="home.forumDetail({id: thread.id})" m-blank>{{thread.title}}</a>
             <a class="author text-ellipsis" title="{{thread.userName}}" ui-sref="home.userDetail({id: thread.userId})" m-blank>{{thread.userName}}</a>
@@ -20,7 +20,7 @@
         <div class="col-sm-1" ng-if="thread.attachedImg">
           <img ng-src="{{thread.attachedImg}}?imageView2/5/w/50/h/50" width="50" height="50">
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
           <button class="btn btn-info btn-xs pull-right" ng-click="select(thread)">选择</button>
         </div>
       </li>

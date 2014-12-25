@@ -1,0 +1,32 @@
+<form class="form-list settled">
+  <div class="row form-list-header">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-4"><label>课程名</label></div>
+    <div class="col-sm-4"><label>Banner图片</label></div>
+    <div class="col-sm-3"><label>操作</label></div>
+  </div>
+  <ul class="form-list-body" as-sortable="sortableOptions" ng-model="list">
+    <li class="row" ng-repeat="item in list" as-sortable-item="list[$index]">
+      <div class="col-sm-1" as-sortable-item-handle><i class="fa fa-arrows"></i>#{{$index + 1}}</div>
+      <div class="col-sm-4 break-word">
+        <div ng-hide="list[$index].data.title">尚未设置</div>
+        <div ng-show="list[$index].data.title">
+          <banner-card banner="list[$index]"></banner-card>
+        </div>
+      </div>
+      <div class="col-sm-4"><div class="banner banner-small">
+        <img ng-src="{{list[$index].img}}"/>
+      </div></div>
+
+      <div class="col-sm-3">
+        <a ng-show="list.length >= $index" class="btn btn-info btn-sm" ng-click="editBanner(list[$index])">编辑课程</a>
+      </div>
+    </li>
+  </ul>
+
+
+  <div class="row form-list-footer">
+    <a class="btn btn-primary pull-right" ng-disabled="list.length !== 2" async-click="save()">保存</a>
+  </div>
+</form>
+

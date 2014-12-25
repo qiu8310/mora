@@ -169,7 +169,7 @@ angular.module('moraApp')
   })
 
 
-  .controller('StreamEditorCtrl', function($scope, $rootScope, $modalInstance, StreamData, C, $http, _) {
+  .controller('StreamEditorCtrl', function($scope, $rootScope, $modalInstance, StreamData, C, $http, _, $filter) {
     var type = $scope.type = StreamData.type,
       TYPE = $scope.TYPE = C.constants.STREAM_TYPE,
       stream = $scope.stream = StreamData || {};
@@ -177,11 +177,20 @@ angular.module('moraApp')
     $scope.BANNER_TYPE = C.constants.BANNER_TYPE;
     $scope.isCreate = stream.isCreate;
 
+
+    $scope.setPublishAtNow = function() {
+      var now = _.now();
+      now -= now % 3600000;
+      stream.publishAt = now;
+      stream.publishAtFormat = $filter('date')(now, 'yyyy/MM/dd HH:mm');
+    };
+
+
+
     if (!stream.publishAt) {
-      stream.publishAt = _.now();
+      $scope.setPublishAtNow();
     }
     stream.data = stream.data || [];
-
 
 
     function cb(data){

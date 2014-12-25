@@ -9,12 +9,12 @@
     <h2 class="modal-list-title">{{listTitle}}</h2>
     <ul class="modal-course-list modal-list">
       <li class="modal-item row" ng-repeat="course in list">
-        <div class="col-sm-{{course.coverUrl ? 8 : 10}}">
+        <div class="col-sm-{{course.coverUrl ? 9 : 10}}">
           <h3>
             <banner-card data="course" type="BANNER_TYPE.COURSE"></banner-card>
           </h3>
         </div>
-        <div class="col-sm-2" ng-if="course.coverUrl">
+        <div class="col-sm-1" ng-if="course.coverUrl">
           <img ng-src="{{course.coverUrl}}?imageView2/5/w/50/h/50" width="50" height="50">
         </div>
         <div class="col-sm-2">

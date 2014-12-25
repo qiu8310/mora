@@ -9,7 +9,7 @@
     <h2 class="modal-list-title">{{listTitle}}</h2>
     <ul class="modal-team-list modal-list">
       <li class="modal-item row" ng-repeat="team in list">
-        <div class="col-sm-{{team.imageUrl ? 10 : 11}}">
+        <div class="col-sm-{{team.imageUrl ? 9 : 10}}">
           <h3>
             <a class="title text-ellipsis" title="{{team.title}}" ui-sref="home.teamDetail({id: team.resourceId})" m-blank>{{team.categoryName + ': ' + team.title}}</a>
             <a class="author text-ellipsis" title="{{team.owner.name}}" ui-sref="home.userDetail({id: team.owner.resourceId})" m-blank>{{team.owner.name}}</a>
@@ -24,7 +24,7 @@
         <div class="col-sm-1" ng-if="team.imageUrl">
           <img ng-src="{{team.imageUrl}}?imageView2/5/w/50/h/50" width="50" height="50">
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
           <button class="btn btn-info btn-xs pull-right" ng-click="select(team)">选择</button>
         </div>
       </li>

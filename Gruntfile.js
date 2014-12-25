@@ -196,10 +196,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['bowerInstall']
-      },
+      //bower: {
+      //  files: ['bower.json'],
+      //  tasks: ['bowerInstall']
+      //},
       js: {
         files: '<%= jshint.all %>',
         //files: ['<%= yeoman.app %>/scripts/{,**/}*.js', 'plugins/grunt/tasks/{,*/}*.js'],
@@ -626,7 +626,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'bowerInstall',
+      //'bowerInstall',
       'concurrent:server',
       'classImport',
       'autoprefixer',
@@ -652,7 +652,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'bowerInstall',
+    //'bowerInstall',
     'useminPrepare',
     'concurrent:dist',
     'classImport',

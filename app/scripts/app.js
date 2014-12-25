@@ -179,6 +179,7 @@ angular
     'ngSanitize',
     'ui.router',
     'ui.utils',
+    'ui.sortable',
     'ui.bootstrap',
     'angular-md5',
     'pasvaz.bindonce',

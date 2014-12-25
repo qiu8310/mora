@@ -129,7 +129,7 @@ angular.module('moraApp')
           result = {
             type: 'huo_dong',
             name: data.title,
-            url: card.url
+            url: data.url
           }; break;
         case TYPE.SMALL_BANNER:
           data = [].concat(data);

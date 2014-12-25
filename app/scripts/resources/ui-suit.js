@@ -1,4 +1,35 @@
 angular.module('moraApp')
+  .directive('dateFormat', function($filter, $parse) {
+    return {
+      require: 'ngModel',
+      restrict: 'A',
+      scope: true,
+      link: function(scope, element, attrs, modelCtrl) {
+        var target = attrs.ngModel.replace(/Format$/, ''),
+          targetGetter = $parse(target),
+          targetSetter = targetGetter.assign,
+          viewerSetter = $parse(attrs.ngModel).assign;
+
+
+        var setOutputValue = function(inputValue) {
+          viewerSetter(scope, $filter('date')(inputValue, attrs.dateFormat || 'yyyy/MM/dd HH:mm:ss'));
+        };
+
+        // 初始化 modelCtrl 的值
+        setOutputValue(targetGetter(scope));
+
+        scope.$watch(attrs.ngModel, function(val) {
+          if (!val) { return false; }
+          var date = new Date(val);
+          if (date.toString() === 'Invalid Date') {
+            return false;
+          }
+          targetSetter(scope, date);
+        });
+
+      }
+    };
+  })
   .directive('mBlank', function(C, $location) {
     return {
       restrict: 'A',
