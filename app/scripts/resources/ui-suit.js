@@ -30,6 +30,7 @@ angular.module('moraApp')
       }
     };
   })
+
   .directive('mBlank', function(C, $location) {
     return {
       restrict: 'A',

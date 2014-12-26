@@ -2,7 +2,7 @@
 
 angular.module('moraApp')
 
-  .controller('FrontBannerCtrl', function($scope, C, Dialog, $http){
+  .controller('FrontBannerCtrl', function($scope, C, Dialog, $http, _){
     $scope.TYPE = C.constants.BANNER_TYPE;
     $scope.list = [];
 
@@ -13,7 +13,7 @@ angular.module('moraApp')
     };
 
     $scope.createBanner = function(type) {
-      $scope.$parent.createBanner(type).then(function(data) {
+      $scope.$parent.createBanner(type, null, false).then(function(data) {
         $scope.list.push(data);
         isUpdated = true;
       });
@@ -30,14 +30,23 @@ angular.module('moraApp')
       isUpdated = true;
     };
 
-    //$scope.$on('$stateChangeStart', function(e) {
-    //  if (isUpdated && !Dialog.confirm('你的修改尚未保存，确认要离开吗？')) {
-    //    e.preventDefault();
-    //  }
-    //});
+    $scope.$on('$stateChangeStart', function(e) {
+      if (isUpdated && !Dialog.confirm('你的修改尚未保存，确认要离开吗？')) {
+        e.preventDefault();
+      }
+    });
 
-    $http.get('api/banners/?position=home_page&page=1&pageSize=100', function(data) {
-      console.log(data);
+    $scope.save = function() {
+      $http.post('api/cards_banners/?position=home_top', {
+        cards: $scope.frontCardToBack($scope.list, true)
+      });
+    };
+
+    $http.get('api/cards_banners/?position=home_top&page=1&pageSize=100').success(function(data) {
+      $scope.list = _.map(data.items, function(item) {
+        return $scope.backCardToFront(item);
+      });
+      console.log('Banner data', $scope.list);
     });
 
   })
@@ -49,7 +58,7 @@ angular.module('moraApp')
 
     $scope.save = function() {
       var data = $rootScope.frontCardToBack({type: $rootScope.STREAM_TYPE.SMALL_BANNER, data: $scope.list});
-      return $http.post('api/banners/?position=courses_library', data).success(function() {
+      return $http.post('api/banners/?position=course_store_top', data).success(function() {
         Dialog.alert('保存成功!');
       });
     };

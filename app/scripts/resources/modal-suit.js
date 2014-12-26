@@ -150,10 +150,10 @@ angular.module('moraApp')
         return cb(null);
       }
       if (banner.isCreate) {
-        $http.post('api/banners/?position=home_page', {card: getBannerCard()})
+        $http.put('api/banners/?position=home_top', {card: getBannerCard()})
           .success(cb);
       } else {
-        $http.put('api/banners/' + banner.cardId + '/?position=home_page', {card: getBannerCard()})
+        $http.post('api/banners/?position=home_top', {card: getBannerCard()})
           .success(cb);
       }
     };

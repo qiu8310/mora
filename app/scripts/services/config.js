@@ -19,16 +19,16 @@ angular.module('moraApp')
   .constant('C', {
     constants: {
       BANNER_TYPE: {
-        ACTIVITY: 'activity',
+        ACTIVITY: 'huo_dong',
         TEAM: 'study_group',
         COURSE: 'course',
-        THREAD: 'topic'
+        THREAD: 'forum_topic'
       },
       STREAM_TYPE: {
-        THREAD: 'topic',
+        THREAD: 'forum_topic',
         COURSE_SET: 'course_set',
         TEAM_SET: 'study_group_set',
-        SMALL_BANNER: 'small_banner'
+        SMALL_BANNER: 'banner'
       }
     },
 

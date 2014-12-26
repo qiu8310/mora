@@ -41,14 +41,15 @@ angular.module('moraApp')
         // 把 token 写入到 header 中
         var token = Auth.getToken();
         //request.headers[['Mora-Authenticate']] = 'Basic token="' + token + '"';
-        token = token ? {token: token} : {};
+
+        var extraData = {token: token, 'app_id': 'lls'};
 
 
         // 从驼峰式的参数变成下划线式的，与后台风格统一
         //request.params = _.assign(_.underscoreCase(request.params) || {}, token);
         //request.data   = _.assign(_.underscoreCase(request.data) || {}, token);
-        request.params = _.assign(request.params || {}, token);
-        request.data   = _.assign(request.data || {}, token);
+        request.params = _.assign(request.params || {}, extraData);
+        request.data   = _.assign(request.data || {}, extraData);
 
         return request;
       },

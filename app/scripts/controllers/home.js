@@ -73,6 +73,7 @@ angular.module('moraApp')
 
     $rootScope.createBanner = function(type, list, commit) {
       commit = _.isUndefined(commit) ? true : !!commit;
+
       return $scope.editBanner({type: type, isCreate: true, commit: commit}).then(function(data) {
         if (list) {
           list.push(data);
@@ -99,67 +100,74 @@ angular.module('moraApp')
     };
 
 
-    $rootScope.frontCardToBack = function(card, _isSmallBanner) {
-      var data = card.data, result,
-        TYPE = C.constants.STREAM_TYPE,
+    var _FtB = $rootScope.frontCardToBack = function(card, batch) {
+      if (batch) {
+        return _.map(card, function(item) { return _FtB(item); });
+      }
+
+      var data = card.data, datas, result,
+        STREAM_TYPE = C.constants.STREAM_TYPE,
         BANNER_TYPE = C.constants.BANNER_TYPE;
+
+      datas = [].concat(data);
+      data = datas[0];
+
       switch (card.type) {
-        case TYPE.THREAD:
+        case STREAM_TYPE.THREAD:
         case BANNER_TYPE.THREAD:
           result = {
             type: 'forum_topic',
-            'topic_id': data.id
+            data: data.id
           }; break;
-        case TYPE.TEAM_SET:
-        case BANNER_TYPE.TEAM:
-          data = [].concat(data);
+        case STREAM_TYPE.TEAM_SET:
           result = {
             type: 'study_group_set',
-            'group_ids': _.map(data, function(o) { return o.resourceId || o.data.resourceId; })
-          };
-          break;
-        case TYPE.COURSE_SET:
-        case BANNER_TYPE.COURSE:
-          data = [].concat(data);
+            data: _.map(datas, function(o) { return o.resourceId || o.data.resourceId; })
+          }; break;
+        case BANNER_TYPE.TEAM:
+          result = {
+            type: 'study_group',
+            data: data.resourceId || data.data.resourceId
+          }; break;
+        case STREAM_TYPE.COURSE_SET:
           result = {
             type: 'course_set',
-            'course_ids': _.map(data, function(o) { return o.id || o.data.id; })
+            data: _.map(datas, function(o) { return o.id || o.data.id; })
+          }; break;
+        case BANNER_TYPE.COURSE:
+          result = {
+            type: 'course',
+            data: data.id || data.data.id
           }; break;
         case BANNER_TYPE.ACTIVITY:
           result = {
             type: 'huo_dong',
-            name: data.title,
-            url: data.url
+            data: {name: data.title, cover: card.img, url: data.url}
           }; break;
-        case TYPE.SMALL_BANNER:
-          data = [].concat(data);
+        case STREAM_TYPE.SMALL_BANNER:
           result = {
             type: 'banner',
-            cards: _.map(data, function(banner) {
-              return $rootScope.frontCardToBack(banner, true);
+            cards: _.map(datas, function(banner) {
+              return _FtB(banner);
             })
           }; break;
         default :
           throw new Error('不支持数据类型');
       }
 
-      if (!_isSmallBanner) {
-        result.cover_url = card.img;
-        result.published_at = Math.round((card.publishAt || _.now())/1000);
-      }
-
       return result;
     };
 
-    $rootScope.backCardToFront = function(card) {
-      var TYPE = C.constants.STREAM_TYPE, data,
-        BANNER_TYPE = C.constants.BANNER_TYPE;
+    var _BtF = $rootScope.backCardToFront = function(card, isBanner) {
+      var STREAM_TYPE = C.constants.STREAM_TYPE,
+        BANNER_TYPE = C.constants.BANNER_TYPE, data;
 
       // publishedAt, id
       switch (card.type) {
         case 'study_group_set':
+        case 'study_group':
           data = {
-            type: TYPE.TEAM_SET,
+            type: STREAM_TYPE.TEAM_SET,
             data: _.map(card.groups, function(o) {
               return {
                 type: BANNER_TYPE.TEAM,
@@ -169,11 +177,12 @@ angular.module('moraApp')
           };
           break;
         case 'forum_topic':
-          data = {type: TYPE.THREAD, data: card.topic};
+          data = {type: STREAM_TYPE.THREAD, data: card.topic};
           break;
         case 'course_set':
+        case 'course':
           data = {
-            type: TYPE.COURSE_SET,
+            type: STREAM_TYPE.COURSE_SET,
             data: _.map(card.courses, function(o) {
               return {
                 type: BANNER_TYPE.COURSE,
@@ -185,8 +194,8 @@ angular.module('moraApp')
 
         case 'banner':
           data = {
-            type: TYPE.SMALL_BANNER,
-            data: _.map(card.cards, function(o) {
+            type: STREAM_TYPE.SMALL_BANNER,
+            data: _.map(card.items, function(o) {
               var item;
               switch (o.type) {
                 case 'huo_dong':
@@ -224,9 +233,10 @@ angular.module('moraApp')
         default : throw new Error('不支持数据类型' + card.type);
       }
 
-      data.cardId = card.id;
-      data.publishAt = new Date(card.publishedAt * 1000);
-      return data;
+      //data.cardId = card.id;
+      //data.publishAt = card.publishedAt * 1000;
+
+      return isBanner ? data.data : data;
 
     };
 
