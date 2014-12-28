@@ -26,6 +26,20 @@ html, body {
   //background: image-url("bg.png");
 }
 
+.link, .link:link, .link:visited {
+  color: map-get($colors, skyblue);
+}
+.link:active, .link:hover {
+  opacity: .8;
+}
+.link.disabled {
+  color: $color-c;
+}
+.bg-skyblue {
+  .link, .link:link, .link:visited {
+    color: #fff;
+  }
+}
 
 
 
@@ -36,12 +50,11 @@ html, body {
   }
 }
 
-
-
-
-//=== 过渡动画
-
-.transition {
-  transition: 250ms cubic-bezier(0.1, .57, .1, 1);
-  transform: translateZ(0px);
+.disabled, [disabled], [class*=disabled] {
+  pointer-events: none;
 }
+
+
+
+
+

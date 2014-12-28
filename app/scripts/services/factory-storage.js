@@ -3,6 +3,7 @@ angular.module('cheApp')
   .factory('Storage', function () {
     // https://github.com/marcuswestin/store.js 支持跨域
     var Storage = window.localStorage,
+      CACHE = {},
       STORAGE_PREFIX = 'che_v1_';
 
     function call(fn) {
@@ -12,42 +13,58 @@ angular.module('cheApp')
     }
 
 
-    function set(key, val, millisecond) {
+    function set(key, val, millisecond, cache) {
+      if (typeof millisecond === 'boolean') {
+        cache = millisecond;
+        millisecond = 0;
+      }
+
+      var storageKey = STORAGE_PREFIX + key,
+        storageVal = [val, Date.now(), millisecond > 0 ? millisecond : 0];
+
+      if (cache) { CACHE[storageKey] = storageVal; }
+
       call(function() {
-        var deadTimestamp = millisecond ? Date.now() + millisecond : 0;
-        this[STORAGE_PREFIX + key] = JSON.stringify([val, deadTimestamp]);
+        this[storageKey] = JSON.stringify(storageVal);
       });
       return val;
     }
 
     /*
-     获取 key 对应的值，如果没有就执行 cb (不支持异步)
+     获取 key 对应的值，如果没有就执行 fallback (不支持异步)
      */
-    function get(key, cb) {
+    function get(key, fallback) {
       return call(function() {
-        var now = Date.now(),
-          storageKey = STORAGE_PREFIX + key,
-          item;
+        var storageKey = STORAGE_PREFIX + key,
+          storageVal;
 
         try {
-          item = JSON.parse(this[storageKey]);
+          storageVal = CACHE[storageKey] || JSON.parse(this[storageKey]);
         } catch(e) {}
 
-        if (!item || item.length !== 2 || item[1] && now > item[1]) {
-          var result,
-            cbType = typeof cb;
+        var invalid = !storageVal || storageVal.length !== 3,
+          expired = !invalid && storageVal[2] !== 0 && Date.now() > storageVal[1] + storageVal[2];
 
-          if (cbType === 'undefined') {
-            this.removeItem(storageKey);
-          } else {
-            result = cbType === 'function' ? cb() : cb;
-            set(key, result);
+        if (invalid || expired) {
+          var result = null,
+            cached = storageKey in CACHE;
+
+          switch (typeof fallback) {
+            case 'undefined':
+              del(key); break;
+            case 'function':
+              result = fallback();
+              set(key, result, expired ? storageVal[2] : 0, cached);
+              break;
+            default :
+              result = fallback;
+              set(key, result, expired ? storageVal[2] : 0, cached);
+              break;
           }
-
           return result;
         }
 
-        return item[0];
+        return storageVal[0];
       });
     }
 
@@ -55,9 +72,12 @@ angular.module('cheApp')
      删除 key 对应的值
      */
     function del(key) {
+      var storageKey = STORAGE_PREFIX + key;
+      delete CACHE[storageKey];
       call(function() {
-        this.removeItem(STORAGE_PREFIX + key);
+        this.removeItem(storageKey);
       });
+      return true;
     }
 
     /*
@@ -67,9 +87,12 @@ angular.module('cheApp')
       call(function() {
         var key, isSelfKey;
         for (key in this) {
-          isSelfKey = key.indexOf(STORAGE_PREFIX) === 0;
-          if (!(type === 'self' && !isSelfKey || type === 'other' && isSelfKey)) {
-            this.removeItem(key);
+          if (this.hasOwnProperty(key)) {
+            isSelfKey = key.indexOf(STORAGE_PREFIX) === 0;
+            if (!(type === 'self' && !isSelfKey || type === 'other' && isSelfKey)) {
+              delete CACHE[key];
+              this.removeItem(key);
+            }
           }
         }
       });

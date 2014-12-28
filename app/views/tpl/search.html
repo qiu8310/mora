@@ -1,0 +1,16 @@
+<form class="search bg-skyblue" ng-class="{'search--on-focus': isFocus, 'search--on-keyword': keyword}">
+  <div class="search__ui">
+    <div class="search__ui__wrap">
+      <i class="search__icon transition"></i>
+      <input class="search__input transition" ng-focus="focus()" ng-blur="blur()"
+             ng-model="keyword" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+             type="search" name="keyword" placeholder="" autocomplete="off" />
+      <button class="search__button transition text-hide" ng-click="search()" type="submit">搜索</button>
+    </div>
+  </div>
+  <div class="search__control">
+    <a ng-click="cancel()"
+       class="link search__control__link search__control__link--cancel">取消</a>
+    <a class="link search__control__link search__control__link--switch-city" href="#!/switchCity"><span class="text text-ellipsis">杭州</span></a>
+  </div>
+</form>

@@ -18,12 +18,16 @@ angular.module('cheApp')
   .constant('C', {
     app: {
       html5Mode: false,
-      hashPrefix: '!'
+      hashPrefix: '!',
+
+      // console.x(..., 'verbose:', ...)
+      // 如果 logVerbose 为 false，则 verbose 之后的数据是不会显示的
+      logVerbose: false,
+
+      searchHistoryLength: 10
     },
     res: {
-      uploader: 'http://mora.sinaapp.com/utils/uploader.php'
-    },
-    search: {
-      historyLength: 10
+      proxyUrl: 'http://mora.sinaapp.com/utils/proxy.php',
+      uploaderUrl: 'http://mora.sinaapp.com/utils/uploader.php'
     }
   });

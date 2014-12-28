@@ -1,0 +1,51 @@
+.page--my-favicon {
+
+  @include B(distance) {
+    @include size(54px, true, true);
+    background-color: map-get($colors, skyblue);
+    color: white;
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    padding: 12px;
+    line-height: 30px;
+
+    @include M(no-bus)  { background-color: map-get($colors, skyblue); line-height: 15px; }
+    @include M(no-line) { background-color: map-get($colors, gray); }
+    @include M(coming)  { background-color: map-get($colors, pink); line-height: 15px; }
+  }
+
+  @include bem-list-item {
+    height: 89px;
+    overflow: hidden;
+  }
+
+  @include bem-list-item-link {
+    @include M(line) {
+      display: block;
+      position: relative;
+      padding: 10px 0 12px 83px;
+      margin-right: 55px;
+
+      .distance {
+        @include position(absolute, 13px false false 14px);
+      }
+    }
+
+    @include M(fav) {
+      float: right;
+      padding: 16px 18px;
+      margin-top: -89px;
+      &::after {
+        display: block;
+        content: '';
+        @include sprite-2x(unstar);
+      }
+    }
+  }
+
+  .list__item--faved .list__item__link--fav::after {
+    @include sprite-2x(star);
+  }
+}

@@ -1,0 +1,36 @@
+<div class="page page--line-search">
+
+  <search data-handlers="searchHandlers"></search>
+
+  <div class="search-history transition-slow">
+    <ul class="list">
+      <li class="list__item" ng-repeat="item in searchHistory">
+        <a class="list__item__link fg-3" ng-click="setKeyword(item)">{{item}}</a>
+      </li>
+    </ul>
+    <div class="search-history__clear">
+      <a class="link" ng-click="clearSearchHistory()">清除历史记录</a>
+    </div>
+  </div>
+
+  <div class="search-result transition-slow">
+    <p class="search-result__loading"></p>
+    <ul class="list">
+      <li class="list__item">
+        <a class="list__item__link">
+          <label class="f-17 fg-3 lh-30">1 路</label>
+          <p class="f-13 fg-a">东真六 - 车公庆幸</p>
+        </a>
+      </li>
+      <li class="list__item">
+        <a class="list__item__link">
+          <label class="f-17 fg-3 lh-30">1 路</label>
+          <p class="f-13 fg-a">东真六 - 车公庆幸</p>
+        </a>
+      </li>
+    </ul>
+    <p class="search-result__none fg-6 text-center hidden">没有搜索到合适的线路</p>
+  </div>
+
+
+</div>

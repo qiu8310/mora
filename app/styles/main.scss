@@ -38,11 +38,28 @@
 
 
 
-.animated.speed-5 { animation-duration: .5s; }
-.animated.speed-4 { animation-duration: .4s; }
-.animated.speed-3 { animation-duration: .3s; }
-.animated.speed-2 { animation-duration: .2s; }
-.animated.speed-1 { animation-duration: .1s; }
+.animate.speed-5 { animation-duration: .5s; }
+.animate.speed-4 { animation-duration: .4s; }
+.animate.speed-3 { animation-duration: .3s; }
+.animate.speed-2 { animation-duration: .2s; }
+.animate.speed-1 { animation-duration: .1s; }
 
+.animate {
+  animation-duration: .15s;
+  animation-fill-mode: both;
+}
+@keyframes fade-out {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
 
+//=== 过渡动画
+.transition {
+  transition: all .15s linear;
+  transform: translateZ(0px);
+}
+.transition-slow {
+  transition: all .35s linear;
+  transform: translateZ(0px);
+}
 

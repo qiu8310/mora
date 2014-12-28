@@ -1,0 +1,82 @@
+@include B(card) {
+
+  @include E(line) {
+    display: block;
+    position: relative;
+    padding: 14px 0 14px 74px;
+    border-top: $border-style;
+    border-bottom: $border-style;
+    height: 78px;
+
+    &::before, &::after {
+      content: '';
+      display: block;
+      position: absolute;
+    }
+
+    &::before {
+      @include size(48px, false, true);
+      background-color: map-get($colors, skyblue);
+      top: 14px;
+      left: 14px;
+    }
+
+    &::after {
+      @include sprite-2x(bus);
+      top: 26px;
+      left: 29px;
+    }
+  }
+
+  @include E(direction) {
+    p {
+      padding-left: 14px;
+    }
+    .link {
+      float: right;
+      display: inline-block;
+      padding: 0 14px;
+    }
+  }
+}
+
+@include B(station-group) {
+  @include bem-list-item {
+    border-bottom: $border-style;
+    line-height: 42px;
+  }
+
+  @include bem-list-item-link {
+    display: block;
+    position: relative;
+    height: 42px;
+    padding: 0 14px;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      @include sprite-2x(forward);
+      top: 15px;
+      right: 14px;
+    }
+
+    .distance {
+      margin-right: 20px;
+//      &::before {
+//        content: '';
+//        margin-right: 4px;
+//        @include sprite-2x(forward);
+//        display: inline-block;
+//      }
+    }
+  }
+
+
+  @include E(title) {
+    height: 33px;
+    line-height: 37px;
+    margin: 0;
+    text-indent: 14px;
+  }
+}

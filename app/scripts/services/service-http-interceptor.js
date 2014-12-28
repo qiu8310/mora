@@ -1,48 +1,32 @@
 angular.module('cheApp')
-  .service('HttpInterceptor', function ($q, $rootScope, Auth, Env) {
+  .service('HttpInterceptor', function ($q, $rootScope, Auth, Env, C) {
 
-    var API_BASE = Env.isTest ? 'http://staging-neo.llsapp.com/' : 'http://crm.llsapp.com/',
+    var API_BASE = Env.isTest ? 'http://web.chelaile.net.cn/datasource' : 'http://web.chelaile.net.cn/h5',
       PREFIX = 'api';
 
     return {
-
       // requestError: function(rejection) {}
 
       request: function(request) {
         // 放行非 api 开头的请求，主要是请求一些模板类的文件
-        var url = request.url, identifier, suffix;
+        var url = request.url,
+          params;
+
         if (url.indexOf(PREFIX) !== 0) {
           return request;
         }
 
-        identifier = url.split('/')[1];
-        suffix = url.substr((PREFIX + '/' + identifier).length);
-        switch (identifier) {
-          case 'login':
-          case 'logout':
-            url = url.replace(PREFIX + '/' + identifier, 'ops/sessions');
-            break;
-          case 'reply':
-            url = 'ops/forum_replies' + suffix; break;
-          case 'forum':
-            url = 'ops/forum_topics' + suffix; break;
-          case 'node':
-            url = 'ops/forum_nodes' + suffix; break;
-          case 'team':
-            url = 'ops/study_groups' + suffix; break;
-          case 'stream':
-            url = 'ops/timeline' + suffix; break;
-          default:
-            url = 'ops/' + identifier + suffix;
-        }
+        url = API_BASE + url.substr(PREFIX.length);
+        params = {s: 'h5', v: '1.0.0'};
+        params.src = Env.Platform.isWechat ? 'wechat' : Env.Platform.isAlipay ? 'alipay' : 'browser';
+        params.userId = Auth.get('uid');
 
-        request.url = API_BASE + url;
+        url = ng.appendQuery(url, params);
 
         // 把 token 写入到 header 中
-        var token = Auth.getToken();
+        //var token = Auth.getToken();
         //request.headers[['Mora-Authenticate']] = 'Basic token="' + token + '"';
-        token = token ? {token: token} : {};
-
+        //token = token ? {token: token} : {};
 
         // 从驼峰式的参数变成下划线式的，与后台风格统一
         //request.params = _.assign(_.underscoreCase(request.params) || {}, token);
@@ -50,36 +34,38 @@ angular.module('cheApp')
         //request.params = _.assign(request.params || {}, token);
         //request.data   = _.assign(request.data || {}, token);
 
+        request.url = Env.isLocal ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
+
+        ng.info('request', url, request.data || {}, 'verbose:', request);
+
         return request;
       },
 
 
       response: function (response) {
+        var url = response.config.url;
+        if (Env.isLocal) { url = ng.parseQuery(url)._url || url; }
 
-        if (response.config.url.indexOf(API_BASE + 'ops/') !== 0) {
-          return response;
-        }
-
+        if (url.indexOf(API_BASE) !== 0) { return response; }
 
         // 将下划线式的参数变成驼峰式的，与前台风格统一
-        console.info(response.config.url.replace(API_BASE + 'ops/', ''), response.data);
         //response.data = _.camelCase(response.data);
 
         // 保存 token 到本地
         //var headers = response.headers();
         //Auth.setToken(headers['mora-authenticate']);
 
-        if (response.data.token) {
-          Auth.setToken(response.data.token);
-        }
+        //if (response.data.token) {
+        //  Auth.setToken(response.data.token);
+        //}
 
-
+        ng.info('response', url, response.data, 'verbose:', response);
         return response;
       },
 
 
       responseError: function(response) {
-        if (response && response.config && response.config.url.indexOf('?ignoreError') < 0) {
+        if (response.config.url.indexOf('ignoreError') < 0) {
           if (response.status === 401) {
             $rootScope.$broadcast('login:required');
           } else if (response.status === 403) {

@@ -41,6 +41,10 @@ $color-a: #aaa;
 $color-c: #ccc;
 
 $border-color: $color-c;
+$border-style: 1px solid $border-color;
+
+.bt { border-top: $border-style; }
+.bb { border-bottom: $border-style; }
 
 // my defined
 $colors: (
@@ -51,17 +55,25 @@ $colors: (
   pink: #f76caf,
   gray: #aaa
 );
+
 @each $key, $val in $colors {
   .bg-#{$key} {
-    background-color: $val !important;
+    background-color: $val;
   }
   .fg-#{$key} {
-    color: $val !important;
+    color: $val;
   }
 }
 
-
-
+@each $num in (3, 6, 9, a, c) {
+  $_num_color: unquote('#' + $num + $num + $num);
+  .bg-#{$num} {
+    background-color: $_num_color;
+  }
+  .fg-#{$num} {
+    color: $_num_color;
+  }
+}
 
 
 

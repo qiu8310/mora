@@ -21,6 +21,7 @@
   "maxlen": 120,
   "globals": {
     "angular": false,
+    "ng": false,
     "_": false,
     "Kinetic": false
   }

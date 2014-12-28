@@ -1,4 +1,66 @@
 @include B(city-group) {
+  $text-indent: 12px;
 
+  @include E(title) {
+    margin: 0;
+    height: 36px;
+    line-height: 40px;
+    text-indent: $text-indent;
+  }
+
+  @include E(list) {
+    background: #fff;
+    border-bottom: $border-style;
+    border-top: $border-style;
+  }
+
+
+  // BEM list 组件
+  @include bem-list-item {
+    border-bottom: $border-style;
+    line-height: 48px;
+    display: inline-block;
+    width: 33.3333333%;
+    text-align: center;
+
+    &.last-row,
+    &:nth-child(3n + 1):nth-last-child(1),
+    &:nth-child(3n + 1):nth-last-child(2),
+    &:nth-child(3n + 1):nth-last-child(3) {
+      border-bottom: none;
+      & ~ li {
+        border-bottom: none;
+      }
+    }
+  }
+
+  @include bem-list-active-item {
+    color: map-get($colors, skyblue);
+
+    @include bem-list-item-link-text {
+      position: relative;
+      display: inline-block;
+
+      &::before {
+        content: '';
+        @include position(absolute, 19px false false -20px);
+        @include sprite-2x(check);
+      }
+    }
+
+  }
+
+  @include bem-list-item-link {
+    @include size(100%, block);
+  }
+
+  @include M(gps) {
+    @include bem-list-disabled-item {
+      color: $color-a;
+      width: 100%;
+      text-align: left;
+      text-indent: $text-indent;
+    }
+  }
 }
 

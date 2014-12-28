@@ -1,24 +1,23 @@
 angular.module('cheApp')
   .service('Auth', function Auth(Storage) {
 
-    var _token;
+    var AUTH_KEY = 'sjk-t';
 
-    this.setToken = function(token) {
-      _token = token;
-      return Storage.set('token', token);
+    this.set = function(data) {
+      return Storage.set(AUTH_KEY, data, true);
     };
 
-    this.hasToken = function() {
-      return !! this.getToken();
+    this.has = function(key) {
+      return !!this.get(key);
     };
 
-    this.getToken = function() {
-      return _token || Storage.get('token');
+    this.get = function(key) {
+      var auth = Storage.get(AUTH_KEY);
+      return ng.isUndefined(key) ? auth : (auth && (key in auth)) ? auth[key] : null;
     };
 
-    this.clearToken = function() {
-      _token = null;
-      Storage.del('token');
+    this.clear = function() {
+      return Storage.del(AUTH_KEY);
     };
 
   });

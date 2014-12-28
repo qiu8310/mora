@@ -117,3 +117,12 @@ button, .button, .btn {
   -ms-user-select: none;
   user-select: none;
 }
+
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+input[type=search] {
+  -webkit-appearance: none;
+}

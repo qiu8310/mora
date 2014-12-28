@@ -57,10 +57,6 @@ example:
 */
 
 
-
-$element-separator: "__";
-$modifier-separator: "--";
-
 @function bem-selector-block($selector) {
   $selector: inspect($selector); //cast to string
   $selector: str-slice($selector, 2, -2); //remove brackets
@@ -81,36 +77,45 @@ $modifier-separator: "--";
   @return if($index, str-slice($selector, 1, $index - 1), $selector);
 }
 
+@function bem-group-append($items, $separator) {
+  $append: '';
+  @each $item in $items {
+    $append: $append + $separator + $item;
+  }
+  @return unquote($append);
+}
+
 @mixin B($block) {
   .#{$block} {
     @content;
   }
 }
-@mixin E($element) {
+@mixin E($elements...) {
   @at-root {
-    #{&}#{$element-separator + $element} {
+    #{&}#{bem-group-append($elements, $element-separator)} {
       @content;
     }
   }
 }
-@mixin M($modifier) {
+@mixin M($modifiers...) {
+
   @at-root {
-    #{&}#{$modifier-separator + $modifier} {
+    #{&}#{bem-group-append($modifiers, $modifier-separator)} {
       @content;
     }
   }
 }
 
-@mixin BE($element) {
+@mixin BE($elements...) {
   $block: bem-selector-block(&);
-  & #{$block + $element-separator + $element} {
+  & #{$block + bem-group-append($elements, $element-separator)} {
     @content;
   }
 }
 
-@mixin BM($modifier) {
+@mixin BM($modifiers...) {
   $block: bem-selector-block(&);
-  & #{$block + $modifier-separator + $modifier} {
+  & #{$block + bem-group-append($modifiers, $modifier-separator)} {
     @content;
   }
 }
