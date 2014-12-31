@@ -49,6 +49,8 @@
     if (phase === '$apply' || phase === '$digest') {
       if (fn && (typeof fn === 'function')) {
         fn();
+      } else if (typeof fn === 'string')) {
+        this.$eval(fn);
       }
     } else {
       this.$apply(fn);
