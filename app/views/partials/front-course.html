@@ -5,7 +5,7 @@
     <div class="col-sm-4"><label>Banner图片</label></div>
     <div class="col-sm-3"><label>操作</label></div>
   </div>
-  <ul class="form-list-body" as-sortable="sortableOptions" ng-model="list">
+  <ul class="form-list-body" as-sortable ng-model="list">
     <li class="row" ng-repeat="item in list" as-sortable-item="list[$index]">
       <div class="col-sm-1" as-sortable-item-handle><i class="fa fa-arrows"></i>#{{$index + 1}}</div>
       <div class="col-sm-4 break-word">
@@ -19,7 +19,8 @@
       </div></div>
 
       <div class="col-sm-3">
-        <a ng-show="list.length >= $index" class="btn btn-info btn-sm" ng-click="editBanner(list[$index])">编辑课程</a>
+        <a class="btn btn-info btn-xs" ng-click="editBanner(list[$index])">编辑</a>
+        <a class="btn btn-danger btn-xs" ng-click="reset($index)">重置</a>
       </div>
     </li>
   </ul>

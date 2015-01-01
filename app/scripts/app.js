@@ -11,7 +11,6 @@ angular
       return string.charAt(0).toUpperCase() + string.substr(1);
     }});
 
-
     function work(obj, deep, processFn) {
       if (deep === undefined) {
         deep = true;
@@ -71,7 +70,6 @@ angular
         }
       };
     }});
-
 
     (function registerAsyncClickToLoDash() {
       function isTextNode(el) {
@@ -162,7 +160,6 @@ angular
       }});
 
     })();
-
 
     return _;
   })())
@@ -276,7 +273,6 @@ angular
           noNeedLogin: true
         }
       })
-
       .state('home', {
         url: '/crm',
         templateUrl: 'views/home.html',

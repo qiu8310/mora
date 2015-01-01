@@ -31,27 +31,6 @@ angular.module('moraApp')
       }
     }
 
-
-    $scope.$on('$stateChangeSuccess', function(e, current, params, prev, prevParams) {
-      if ((!redirect || !redirect[2]) && prev.name) {
-        redirect = [prev.name, prevParams];
-      }
-
-      if (current.name === 'login' && Auth.hasToken()) {
-        back();
-      }
-    });
-    $scope.$on('login:success', back);
-
-
-    // 登出
-    $scope.logout = function() {
-      Auth.clearToken();
-      $state.go('index');
-    };
-
-
-
     // 分页参数
     $scope.pager = {
       page: 1,
@@ -61,8 +40,25 @@ angular.module('moraApp')
     };
 
 
+    $scope.$on('$stateChangeSuccess', function(e, current, params, prev, prevParams) {
+      if ((!redirect || !redirect[2]) && prev.name) {
+        redirect = [prev.name, prevParams];
+      }
+
+      if (current.name === 'login' && Auth.hasToken()) {
+        back();
+      }
+
+      $scope.pager.page = 1;
+    });
+    $scope.$on('login:success', back);
 
 
+    // 登出
+    $scope.logout = function() {
+      Auth.clearToken();
+      $state.go('index');
+    };
 
 
     // layout 相关的配置

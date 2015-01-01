@@ -12,9 +12,15 @@
     </div>
     <table class="table thread-list">
       <tr class="thread" ng-repeat="thread in list">
-        <td><label class="no-select"><input type="checkbox" ng-checked="thread.checked"/></label></td>
+        <td>
+          <label class="no-select">
+            <!--<input type="checkbox" ng-checked="thread.checked"/>-->
+            <a class="fa fa-edit quick-edit" style="margin: 12px 0 0;" ng-click="editThread(thread)">编辑</a>
+          </label>
+        </td>
         <td>
           <div class="btn-group item__status">
+            <label class="btn btn-primary fa fa-hand-o-left" async-click="indexThread(thread)" ng-class="{active: thread.isHome}">首页</label>
             <label class="btn btn-primary fa fa-thumbs-up" async-click="recommendThread(thread)" ng-class="{active: thread.isRecommended}">推荐</label>
             <label class="btn btn-primary fa fa-angellist" async-click="essenceThread(thread)" ng-class="{active: thread.isEssential}">精华</label>
             <label class="btn btn-primary fa fa-fire" async-click="hotThread(thread)" ng-class="{active: thread.isHot}">热门</label>
@@ -23,16 +29,15 @@
 
           <h3 class="title text-ellipsis">
             <a ui-sref="home.forumDetail({id: thread.id})">{{thread.title}}</a>
-            <a class="fa fa-edit quick-edit" ng-click="editThread(thread)">编辑</a>
           </h3>
           <div class="detail" fade>
             <div class="detail-content" post="thread"></div>
-            <label class="label label-info">回复 {{thread.repliesCount}} 条</label>
           </div>
         </td>
-        <td width="200px">
+        <td width="200px" class="text-center">
           <a class="center-block block" user="thread" data-avatar></a>
-          <p class="text-center">Posted at {{thread.createdAt | time}}</p>
+          <p>Posted at {{thread.createdAt | time}}</p>
+          <label class="label label-info">回复 {{thread.repliesCount}} 条</label>
         </td>
       </tr>
     </table>

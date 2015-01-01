@@ -181,13 +181,13 @@ angular.module('moraApp')
     $scope.setPublishAtNow = function() {
       var now = _.now();
       now -= now % 3600000;
-      stream.publishAt = now;
-      stream.publishAtFormat = $filter('date')(now, 'yyyy/MM/dd HH:mm');
+      stream.pubtime = now;
+      stream.pubtimeFormat = $filter('date')(now, 'yyyy/MM/dd HH:mm');
     };
 
 
 
-    if (!stream.publishAt) {
+    if (!stream.pubtime) {
       $scope.setPublishAtNow();
     }
     stream.data = stream.data || [];
@@ -195,8 +195,8 @@ angular.module('moraApp')
 
     function cb(data){
       delete stream.isCreate;
-      if (data && data.id) {
-        stream.cardId = data.id;
+      if (data && (data.id || data.ids)) {
+        stream.cardId = data.id || data.ids[0];
       }
       console.info('Save stream success:', stream);
       $modalInstance.close(stream);
@@ -204,9 +204,9 @@ angular.module('moraApp')
 
     $scope.save = function() {
       if (stream.isCreate) {
-        $http.post('api/stream', {card: getStreamCard()}).success(cb);
+        $http.post('api/stream/', {cards: getStreamCard()}).success(cb);
       } else {
-        $http.put('api/stream/' + stream.cardId, {card: getStreamCard()}).success(cb);
+        $http.put('api/stream/', {cards: getStreamCard()}).success(cb);
       }
     };
 

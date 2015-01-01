@@ -72,10 +72,10 @@
       </div>
       <div class="radio-btn-group-types type-{{publishType}}">
         <div class="col-sm-5 no-padding-left block">
-          <div style="line-height: 34px">{{stream.publishAt|date:'yyyy/MM/dd HH:mm'}}</div>
+          <div style="line-height: 34px">{{stream.pubtime|date:'yyyy/MM/dd HH:mm'}}</div>
         </div>
         <div class="col-sm-6 type-b no-padding-left">
-          <input class="form-control" type="datetime" date-format="yyyy/MM/dd HH:mm" ng-model="stream.publishAtFormat">
+          <input class="form-control" type="datetime" date-format="yyyy/MM/dd HH:mm" ng-model="stream.pubtimeFormat">
         </div>
       </div>
     </form-control>

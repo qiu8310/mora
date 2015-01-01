@@ -123,6 +123,11 @@ angular.module('moraApp')
             key: 'hot',
             title: '热门贴',
             templateUrl: 'forum-hot.html'
+          },
+          {
+            key: 'index',
+            title: '首页帖子',
+            templateUrl: 'forum-index.html'
           }
         ]
       },

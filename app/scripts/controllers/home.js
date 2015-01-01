@@ -59,18 +59,6 @@ angular.module('moraApp')
     };
 
 
-    $rootScope.editThread = function(thread) {
-      return $modal.open({
-        templateUrl: 'views/incs/modal-thread-editor.html',
-        controller: 'ThreadEditorCtrl',
-        backdrop: 'static',
-        windowClass: 'thread-editor-modal',
-        resolve: {
-          ThreadData: function() { return thread; }
-        }
-      }).result;
-    };
-
     $rootScope.createBanner = function(type, list, commit) {
       commit = _.isUndefined(commit) ? true : !!commit;
 
@@ -82,24 +70,23 @@ angular.module('moraApp')
       });
     };
 
-    $rootScope.editBanner = function(banner, list, index) {
+    $rootScope.editBanner = function(banner) {
       return $modal.open({
         templateUrl: 'views/incs/modal-banner-editor.html',
         controller: 'BannerEditorCtrl',
         backdrop: 'static',
         windowClass: 'banner-editor-modal',
         resolve: {
-          BannerData: function() { return banner; }
+          BannerData: function() { return _.cloneDeep(banner); }
         }
       }).result.then(function(data) {
-          if (list && index >= 0) {
-            list[index] = data;
-          }
+          _.assign(banner, data);
           return data;
         });
     };
 
 
+    var COVER = 'cover';
     var _FtB = $rootScope.frontCardToBack = function(card, batch) {
       if (batch) {
         return _.map(card, function(item) { return _FtB(item); });
@@ -147,98 +134,84 @@ angular.module('moraApp')
         case STREAM_TYPE.SMALL_BANNER:
           result = {
             type: 'banner',
-            cards: _.map(datas, function(banner) {
-              return _FtB(banner);
-            })
+            data: {
+              cards: _.map(datas, function(banner) {
+                return _FtB(banner);
+              })
+            }
           }; break;
         default :
           throw new Error('不支持数据类型');
       }
 
+      if (card.pubtime) { result.pubtime = Math.round((card.pubtime - 0)/1000); }
+      if (card.id) { result.id = card.id; }
+      result[COVER] = card.img;
       return result;
     };
 
     var _BtF = $rootScope.backCardToFront = function(card, isBanner) {
-      var STREAM_TYPE = C.constants.STREAM_TYPE,
-        BANNER_TYPE = C.constants.BANNER_TYPE, data;
+      var STREAM_TYPE = C.constants.STREAM_TYPE, result,
+        BANNER_TYPE = C.constants.BANNER_TYPE, type, data;
 
       // publishedAt, id
       switch (card.type) {
         case 'study_group_set':
+          type = STREAM_TYPE.TEAM_SET;
+          data = _.map(card.data.groups, function(d) {
+            return {
+              type: BANNER_TYPE.TEAM,
+              data: d
+            };
+          });
+          break;
         case 'study_group':
-          data = {
-            type: STREAM_TYPE.TEAM_SET,
-            data: _.map(card.groups, function(o) {
-              return {
-                type: BANNER_TYPE.TEAM,
-                data: o
-              };
-            })
-          };
-          break;
+          type = BANNER_TYPE.TEAM; break;
         case 'forum_topic':
-          data = {type: STREAM_TYPE.THREAD, data: card.topic};
-          break;
+          type = BANNER_TYPE.THREAD; break;
         case 'course_set':
+          type = STREAM_TYPE.COURSE_SET;
+          data = _.map(card.data.courses, function(d) {
+            return {
+              type: BANNER_TYPE.COURSE,
+              data: d
+            };
+          });
+          break;
         case 'course':
-          data = {
-            type: STREAM_TYPE.COURSE_SET,
-            data: _.map(card.courses, function(o) {
-              return {
-                type: BANNER_TYPE.COURSE,
-                data: o
-              };
-            })
-          };
-          break;
-
+          type = BANNER_TYPE.COURSE; break;
         case 'banner':
-          data = {
-            type: STREAM_TYPE.SMALL_BANNER,
-            data: _.map(card.items, function(o) {
-              var item;
-              switch (o.type) {
-                case 'huo_dong':
-                  item = {
-                    type: BANNER_TYPE.ACTIVITY,
-                    data: {
-                      title: o.name,
-                      url: o.url
-                    }}; break;
-                case 'forum_topic':
-                  item = {
-                    type: BANNER_TYPE.THREAD,
-                    data: o.topic
-                  };break;
-                case 'study_group_set':
-                  item = {
-                    type: BANNER_TYPE.TEAM,
-                    data: o.groups.pop()
-                  };break;
-                case 'course_set':
-                  item = {
-                    type: BANNER_TYPE.COURSE,
-                    data: o.courses.pop()
-                  };break;
-                default : throw new Error('不支持数据类型' + o.type);
-              }
-              item.img = o.coverUrl;
-              return item;
-            })
-          };
+          type = STREAM_TYPE.SMALL_BANNER;
+          data = _.map(card.data.cards, function(d) {
+            return _BtF(d);
+          });
           break;
-
-        // bad data
-        case 'huo_dong': data = {}; break;
+        case 'huo_dong':
+          data = {title: card.data.name, url: card.data.url};
+          type = BANNER_TYPE.ACTIVITY; break;
         default : throw new Error('不支持数据类型' + card.type);
       }
 
-      //data.cardId = card.id;
-      //data.publishAt = card.publishedAt * 1000;
+      result = {id: card.id, type: type, data: data || card.data};
+      if (card[COVER]) { result.img = card[COVER]; }
 
-      return isBanner ? data.data : data;
+      return result;
 
     };
+
+
+    $rootScope.editThread = function(thread) {
+      return $modal.open({
+        templateUrl: 'views/incs/modal-thread-editor.html',
+        controller: 'ThreadEditorCtrl',
+        backdrop: 'static',
+        windowClass: 'thread-editor-modal',
+        resolve: {
+          ThreadData: function() { return thread; }
+        }
+      }).result;
+    };
+
 
 
     $scope.hotThread = function(thread) {
@@ -255,6 +228,12 @@ angular.module('moraApp')
       } else {
         return $http.delete('api/forum/' + thread.id).success(cb);
       }
+    };
+
+    $scope.indexThread = function(thread) {
+      return $http[thread.isHome ? 'delete' : 'post']('api/forum/' + thread.id + '/home/').success(function() {
+        thread.isHome = !thread.isHome;
+      });
     };
 
     $scope.recommendThread = function(thread) {
