@@ -5,6 +5,8 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -ms-tap-highlight-color: rgba(0, 0, 0, 0);
+  tap-highlight-color: rgba(0, 0, 0, 0);
 
   // In addition in IE10, also add this CSS rule to remove the ghost click delay
   // http://ariatemplates.com/blog/2014/05/ghost-clicks-in-mobile-browsers/
@@ -13,7 +15,7 @@ html {
 }
 
 body {
-  padding: 0 !important;
+  padding: 0;
   margin-right: auto;
   margin-left: auto;
   overflow: hidden;
@@ -26,6 +28,16 @@ html, body {
   //background: image-url("bg.png");
 }
 
+body.has-footer {
+  padding-bottom: $footer-height;
+}
+
+
+.link, .btn {
+  cursor: pointer;
+}
+
+
 .link, .link:link, .link:visited {
   color: map-get($colors, skyblue);
 }
@@ -35,13 +47,32 @@ html, body {
 .link.disabled {
   color: $color-c;
 }
+
 .bg-skyblue {
   .link, .link:link, .link:visited {
     color: #fff;
   }
 }
 
+.btn {
+  display: inline-block;
+  background-color: map-get($colors, skyblue);
+  font-size: 14px;
+  color: white;
+  border-radius: 2px;
+}
+.btn:active, .btn:hover {
+  opacity: .8;
+}
+.btn.disabled {
+  background-color: #E5E5EA;
+  color: $color-c;
+  opacity: .8;
+}
 
+.ng-click-active {
+  opacity: .8;
+}
 
 .touchable {
   transition: .1s;
@@ -51,7 +82,7 @@ html, body {
 }
 
 .disabled, [disabled], [class*=disabled] {
-  pointer-events: none;
+  pointer-events: none !important;
 }
 
 

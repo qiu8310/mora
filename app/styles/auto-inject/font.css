@@ -18,6 +18,9 @@
 .mpr0 {margin-right: 0; padding-right: 0;}
 
 
+.f-bold { font-weight: 700; }
+.f-bolder { font-weight: 900; }
+
 /* font size */
 .f-10 { font-size: 10px; }
 .f-11 { font-size: 11px; }
@@ -43,6 +46,11 @@
 
 
 /* line height */
+.lh-15 { line-height: 15px; }
+.lh-16 { line-height: 16px; }
+.lh-17 { line-height: 17px; }
+.lh-18 { line-height: 18px; }
+.lh-19 { line-height: 19px; }
 .lh-20 { line-height: 20px; }
 .lh-21 { line-height: 21px; }
 .lh-22 { line-height: 22px; }

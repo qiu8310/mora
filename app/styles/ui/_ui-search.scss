@@ -1,7 +1,4 @@
 @include B(search){
-  @include size(100% 50px);
-  overflow: hidden;
-
   @include E(ui) {
     padding: 9px 78px 9px 12px;
     @include E(wrap) {
@@ -112,4 +109,40 @@
       opacity: 1;
     }
   }
+}
+
+@include bem-search-form {
+  @include size(100% 50px);
+  overflow: hidden;
+}
+
+@include bem-search-history {
+
+  @include bem-list-item-link {
+    line-height: 41px;
+    padding-left: 14px;
+  }
+
+  @include E(clear) {
+    height: 42px;
+    text-align: center;
+    .link {
+      display: inline-block;
+      padding: 10px 40px;
+    }
+  }
+}
+
+
+.search__history { opacity: 0; height: 0; };
+.search__result  { opacity: 0; height: 0; };
+.page--line-list .search__result { opacity: 1; height: auto; }
+
+.search--on-focus {
+  .search__history { opacity: 1; height: auto; };
+  .search__result  { opacity: 0; height: 0; };
+}
+.search--on-keyword {
+  .search__history { opacity: 0; height: 0; };
+  .search__result  { opacity: 1; height: auto; };
 }

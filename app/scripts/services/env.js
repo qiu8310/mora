@@ -1,6 +1,7 @@
-angular.module('cheApp').service('Env', function (C) {
+angular.module('cheApp').service('Env', function (C, Storage, $window) {
 
-  var Env = this,
+  var doc = $window.document,
+    Env = this,
     host = location.host,
     params;
 
@@ -38,6 +39,7 @@ angular.module('cheApp').service('Env', function (C) {
 
   ng.forEach('log info error debug'.split(' '), function(key) {
     if (DEBUG && (DEBUG === 'all' || DEBUG === key)) {
+      console['_' + key] = console[key]; // backup old method
       console[key] = debug(console[key]);
     } else {
       console[key] = nope;
@@ -70,6 +72,19 @@ angular.module('cheApp').service('Env', function (C) {
   Env.Mobile = Mobile;
   Env.Platform = Platform;
 
+
   Env.now = function() { return Date.now(); };
+
+
+  Env.setCurrentCity = function(city) {
+    Env.cityId = city.id;
+    Env.cityName = city.name;
+    return Storage.set('activeCity', {id: city.id, name: city.name}, true);
+  };
+  Env.getCurrentCity = function() { return Storage.get('activeCity'); };
+
+  var currentCity = Env.getCurrentCity();
+  Env.cityId = currentCity && currentCity.id;
+  Env.cityName = currentCity && currentCity.name;
 
 });

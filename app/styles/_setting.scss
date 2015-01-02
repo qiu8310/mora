@@ -28,8 +28,8 @@ $modifier-separator: "--";
 
 
 //== user defined
-
+$footer-height: 59px;
 $z-indexes: (
-  header: 905,
-  footer: 904
+  header: 100,
+  footer: 200
 )

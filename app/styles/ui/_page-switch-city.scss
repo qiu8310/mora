@@ -36,6 +36,7 @@
 
   @include bem-list-active-item {
     color: map-get($colors, skyblue);
+    pointer-events: none;
 
     @include bem-list-item-link-text {
       position: relative;

@@ -1,4 +1,4 @@
-.page--my-favicon {
+.page--line-list {
 
   @include B(distance) {
     @include size(54px, true, true);
@@ -16,31 +16,33 @@
     @include M(coming)  { background-color: map-get($colors, pink); line-height: 15px; }
   }
 
-  @include bem-list-item {
-    height: 89px;
-    overflow: hidden;
-  }
-
-  @include bem-list-item-link {
-    @include M(line) {
-      display: block;
-      position: relative;
-      padding: 10px 0 12px 83px;
-      margin-right: 55px;
-
-      .distance {
-        @include position(absolute, 13px false false 14px);
-      }
+  .search__result {
+    @include bem-list-item {
+      height: 89px;
+      overflow: hidden;
     }
 
-    @include M(fav) {
-      float: right;
-      padding: 16px 18px;
-      margin-top: -89px;
-      &::after {
+    @include bem-list-item-link {
+      @include M(line) {
         display: block;
-        content: '';
-        @include sprite-2x(unstar);
+        position: relative;
+        padding: 10px 0 12px 83px;
+        margin-right: 55px;
+
+        .distance {
+          @include position(absolute, 13px false false 14px);
+        }
+      }
+
+      @include M(fav) {
+        float: right;
+        padding: 16px 18px;
+        margin-top: -89px;
+        &::after {
+          display: block;
+          content: '';
+          @include sprite-2x(unstar);
+        }
       }
     }
   }

@@ -4,7 +4,7 @@
   <head>
 
     <meta charset="utf-8">
-    <title>测试</title>
+    <title>车来了 - 最精准的实时公交App</title>
     <meta name="apple-mobile-web-app-title" content="车来了">
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -45,12 +45,26 @@
     <base href="/">
 
   </head>
-  <body ng-app="cheApp" ng-controller="RootCtrl" class="{{ layoutClasses }}">
+  <body ng-app="cheApp" ng-controller="RootCtrl" ng-class="{'has-footer': !hideFooter, 'has-header': showHeader}">
+
+    <header class="header bg-black">
+      <h1 class="header__title fg-white f-17"></h1>
+      <a ng-click="back()" ng-hide="isMainPage" class="header__back link text-hide">返回</a>
+    </header>
 
     <!-- Add your site or application content here -->
     <div class="view" ng-view autoscroll></div>
 
-
+    <footer class="footer">
+      <div class="footer__left">
+        <h3 class="footer__title f-16 lh-24">车来了</h3>
+        <p class="footer__desc f-13 lh-16">最精准的实时公交应用</p>
+      </div>
+      <div class="footer__right">
+        <a ng-href="{{downloadUrl}}" class="btn">立即下载</a>
+        <a class="footer__closer text-hide" ng-click="closeFooter()">关闭</a>
+      </div>
+    </footer>
     <!--
       TODO 一个比较全的 analytics 工具
       https://segment.com/docs/libraries/analytics.js/quickstart/

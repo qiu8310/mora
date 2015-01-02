@@ -1,0 +1,87 @@
+@include B(header) {
+  overflow: hidden;
+  display: none;
+
+  @include root-modifier('.has-header') {
+    display: block;
+  }
+
+  @include E(title) {
+    margin: 0;
+    @include size(100% 49px, block);
+    line-height: 49px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  @include E(back) {
+    @include size(49px, block);
+    float: left;
+    margin-top: -49px;
+
+    &::after {
+      content: '';
+      display: block;
+      margin: 14px 0 0 14px;
+      @include sprite-2x(back);
+
+    }
+  }
+}
+
+
+@include B(footer) {
+  transition: all .35s ease-in;
+  transition-delay: 0s;
+
+  position: relative;
+  overflow: hidden;
+  @include size(100% 0, block);
+  @include z-index(footer);
+  @include position(fixed, false 0 0 0);
+  background-color: rgba(0, 0, 0, .85);
+  border-top: $border-style;
+  color: #f2f2f2;
+
+  @include root-modifier('.has-footer') {
+    transition-delay: 1s;
+    height: $footer-height;
+  }
+
+  @include E(left) {
+    position: relative;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    padding-left: 62px;
+    &::before {
+      content: '';
+      @include sprite(logo, 44px);
+      @include position(absolute, 7px false false 12px);
+    }
+  }
+  @include E(right) {
+    @include position(absolute, 14px 0 false false);
+    z-index: 2;
+
+    .btn {
+      width: 80px;
+      line-height: 30px;
+      text-align: center;
+    }
+  }
+
+  @include E(closer) {
+    @include size(34px 30px, inline-block);
+    vertical-align: top;
+    &::after {
+      content: '';
+      margin: 10px 0 0 12px;
+      @include sprite-2x(close);
+    }
+  }
+
+  @include E(title) {
+    margin: 8px 0 0 0;
+  }
+}

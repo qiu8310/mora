@@ -30,23 +30,41 @@ angular
     $routeProvider
       .when('/switchCity', {
         controller: 'SwitchCityCtrl',
-        templateUrl: 'views/switchCity.html'
+        templateUrl: 'views/switchCity.html',
+        data: {
+          title: '切换城市'
+        }
       })
       .when('/lineSearch', {
         controller: 'LineSearchCtrl',
-        templateUrl: 'views/lineSearch.html'
+        templateUrl: 'views/lineSearch.html',
+        data: {
+          title: '线路查询'
+        }
       })
       .when('/choseStation', {
         controller: 'ChoseStationCtrl',
-        templateUrl: 'views/choseStation.html'
+        templateUrl: 'views/choseStation.html',
+        data: {
+          title: '选择车站'
+        }
       })
       .when('/myFavicon', {
         controller: 'MyFaviconCtrl',
-        templateUrl: 'views/myFavicon.html'
+        templateUrl: 'views/lineList.html',
+        data: {
+          title: '我的收藏'
+        }
       })
-      .when('/lineAround', {})
+      .when('/lineAround', {
+        controller: 'LineAroundCtrl',
+        templateUrl: 'views/lineList.html',
+        data: {
+          title: '周边线路'
+        }
+      })
 
-      .otherwise('/lineSearch');
+      .otherwise(C.app.mainPage);
 
   })
   .run(function(Env, Auth) {

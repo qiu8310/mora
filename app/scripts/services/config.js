@@ -24,8 +24,21 @@ angular.module('cheApp')
       // 如果 logVerbose 为 false，则 verbose 之后的数据是不会显示的
       logVerbose: false,
 
-      searchHistoryLength: 10
+
+      title: '车来了 - 最精准的实时公交App',
+      mainPage: '/lineAround',
+
+      searchHistoryLength: 10,
+      geolocationTimeout: 3000,
+
+      download: {
+        android: 'http://www.baidu.com?from=android',
+        ios: 'http://www.baidu.com?from=ios',
+        wechat: 'http://www.baidu.com?from=wechat',
+        alipay: 'http://www.baidu.com?from=alipay'
+      }
     },
+
     res: {
       proxyUrl: 'http://mora.sinaapp.com/utils/proxy.php',
       uploaderUrl: 'http://mora.sinaapp.com/utils/uploader.php'

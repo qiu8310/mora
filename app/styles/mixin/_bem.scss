@@ -121,3 +121,17 @@ example:
 }
 
 
+@function bem-helper-modified-element($block, $modifier:false, $element:false) {
+  @if not $modifier and not $element {
+    @return unquote('.#{$block}');
+  }
+  @if $modifier and $element {
+    @return unquote('.#{$block}--#{$modifier} .#{$block}__#{$element}');
+  }
+  @if not $element {
+    @return unquote('.#{$block}--#{$modifier}');
+  }
+  @if not $modifier {
+    @return unquote('.#{$block}__#{$element}');
+  }
+}
