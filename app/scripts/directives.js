@@ -83,7 +83,7 @@ angular.module('cheApp')
       }
     };
   })
-  .directive('search', function() {
+  .directive('search', function($location) {
 
     return {
       templateUrl: 'views/tpl/search.html',
@@ -138,6 +138,10 @@ angular.module('cheApp')
           $scope.isFocus = false;
           $scope.keyword = '';
           $scope.blur();
+        };
+
+        $scope.switchCity = function() {
+          $location.path('/switchCity');
         };
 
         if (getHandler('onChange')) {

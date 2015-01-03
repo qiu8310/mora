@@ -26,7 +26,7 @@ angular.module('cheApp')
 
 
       title: '车来了 - 最精准的实时公交App',
-      mainPage: '/lineAround',
+      mainPage: '/lineSearch',
 
       searchHistoryLength: 10,
       geolocationTimeout: 3000,

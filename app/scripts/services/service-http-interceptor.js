@@ -34,7 +34,7 @@ angular.module('cheApp')
         //request.params = _.assign(request.params || {}, token);
         //request.data   = _.assign(request.data || {}, token);
 
-        request.url = Env.isLocal ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
+        request.url = Env.isTest ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
 
         ng.info('request', url, request.data || {}, 'verbose:', request);
 
@@ -44,7 +44,7 @@ angular.module('cheApp')
 
       response: function (response) {
         var url = response.config.url;
-        if (Env.isLocal) { url = ng.parseQuery(url)._url || url; }
+        if (Env.isTest) { url = ng.parseQuery(url)._url || url; }
 
         if (url.indexOf(API_BASE) !== 0) { return response; }
 

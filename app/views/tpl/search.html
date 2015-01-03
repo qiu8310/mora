@@ -10,9 +10,8 @@
       </div>
     </div>
     <div class="search__control">
-      <a ng-click="cancel()"
-         class="link search__control__link search__control__link--cancel">取消</a>
-      <a class="link search__control__link search__control__link--switch-city" href="#!/switchCity"><span class="text text-ellipsis">{{::currentCityName}}</span></a>
+      <a ng-click="cancel()" class="link search__control__link search__control__link--cancel">取消</a>
+      <a ng-click="switchCity()" class="link search__control__link search__control__link--switch-city"><span class="text text-ellipsis">{{::currentCityName}}</span></a>
     </div>
   </div>
 

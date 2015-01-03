@@ -36,6 +36,7 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  // http://mora.sinaapp.com/spa-bootstrap-manager.php?token=d7P843348fa7ea4LedDae155380aKdDfdO4dKQ10
   var qiniuConfig = require(process.env.HOME + '/qiniu.json'),
     secretConfig = require(process.env.HOME + '/.secret.json');
 
@@ -58,16 +59,16 @@ module.exports = function (grunt) {
           accessKey: qiniuConfig.accessKey,
           secretKey: qiniuConfig.secretKey,
           bucket: 'liulishuo',
-          prefix: 't-'
+          prefix: 'che-'
         },
 
         angularTplTransform: function(tplPath, tplCalledBy) {
           tplPath = tplPath.replace('scripts/', '');
-          if (!require('fs').existsSync(tplPath)) {
-            var parts = tplPath.split('/');
-            parts.splice(-1, 0, 'views/partials'); // 给模板加上前缀
-            tplPath = parts.join('/');
-          }
+          //if (!require('fs').existsSync(tplPath)) {
+          //  var parts = tplPath.split('/');
+          //  parts.splice(-1, 0, 'views/partials'); // 给模板加上前缀
+          //  tplPath = parts.join('/');
+          //}
 
           //if (tplPath.indexOf('/tpls/') >= 0) {
           ////if (/\/(?:tpls|incs)\//.test(tplPath)) {
@@ -91,20 +92,13 @@ module.exports = function (grunt) {
           return 'http://mora.sinaapp.com/spa-bootstrap.php?m=' + m;
           //return 'http://mora.com/spa-bootstrap.php?m=' + m;
         },
-        token: secretConfig.spaBootstrapCrmToken
+        token: secretConfig.spaBootstrapCheToken
       },
-      crmTest: {
+      che: {
         options: {
           //index: '<%= yeoman.dist %>/index.html',
-          app: 'crm_test',
-          secureCode: secretConfig.spaBootstrapCrmTestSecure,
-          bootstrap: '<%= yeoman.dist %>/bootstrap_test.html'
-        }
-      },
-      crmDev: {
-        options: {
-          app: 'crm_dev',
-          secureCode: secretConfig.spaBootstrapCrmDevSecure,
+          app: 'chelaile',
+          secureCode: secretConfig.spaBootstrapCheSecure,
           bootstrap: '<%= yeoman.dist %>/bootstrap.html'
         }
       }
@@ -113,13 +107,13 @@ module.exports = function (grunt) {
 
     ngtemplates: {
       options: {
-        module: 'moraApp',
+        module: 'cheApp',
         htmlmin: '<%= htmlmin.dist.options %>',
         usemin: '/scripts/scripts.js'
       },
       dist: {
         cwd: '<%= yeoman.app %>',
-        src: ['views/incs/*.html', 'views/tpls/*.html'], // 其它模板传到七牛上去
+        src: ['views/*.html', 'views/tpl/*.html'], // 其它模板传到七牛上去
         dest: '.tmp/scripts/ngtemplates.js'
       }
     },
@@ -675,11 +669,10 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('bootstrap', 'spaBootstrap:crmDev');
+  grunt.registerTask('bootstrap', 'spaBootstrap');
   grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
 
-
-  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmDev']);
+  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap']);
 
 
   //grunt.registerTask('publish', function(comment) {
