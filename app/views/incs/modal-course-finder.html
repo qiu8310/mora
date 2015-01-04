@@ -8,17 +8,17 @@
   <div ng-show="list.length">
     <h2 class="modal-list-title">{{listTitle}}</h2>
     <ul class="modal-course-list modal-list">
-      <li class="modal-item row" ng-repeat="course in list">
-        <div class="col-sm-{{course.coverUrl ? 9 : 10}}">
+      <li class="modal-item row" ng-repeat="item in list">
+        <div class="col-sm-10">
           <h3>
-            <banner-card data="course" type="BANNER_TYPE.COURSE"></banner-card>
+            <banner-card banner="item"></banner-card>
           </h3>
         </div>
-        <div class="col-sm-1" ng-if="course.coverUrl">
-          <img ng-src="{{course.coverUrl}}?imageView2/5/w/50/h/50" width="50" height="50">
-        </div>
+        <!--<div class="col-sm-1" ng-if="course.coverUrl">-->
+          <!--<img ng-src="{{course.coverUrl}}?imageView2/5/w/50/h/50" width="50" height="50">-->
+        <!--</div>-->
         <div class="col-sm-2">
-          <button class="btn btn-info btn-xs pull-right" ng-click="select(course)">选择</button>
+          <button class="btn btn-info btn-xs pull-right" ng-click="select(item.data)">选择</button>
         </div>
       </li>
     </ul>

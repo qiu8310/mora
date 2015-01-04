@@ -120,6 +120,7 @@ angular.module('moraApp')
         templateUrl: 'views/incs/modal-stream-editor.html',
         controller: 'StreamEditorCtrl',
         backdrop: 'static',
+        size: 'lg',
         windowClass: 'stream-editor-modal',
         resolve: { StreamData: function() { return data; }}
       }).result;

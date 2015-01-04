@@ -11,7 +11,7 @@ angular
       return string.charAt(0).toUpperCase() + string.substr(1);
     }});
 
-    function work(obj, deep, processFn) {
+    function walkObject(obj, deep, processFn) {
       if (deep === undefined) {
         deep = true;
       }
@@ -30,7 +30,7 @@ angular
             }
 
             result[key] = deep && (_.isArray(val) || _.isPlainObject(val)) ?
-              work(val, deep, processFn) :
+              walkObject(val, deep, processFn) :
               val;
           });
 
@@ -41,20 +41,20 @@ angular
     }
 
     _.mixin({camelCase: function(obj, deep) {
-      return work(obj, deep, function(str) {
+      return walkObject(obj, deep, function(str) {
         return str.replace(/_+([a-z])/g, function(_, letter) { return letter.toUpperCase(); });
       });
     }});
 
     _.mixin({lineCase: function(obj, deep) {
-      return work(obj, deep, function(str) {
+      return walkObject(obj, deep, function(str) {
         // 如果第一个字符是大写的，则不要在它前面加下划线，直接小写就行了
         return str.replace(/[A-Z]/g, function(letter, index) { return (index ? '-' : '') + letter.toLowerCase(); });
       });
     }});
 
     _.mixin({underscoreCase: function(obj, deep) {
-      return work(obj, deep, function(str) {
+      return walkObject(obj, deep, function(str) {
         // 如果第一个字符是大写的，则不要在它前面加下划线，直接小写就行了
         return str.replace(/[A-Z]/g, function(letter, index) { return (index ? '_' : '') + letter.toLowerCase(); });
       });

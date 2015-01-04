@@ -72,7 +72,7 @@ angular.module('moraApp')
   })
 
 
-  .controller('CourseFinderCtrl', function($scope, $http, $modalInstance) {
+  .controller('CourseFinderCtrl', function($scope, $http, $modalInstance, _) {
     $scope.pager = {
       page: 1,
       pageSize: 6,
@@ -92,8 +92,9 @@ angular.module('moraApp')
       } else {
         return $http.get('api/courses/' + $scope.search.keyword + '?ignoreError')
           .success(function(data) {
-            // data.courseId = $scope.search.keyword;
-            $scope.list = [data];
+            $scope.list = _.map([data], function(course) {
+              return {type: $scope.BANNER_TYPE.COURSE, data: course};
+            });
           })
           .error(empty);
       }
@@ -197,6 +198,10 @@ angular.module('moraApp')
       delete stream.isCreate;
       if (data && (data.id || data.ids)) {
         stream.cardId = data.id || data.ids[0];
+      }
+      var now = _.now();
+      if (stream.pubtime && stream.pubtime > now) {
+        stream.pubtimeCountdown = Math.round((stream.pubtime - now) / 1000);
       }
       console.info('Save stream success:', stream);
       $modalInstance.close(stream);

@@ -1,30 +1,36 @@
-<form class="form-list settled">
+<form class="form-list settled front-stream">
   <div class="row form-list-header">
     <div class="col-sm-1"></div>
     <div class="col-sm-2"><label>类型</label></div>
-    <div class="col-sm-6"><label>信息</label></div>
-    <div class="col-sm-3">操作</div>
+    <div class="col-sm-5"><label>信息</label></div>
+    <div class="col-sm-2"><label>状态</label></div>
+    <div class="col-sm-2"><label>操作</label></div>
   </div>
   <div class="no-item" ng-hide="list.length">没有任何 Streams ~~~</div>
   <ul class="form-list-body" ng-show="list.length">
     <li class="row" ng-repeat="item in list" style="border-bottom: 1px solid lightgray;">
       <div class="col-sm-1">#{{$index + 1}}</div>
       <div class="col-sm-2 text-left">{{item.type | inflector:humanize}}</div>
-      <div class="col-sm-6 break-word text-left">
+      <div class="col-sm-5 break-word text-left">
         <div ng-if="item.type === TYPE.COURSE_SET">
-          <div ng-repeat="it in item.data"><banner-card banner="it"></banner-card></div>
+          <banner-card ng-repeat="it in item.data" banner="it"></banner-card>
         </div>
-        <div ng-if="item.type === TYPE.SMALL_BANNER">
-          <div ng-repeat="it in item.data"><banner-card banner="it"></banner-card></div>
+        <div class="stream-small-banner" ng-if="item.type === TYPE.SMALL_BANNER">
+          <img ng-repeat="it in item.data" ng-src="{{it.img}}">
+          <!--<banner-card ng-repeat="it in item.data" banner="it"></banner-card>-->
         </div>
         <div ng-if="item.type === TYPE.TEAM_SET">
-          <div ng-repeat="it in item.data"><banner-card banner="it"></banner-card></div>
+          <banner-card ng-repeat="it in item.data" banner="it"></banner-card>
         </div>
         <div ng-if="item.type === TYPE.THREAD">
           <banner-card banner="item"></banner-card>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
+        <label ng-show="item.pubtimeCountdown" class="label label-info">{{item.pubtimeCountdown|countDown}}</label>
+        <label ng-hide="item.pubtimeCountdown" class="label label-default">已发布</label>
+      </div>
+      <div class="col-sm-2 text-center">
         <button class="btn btn-default btn-xs" ng-click="editStream(item)">编辑</button>
         <button class="btn btn-danger btn-xs" async-confirm="确认删除？"
                 async-click="deleteStream(item, $index)">删除</button>

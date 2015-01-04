@@ -5,6 +5,7 @@ angular.module('moraApp')
     $scope.user = Auth.getLoginUser();
 
 
+    $rootScope.res = C.res;
     $rootScope.BANNER_TYPE = C.constants.BANNER_TYPE;
     $rootScope.STREAM_TYPE = C.constants.STREAM_TYPE;
 
@@ -194,6 +195,8 @@ angular.module('moraApp')
 
       result = {id: card.id, type: type, data: data || card.data};
       if (card[COVER]) { result.img = card[COVER]; }
+      if ('pubtimeCountdown' in card) { result.pubtimeCountdown = card.pubtimeCountdown; }
+      if ('pubtime' in card) { result.pubtime = card.pubtime * 1000; }
 
       return result;
 

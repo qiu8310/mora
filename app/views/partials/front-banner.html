@@ -1,23 +1,23 @@
-<form class="form-list settled">
+<form class="form-list settled front-banner">
   <div class="row form-list-header">
     <div class="col-sm-1"></div>
     <div class="col-sm-2"><label>类型</label></div>
-    <div class="col-sm-3"><label>图片</label></div>
-    <div class="col-sm-3"><label>标题</label></div>
-    <div class="col-sm-3">操作</div>
+    <div class="col-sm-2"><label>Banner图片</label></div>
+    <div class="col-sm-5"><label>信息</label></div>
+    <div class="col-sm-2">操作</div>
   </div>
   <div class="no-item" ng-hide="list.length">没有任何 Banners ~~~</div>
   <ul class="form-list-body" ng-show="list.length" as-sortable="sortableOptions" ng-model="list">
     <li class="row" ng-repeat="item in list" as-sortable-item="list[$index]">
       <div class="col-sm-1" as-sortable-item-handle><i class="fa fa-arrows"></i>#{{$index + 1}}</div>
       <div class="col-sm-2">{{item.type | inflector:humanize}}</div>
-      <div class="col-sm-3"><div class="banner banner-small">
+      <div class="col-sm-2 text-center"><div class="banner banner-small">
         <img ng-src="{{item.img}}"/>
       </div></div>
-      <div class="col-sm-3 break-word">
+      <div class="col-sm-5 break-word">
         <banner-card banner="item"></banner-card>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <button class="btn btn-default btn-xs" ng-click="editBanner(item)">编辑</button>
         <button class="btn btn-danger btn-xs" ng-click="deleteBanner($index)">删除</button>
       </div>

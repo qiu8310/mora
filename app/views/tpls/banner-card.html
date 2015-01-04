@@ -1,17 +1,88 @@
-<div class="banner-card">
-  <div ng-if="(banner.type || type) === TYPE.ACTIVITY">
-    <a href="{{banner.data.url || banner.url}}" target="_blank">{{banner.data.title || data.title}}</a>
+<div class="banner-card" ng-show="banner.data.title">
+  <div class="box box-activity" ng-if="banner.type === TYPE.ACTIVITY">
+    <h3><a href="{{banner.data.url}}" target="_blank">{{banner.data.title}}</a></h3>
   </div>
 
-  <div ng-if="(banner.type || type) === TYPE.THREAD">
-    <a ui-sref="home.forumDetail({id: banner.data.id || data.id})" m-blank>{{banner.data.title || data.title}}</a>
+  <div class="box box-thread" ng-if="banner.type === TYPE.THREAD">
+    <!--
+    attachedImg: ''
+    body: "新内容"
+    bodyLength: 3
+    createdAt: 1380179212
+    followsCount: 0
+    id: "MzEwMDgwMDAwMDAwMDAwNA=="
+    isFollowed: false
+    isLiked: false
+    likesCount: 1
+    os: "Unknown"
+    platform: 3
+    read: true
+    repliedAt: 1419163567
+    repliesCount: 5
+    title: "新帖子"
+    type: 0
+    userAnswerBadgeLevel: 0
+    userAvatar: "http://hdn.xnimg.cn/photos/hdn421/20110809/1145/h_main_xXrk_5c69000356182f76.jpg"
+    userId: "MzEwMWQwMDAwMDAwMDBjNA=="
+    userName: "胡哲人"
+    -->
+    <div class="box-right">
+      <img ng-src="{{banner.data.attachedImg || res.noImg}}">
+      <p>{{banner.data.likesCount}}赞  {{banner.data.repliesCount}}回复</p>
+    </div>
+    <div class="box-left">
+      <h3 class="text-ellipsis"><a ui-sref="home.forumDetail({id: banner.data.id})" m-blank>{{banner.data.title}}</a></h3>
+      <p class="thread-body">
+        <audio controls src="{{banner.data.audioUrl}}" ng-show="banner.data.audioUrl"></audio>
+        {{banner.data.body}}
+      </p>
+      <p class="thread-user">
+        <span>{{banner.data.userName}}</span> &nbsp;
+        <time>{{banner.data.createdAt|date:'MM/dd HH:mm'}}</time>
+      </p>
+    </div>
   </div>
 
-  <div ng-if="(banner.type || type) === TYPE.TEAM">
-    <a ui-sref="home.teamDetail({id: banner.data.resourceId || data.resourceId})" m-blank>{{banner.data.title || data.title}}</a>
+  <div class="box box-team" ng-if="banner.type === TYPE.TEAM">
+    <!--
+    announcement: Object
+    categoryName: "啥都有"
+    createdAt: 1417419822
+    description: "m08有钱任性01m08有钱任性01"
+    id: "MWEwMWUwMDAwMDAwMDA2OA=="
+    imId: "1417419923793490"
+    imageUrl: "http://llss.qiniudn.com/group/image/5d24849445a42f4fe8e6ea08bf4a1221bb31a6d4_1417419981.jpg"
+    isOfficial: false
+    maxMembers: 100
+    members: Array[0]
+    membersCount: 2
+    owner: Object
+    resourceId: "MWEwMWUwMDAwMDAwMDA2OA=="
+    tags: Array[1]
+    title: "m08有钱任性01"
+    -->
+    <div class="box-left">
+      <img ng-src="{{banner.data.imageUrl || res.noImg}}">
+    </div>
+    <div class="box-right">
+      <h3><a ui-sref="home.teamDetail({id: banner.data.resourceId})" m-blank>{{banner.data.title}}</a></h3>
+      <p>{{banner.data.description}}</p>
+    </div>
+
   </div>
 
-  <div ng-if="(banner.type || type) === TYPE.COURSE">
-    <a href="{{cmsBaseUrl}}courses/{{banner.data.id || data.id}}/units" target="_blank">{{banner.data.title || data.title}}</a>
+  <div class="box box-course" ng-if="banner.type === TYPE.COURSE">
+    <!--
+    coverUrl: "http://cms-uploads.qiniudn.com/cms/5bc3c347-9221-44dc-9c09-7360182eb265"
+    description: "course description"
+    id: "54865ce8636d732539120000"
+    title: "测试数据"
+    -->
+    <div class="box-left">
+      <img ng-src="{{banner.data.coverUrl || res.noImg}}">
+    </div>
+    <div class="box-right">
+      <h3><a href="{{cmsBaseUrl}}courses/{{banner.data.id}}/units" target="_blank">{{banner.data.title}}</a></h3>
+    </div>
   </div>
 </div>

@@ -675,11 +675,13 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('bootstrap', 'spaBootstrap:crmDev');
   grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
 
 
-  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:crmDev']);
+  grunt.registerTask('publish', function(target) {
+    target = 'dev' === target ? 'crmDev' : 'crmTest';
+    grunt.task.run(['build', 'deployAsset:dist', 'spaBootstrap:' + target]);
+  });
 
 
   //grunt.registerTask('publish', function(comment) {

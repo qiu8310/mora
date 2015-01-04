@@ -1,0 +1,52 @@
+<form class="col-sm-11 form-horizontal"
+      ng-submit="submit($event)"
+      name="messageForm"
+      style="padding-top: 20px;">
+
+
+
+  <form-control label="通知内容" ref="title">
+    <textarea type="text" class="form-control"
+           name="content" placeholder="最多40个字符" ng-maxlength="40"
+           ng-model="message.content"
+           required></textarea>
+  </form-control>
+
+
+  <form-control label="消息类型">
+    <label class="radio-inline">
+      <input type="radio" ng-model="message.type" ng-value="'system'"><span>system</span>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" ng-model="message.type" ng-value="'event'"><span>event</span>
+    </label>
+  </form-control>
+
+
+
+  <form-control label="推送平台">
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="message.platforms.ios"><span>iOS</span>
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="message.platforms.android"><span>Android</span>
+    </label>
+  </form-control>
+
+
+
+  <form-control label="定时推送">
+    <div class="col-sm-12 block">
+      <div style="line-height: 34px">{{message.date|date:'yyyy/MM/dd HH:mm'}}</div>
+    </div>
+    <div class="col-sm-6 no-padding-left">
+      <input class="form-control" type="datetime" date-format="yyyy/MM/dd HH:mm" ng-model="message.dateFormat">
+    </div>
+  </form-control>
+
+  <form-control label="">
+    <button class="btn btn-success" ng-disabled="messageForm.$invalid" type="submit">提交</button>
+  </form-control>
+
+
+</form>

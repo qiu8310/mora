@@ -48,17 +48,18 @@ angular.module('moraApp')
     };
   })
 
-  .directive('bannerCard', function() {
+  .directive('bannerCard', function($rootScope) {
     return {
       restrict: 'E',
       replace: true,
       scope: {
-        data: '=', // banner = {data: '', type: ''}
-        banner: '=',
-        type: '='
+        //data: '=',
+        banner: '=' // banner = {data: '', type: ''}
+        //type: '='
       },
       templateUrl: 'views/tpls/banner-card.html',
       controller: function($scope, C, Env) {
+        $scope.res = $rootScope.res;
         $scope.TYPE = C.constants.BANNER_TYPE;
         $scope.cmsBaseUrl = Env.isTest ? 'http://cms-staging.liulishuo.com/' : 'http://cms.liulishuo.com/';
       }

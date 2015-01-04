@@ -66,7 +66,7 @@
 
 
     <form-control label="定时">
-      <div class="btn-group" ng-init="publishType='a'">
+      <div class="btn-group" ng-init="publishType=(stream.pubtimeCountdown ? 'b' : 'a')">
         <label class="btn btn-default btn-sm" ng-model="publishType" ng-click="setPublishAtNow()" btn-radio="'a'">立即发布</label>
         <label class="btn btn-default btn-sm" ng-model="publishType" btn-radio="'b'">定时发布</label>
       </div>

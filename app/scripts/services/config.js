@@ -8,6 +8,9 @@
  男头像1：http://lesson-production.qiniudn.com/connett/8a1b42af-8fc5-4c43-aacb-20dd8cf62ac3
  男头像2：http://lesson-production.qiniudn.com/connett/b9ce1c9a-18cf-4c5f-b8fc-e692dcba54a8
 
+ http://design-res.qiniudn.com/img__no.svg
+ http://design-res.qiniudn.com/img__no.png
+
  audio:
  http://lesson-production.qiniudn.com/connett/b24c13cd-7133-4206-8e01-7d1d0e5eeafd
 
@@ -39,6 +42,7 @@ angular.module('moraApp')
 
     res: {
       defaultAvatar: 'http://llss.qiniudn.com/avatar_default.png',
+      noImg: 'http://design-res.qiniudn.com/img__no.svg',
       audioPrefix: '?avthumb/mp3/ab/36',
       uploader: 'http://mora.sinaapp.com/utils/uploader.php'
     },
@@ -132,10 +136,16 @@ angular.module('moraApp')
         ]
       },
       {
-        key: 'manage',
-        title: '管理',
-        fa: 'user',
-        templateUrl: 'manage.html'
+        key: 'system',
+        title: '系统管理',
+        fa: 'windows',
+        children: [
+          {
+            key: 'message',
+            title: '消息推送',
+            templateUrl: 'system-message.html'
+          }
+        ]
       }
     ]
 

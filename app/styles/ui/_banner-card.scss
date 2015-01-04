@@ -1,0 +1,146 @@
+.banner-card {
+  color: #989aa1;
+  text-align: left;
+  h3 {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  .box {
+    width: 320px;
+    overflow: hidden;
+    padding: 15px 16px;
+    background-color: white;
+    border-top: 1px solid #bfc2cd;
+    border-bottom: 1px solid #bfc2cd;
+  }
+
+
+  .box-thread {
+    min-height: 170px;
+
+    .box-right {
+      float: right;
+      width: 80px;
+      margin: 0;
+      img {
+        @include size(80px, false, 12px);
+      }
+      p {
+        text-align: right;
+        margin-top: 37px;
+        font-size: 12px;
+        height: 16px;
+        line-height: 16px;
+        overflow: hidden;
+        color: #ff9933;
+      }
+    }
+
+    .box-left {
+      width: 200px;
+      overflow: hidden;
+      margin-right: 100px;
+
+      audio {
+        width: 180px;
+      }
+      .thread-body {
+        height: 80px;
+        overflow: hidden;
+      }
+
+      .thread-user {
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      h3 {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+
+      time {
+        color: #d3d4d7;
+      }
+    }
+
+  }
+
+  .box-team {
+    min-height: 102px;
+    .box-left {
+      img {
+        @include size(72px, false, 12px);
+      }
+    }
+    h3 {
+      line-height: 24px;
+    }
+    .box-right {
+      width: 200px;
+      margin-left: 88px;
+      margin-top: -72px;
+
+      p {
+        height: 40px;
+        line-height: 20px;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .box-course {
+    min-height: 102px;
+    .box-left {
+      img {
+        @include size(110px 72px, false, 12px);
+      }
+    }
+    h3 {
+      line-height: 24px;
+    }
+    .box-right {
+      width: 170px;
+      margin-left: 126px;
+      margin-top: -72px;
+    }
+
+  }
+
+  .box-activity {
+    h3 {
+      text-align: center;
+    }
+  }
+
+}
+
+.front-stream, .front-course, .front-banner {
+  .box {
+    margin: 0 auto;
+  }
+}
+
+.front-stream .banner-card {
+  .box {
+    border-bottom: none;
+  }
+  &:last-child {
+    .box {
+      border-bottom: 1px solid #bfc2cd;
+    }
+  }
+}
+.stream-small-banner {
+  overflow: hidden;
+  width: 320px;
+  margin: 0 auto;
+  img {
+    margin: 10px;
+    @include size(140px 60px, inline-block, 12px);
+  }
+}
