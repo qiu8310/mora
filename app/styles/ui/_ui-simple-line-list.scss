@@ -1,8 +1,6 @@
-.search .search__history, .page--line-search .search__result {
+.simple-line-list.list {
+  border-top: $border-style;
 
-  .list {
-    border-top: $border-style;
-  }
   .list__item {
     border-bottom: $border-style;
     background-color: white;
@@ -22,7 +20,7 @@
 
     &::before {
       @include size(48px, false, true);
-      background-color: map-get($colors, skyblue);
+      background-color: map-get($colors, green);
       top: 14px;
       left: 14px;
     }

@@ -65,16 +65,23 @@ angular.module('cheApp')
       var navigator = $window.navigator;
       fn = ng.isFunction(fn) ? fn : function(){};
 
+      var fnHandler = function(data) {
+        if (data.coords) {
+          // coords.latitude  纬度
+          // coords.longitude 径度
+          fn(false, data.coords);
+        } else {
+          fn(data || true, null);
+        }
+        $scope.$apply();
+      };
+
       if (navigator.geolocation) {
-        var fnHandler = function() {
-          fn.apply(null, arguments);
-          $scope.$apply();
-        };
         navigator.geolocation.getCurrentPosition(fnHandler, fnHandler, {
           timeout: C.app.geolocationTimeout,
           maximumAge: 60000
         });
-      } else { fn(); }
+      } else { fnHandler(); }
     };
 
 

@@ -2,23 +2,94 @@
 angular.module('cheApp')
   .controller('LineSearchCtrl', function($scope, Storage, http, C, $location) {
 
+    var LIST_KEY = {AROUND: 'around', SEARCH: 'search', FAVORITE: 'favorite'};
+
+    var lastKeyword = false,
+      perPage = 20,
+      loadPath,
+      loadData,
+      loadedCount;
+
     var searchHandlers = $scope.searchHandlers = {
       onChange: search
     };
-
-    var lastKeyword = false, perPage = 20,
-      loadedCount;
 
     function reset() {
       loadedCount = 0;
       $scope.loadEnded = false;
       $scope.noResult = false;
+      $scope.locateError = false;
       $scope.list = [];
     }
-    reset();
+
+    function loadSuccess(data) {
+      if (!$scope.list.length && data.data.length === 0) {
+        $scope.noResult = true;
+      }
+
+      $scope.list = $scope.list.concat([
+        {
+          lineName: '1路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '11路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '111路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '1路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '11路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '111路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '111路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        }
+      ]);
+
+      if ((Math.random() * 100) < 20 && data.data.length < perPage) {
+        $scope.loadEnded = true;
+      }
+    }
+
+
+
+    $scope.listKey = null;
+    $scope.LIST_KEY = LIST_KEY;
+    $scope.$on('$routeChangeSuccess', function(e, route) {
+      $scope.listKey = route.$$route.data.listKey;
+
+      // 初始化基本数据
+      reset();
+
+      // 如果是周边列表，则首先定位
+      if ($scope.listKey === LIST_KEY.AROUND) {
+        $scope.getCurrentPosition(locate);
+      }
+    });
+
+
 
     $scope.loadMore = function() {
-      return search(lastKeyword);
+      return load();
     };
 
     $scope.goLine = function() {
@@ -26,73 +97,57 @@ angular.module('cheApp')
       $location.path('/choseStation');
     };
 
+
+
+    function load() {
+      if (!$scope.loadEnded) {
+        loadedCount++;
+
+        loadData.next = loadedCount * perPage;
+        loadData.CityId = '004';
+
+        return http.post(loadPath, loadData).success(loadSuccess);
+      }
+    }
+
+
+    function locate(err, data) {
+      console.log(err, data);
+      if (err) {
+        $scope.locateError = true;
+      } else {
+        loadPath = 'api/querynearby';
+        loadData = {
+          lat: data.latitude,
+          lng: data.longitude
+        };
+        load();
+      }
+      $scope.$apply();
+    }
+
     function search(keyword) {
       if (!keyword || keyword !== lastKeyword) {
         reset();
       }
       lastKeyword = keyword;
 
-      if (keyword && !$scope.loadEnded) {
-        return http.post('api/query', {
-          'Type': 'LineList',
-          'LineName': '11',
-          'CityId': '004',
-          next: (++loadedCount) * perPage
-        }).success(function(data) {
-          if (!$scope.list.length && data.data.length === 0) {
-            $scope.noResult = true;
-          }
+      if (keyword) {
+        $scope.listKey = LIST_KEY.SEARCH; // 触发线路搜索
 
-          $scope.list = $scope.list.concat([
-            {
-              lineName: '1路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            },
-            {
-              lineName: '11路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            },
-            {
-              lineName: '111路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            },
-            {
-              lineName: '1路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            },
-            {
-              lineName: '11路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            },
-            {
-              lineName: '111路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            },
-            {
-              lineName: '111路',
-              startStopName: '高新区地铁站',
-              endStopName: '曹庄子花卉市场'
-            }
-          ]);
-
-          if (data.data.length < perPage) {
-            $scope.loadEnded = true;
-          }
-        });
+        loadPath = 'api/query';
+        loadData = {
+          type: 'LineList',
+          lineName: keyword
+        };
+        load();
       }
     }
 
   })
-  .controller('SwitchCityCtrl', function($scope, $window, Env) {
+  .controller('SwitchCityCtrl', function($scope, Env) {
 
-    var nav = $window.navigator,
-      currentCity = Env.getCurrentCity();
+    var currentCity = Env.getCurrentCity();
 
     $scope.chose = function(city) {
       if (!city.active && !city.disabled) {
@@ -162,7 +217,7 @@ angular.module('cheApp')
     $scope.getCurrentPosition(locateFn);
 
   })
-  .controller('MyFaviconCtrl', function() {
+  .controller('FavouriteCtrl', function() {
 
   })
   .controller('LineAroundCtrl', function() {

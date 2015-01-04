@@ -39,27 +39,23 @@ angular
         controller: 'LineSearchCtrl',
         templateUrl: 'views/lineSearch.html',
         data: {
+          listKey: 'search',
           title: '线路查询'
         }
       })
-      .when('/choseStation', {
-        controller: 'ChoseStationCtrl',
-        templateUrl: 'views/choseStation.html',
-        data: {
-          title: '选择车站'
-        }
-      })
-      .when('/myFavicon', {
-        controller: 'MyFaviconCtrl',
+      .when('/favourite', {
+        controller: 'FavouriteCtrl',
         templateUrl: 'views/lineList.html',
         data: {
+          listKey: 'favourite',
           title: '我的收藏'
         }
       })
       .when('/lineAround', {
-        controller: 'LineAroundCtrl',
-        templateUrl: 'views/lineList.html',
+        controller: 'LineSearchCtrl',
+        templateUrl: 'views/lineSearch.html',
         data: {
+          listKey: 'around',
           title: '周边线路'
         }
       })

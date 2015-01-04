@@ -2,7 +2,7 @@
 
   @include B(distance) {
     @include size(54px, true, true);
-    background-color: map-get($colors, skyblue);
+    background-color: map-get($colors, green);
     color: white;
     font-style: normal;
     font-size: 14px;
@@ -11,8 +11,8 @@
     padding: 12px;
     line-height: 30px;
 
-    @include M(no-bus)  { background-color: map-get($colors, skyblue); line-height: 15px; }
-    @include M(no-line) { background-color: map-get($colors, gray); }
+    @include M(no-bus)  { background-color: map-get($colors, green); line-height: 15px; }
+    @include M(no-line) { background-color: #f3f3f5; color: #999; }
     @include M(coming)  { background-color: map-get($colors, pink); line-height: 15px; }
   }
 
