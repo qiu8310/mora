@@ -22,6 +22,10 @@
   .box-thread {
     min-height: 170px;
 
+    audio {
+      display: block;
+    }
+
     .box-right {
       float: right;
       width: 80px;

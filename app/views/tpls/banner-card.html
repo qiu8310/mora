@@ -33,7 +33,7 @@
     <div class="box-left">
       <h3 class="text-ellipsis"><a ui-sref="home.forumDetail({id: banner.data.id})" m-blank>{{banner.data.title}}</a></h3>
       <p class="thread-body">
-        <audio controls src="{{banner.data.audioUrl}}" ng-show="banner.data.audioUrl"></audio>
+        <audio controls ng-src="{{banner.data.audioUrl}}" ng-show="banner.data.audioUrl"></audio>
         {{banner.data.body}}
       </p>
       <p class="thread-user">

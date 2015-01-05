@@ -109,7 +109,7 @@ angular.module('moraApp')
         $scope.list = _.map(data.data.cards, function(item) {
           return $rootScope.backCardToFront(item);
         });
-        $scope.pager.total = data.total;
+        $scope.pager.total = data.data.total;
         console.info($scope.list);
       });
     }
