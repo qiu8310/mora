@@ -75,10 +75,14 @@ angular.module('cheApp')
   .directive('loading', function() {
     return {
       replace: true,
-      template: '<div class="loading f-14 fg-6"><i class="icon"></i>正在加载...</div>',
+      template: '<div class="loading f-14 fg-6"><p class="loading__text"></p></div>',
       link: function (scope, element, attrs) {
         if (attrs.large) {
           element.addClass('loading--large');
+        }
+        console.log(attrs);
+        if (attrs.text) {
+          element.find('.loading__text').text(attrs.text);
         }
       }
     };

@@ -1,4 +1,4 @@
-<div class="page page--line-search">
+<div class="page page-line page-line--{{listKey}}">
 
   <search data-handlers="searchHandlers">
 
@@ -11,13 +11,29 @@
         </a>
       </li>
     </ul>
-    <loading ng-hide="noResult || loadEnded || locateError"></loading>
+    <loading data-text="正在加载..." ng-show="isLoading"></loading>
 
-    <div class="locate-error" ng-show="locateError">
-      <p class="fg-6 text-center">暂时无法确定您的位置</p>
+
+    <div class="line-tip for-favorite vertical-mid">
+      <div class="no-favorite" ng-show="noFavorite">
+        <p class="fg-6 text-center">你还没有收藏任何线路</p>
+        <a class="btn center-block" onclick="document.searchForm.keyword.focus()">添加收藏</a>
+      </div>
     </div>
-    <p class="no-result fg-6 text-center" ng-show="noResult">没有搜索到合适的线路</p>
-    <p class="load-ended text-hide" ng-show="loadEnded">没有更多条目了</p>
+
+    <div class="line-tip for-around vertical-mid">
+      <loading data-text="正在定位..." ng-show="isLocating"></loading>
+      <div class="locate-error" ng-show="locateError">
+        <p class="fg-6 text-center">暂时无法确定您的位置</p>
+        <a class="btn center-block" onclick="document.searchForm.keyword.focus()">手动搜索线路</a>
+      </div>
+    </div>
+
+
+    <div class="line-tip for-search">
+      <p class="no-result fg-6 vertical-mid" ng-show="noResult">没有搜索到合适的线路</p>
+      <p class="load-ended text-hide" ng-show="loadEnded">没有更多条目了</p>
+    </div>
 
   </search>
 

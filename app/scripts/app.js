@@ -44,8 +44,8 @@ angular
         }
       })
       .when('/favourite', {
-        controller: 'FavouriteCtrl',
-        templateUrl: 'views/lineList.html',
+        controller: 'LineSearchCtrl',
+        templateUrl: 'views/lineSearch.html',
         data: {
           listKey: 'favourite',
           title: '我的收藏'

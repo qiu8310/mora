@@ -133,16 +133,68 @@
   }
 }
 
+@include bem-search-result {
+  padding-bottom: 30px;
+}
+
+
+
+.vertical-mid {
+  margin-top: 180px;
+  text-align: center;
+}
+
+
+.line-tip {
+  .btn {
+    @include size(146px 40px, block);
+    line-height: 40px;
+    margin-top: 20px;
+  }
+
+  .no-favorite .btn {
+    width: 116px;
+  }
+}
+
+.no-result {
+  margin-top: 209px;
+}
+
+
+.load-ended {
+  &::after {
+    content: '';
+    @include sprite-2x(end);
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+
+
+
+.page-line--around .search__result,
+.page-line--favourite .search__result {opacity: 1; height: auto;}
+
 
 .search__history { opacity: 0; height: 0; };
 .search__result  { opacity: 0; height: 0; };
-.page--line-list .search__result { opacity: 1; height: auto; }
 
 .search--on-focus {
   .search__history { opacity: 1; height: auto; };
-  .search__result  { opacity: 0; height: 0; };
 }
 .search--on-keyword {
   .search__history { opacity: 0; height: 0; };
   .search__result  { opacity: 1; height: auto; };
+}
+
+
+.page-line {
+  .line-tip { display: none; }
+  &.page-line--search { .for-search { display: block; }}
+  &.page-line--around { .for-around { display: block; }}
+  &.page-line--favourite { .for-favorite { display: block; }}
 }

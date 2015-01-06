@@ -2,7 +2,7 @@
 angular.module('cheApp')
   .controller('LineSearchCtrl', function($scope, Storage, http, C, $location) {
 
-    var LIST_KEY = {AROUND: 'around', SEARCH: 'search', FAVORITE: 'favorite'};
+    var LIST_KEY = {AROUND: 'around', SEARCH: 'search', FAVORITE: 'favourite'};
 
     var lastKeyword = false,
       perPage = 20,
@@ -19,51 +19,54 @@ angular.module('cheApp')
       $scope.loadEnded = false;
       $scope.noResult = false;
       $scope.locateError = false;
+
+      $scope.isLoading = false;
       $scope.list = [];
     }
 
     function loadSuccess(data) {
+      data = data || {data: [
+        {
+          lineName: '1路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '11路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '111路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '1路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '11路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '111路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        },
+        {
+          lineName: '111路',
+          startStopName: '高新区地铁站',
+          endStopName: '曹庄子花卉市场'
+        }]}; // for test;
+
       if (!$scope.list.length && data.data.length === 0) {
         $scope.noResult = true;
       }
 
-      $scope.list = $scope.list.concat([
-        {
-          lineName: '1路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '11路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '111路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '1路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '11路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '111路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '111路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        }
-      ]);
+      $scope.list = $scope.list.concat(data.data);
 
       if ((Math.random() * 100) < 20 && data.data.length < perPage) {
         $scope.loadEnded = true;
@@ -71,18 +74,23 @@ angular.module('cheApp')
     }
 
 
-
     $scope.listKey = null;
     $scope.LIST_KEY = LIST_KEY;
     $scope.$on('$routeChangeSuccess', function(e, route) {
+      // listKey 会根据行为变化而变化，但 currentPage 是不变的
       $scope.listKey = route.$$route.data.listKey;
+      $scope.currentPage = $scope.listKey;
 
       // 初始化基本数据
       reset();
 
       // 如果是周边列表，则首先定位
-      if ($scope.listKey === LIST_KEY.AROUND) {
+      if ($scope.currentPage === LIST_KEY.AROUND) {
+        $scope.isLocating = true;
         $scope.getCurrentPosition(locate);
+
+      } else if ($scope.currentPage === LIST_KEY.FAVORITE) {
+        $scope.noFavorite = true;
       }
     });
 
@@ -98,21 +106,27 @@ angular.module('cheApp')
     };
 
 
-
     function load() {
-      if (!$scope.loadEnded) {
+      if (!$scope.loadEnded && loadData && loadPath) {
         loadedCount++;
 
         loadData.next = loadedCount * perPage;
         loadData.CityId = '004';
 
-        return http.post(loadPath, loadData).success(loadSuccess);
+        $scope.isLoading = true;
+
+        return http.post(loadPath, loadData).success(loadSuccess).finally(function() {
+          $scope.isLoading = false;
+        });
       }
     }
 
+    function favourite() {
+
+    }
 
     function locate(err, data) {
-      console.log(err, data);
+      $scope.isLocating = false;
       if (err) {
         $scope.locateError = true;
       } else {
@@ -218,11 +232,5 @@ angular.module('cheApp')
 
   })
   .controller('FavouriteCtrl', function() {
-
-  })
-  .controller('LineAroundCtrl', function() {
-
-  })
-  .controller('ChoseStationCtrl', function() {
 
   });
