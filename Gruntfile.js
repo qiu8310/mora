@@ -58,6 +58,7 @@ module.exports = function (grunt) {
           accessKey: qiniuConfig.accessKey,
           secretKey: qiniuConfig.secretKey,
           bucket: 'liulishuo',
+          baseDomain: '7narj5.com1.z0.glb.clouddn.com',
           prefix: 't-'
         },
 

@@ -40,7 +40,7 @@
     "grunt-karma-coveralls": "~2.5.0",
     "karma-coverage": "^0.2.6",
     "text-free": "^0.1.2",
-    "grunt-deploy-asset": "0.0.4",
+    "grunt-deploy-asset": "0.0.5",
     "grunt-spa-bootstrap": "0.0.1",
     "grunt-angular-templates": "^0.5.7",
     "grunt-ng-annotate": "^0.8.0"

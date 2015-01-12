@@ -5,16 +5,6 @@ angular.module('moraApp').service('Env', function () {
     params = {};
 
 
-  Env.isStaging = host.indexOf('staging') >= 0 || host.indexOf('qiniudn.com') > 0;
-
-  // localhost 可能会带有端口号，所以不能用全等，也可能是本地文件，即 host === ''
-  Env.isLocal = !host || host.indexOf('localhost') === 0 || ['192', '172', '127'].indexOf(host.split('.').shift()) > -1;
-
-  Env.isOnline = !Env.isLocal && !Env.isStaging;
-
-  Env.isTest = Env.isStaging || Env.isLocal;
-
-
   location.search.slice(1).replace(/([^&=]+)=([^&]*)/g, function ($, key, val) {
     key = decodeURIComponent(key);
     val = decodeURIComponent(val);
@@ -22,6 +12,17 @@ angular.module('moraApp').service('Env', function () {
   });
 
   Env.Params = params;
+
+
+  Env.isStaging = params.env === 'staging' || host.indexOf('staging') >= 0 || host.indexOf('qiniudn.com') > 0;
+
+  // localhost 可能会带有端口号，所以不能用全等，也可能是本地文件，即 host === ''
+  Env.isLocal = params.env === 'local' ||
+    !host || host.indexOf('localhost') === 0 || ['192', '172', '127'].indexOf(host.split('.').shift()) > -1;
+
+  Env.isOnline = params.env === 'online' || !Env.isLocal && !Env.isStaging;
+
+  Env.isTest = Env.isStaging || Env.isLocal;
 
 
 
