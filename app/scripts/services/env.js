@@ -14,7 +14,8 @@ angular.module('moraApp').service('Env', function () {
   Env.Params = params;
 
 
-  Env.isStaging = params.env === 'staging' || host.indexOf('staging') >= 0 || host.indexOf('qiniudn.com') > 0;
+  Env.isStaging = params.env === 'staging' || host.indexOf('staging') >= 0 ||
+    host.indexOf('qiniudn.com') > 0 || host.indexOf('clouddn.com') > 0;
 
   // localhost 可能会带有端口号，所以不能用全等，也可能是本地文件，即 host === ''
   Env.isLocal = params.env === 'local' ||
