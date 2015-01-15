@@ -288,6 +288,16 @@ angular
           }]
         }
       })
+      .state('home.forumNode', {
+        url: '/forum/all',
+        templateUrl: 'views/partials/forum-all.html',
+        controller: 'ForumNodeCtrl',
+        resolve: {
+          NodeData: ['ForumSer', function(ForumSer) {
+            return ForumSer.nodes();
+          }]
+        }
+      })
       .state('home.userDetail', {
         url: '/user/detail/{id}',
         templateUrl: 'views/partials/user-detail.html',

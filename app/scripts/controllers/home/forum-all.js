@@ -1,5 +1,45 @@
 angular.module('moraApp')
-  .controller('ForumAllCtrl', function($scope, $q, $http, _, C, $modal, NodeData, $window) {
+  .controller('ForumSearchCtrl', function($scope, C, $http) {
+    function getList() {
+      return $http.get('api/forum/search/?' + $scope.search.params().toQuery())
+        .success(function(data) {
+          $scope.pager.total = data.total;
+          $scope.list = _.map(data.topics || data, function(thread) {
+            if (thread.audioUrl) {
+              thread.audioUrl += C.res.audioPrefix;
+            }
+            return thread;
+          });
+        });
+    }
+
+
+    $scope.$watch('pager.page', _.ignoreFirstCall(getList));
+
+    $scope.filters = [
+      {
+        key: 'type',
+        active: 'visible',
+        list: [
+          {all: '所有删除和未删除的贴子'},
+          {visible: '未删除的贴子'},
+          {deleted: '删除的贴子'}
+        ]
+      }
+    ];
+
+    $scope.search = {
+      async: {
+        target: '.thread-list'
+      },
+      keyword: '',
+      placeholder: '搜索帖子',
+      searchFn: function(e, params) {
+        return getList();
+      }
+    };
+  })
+  .controller('ForumAllCtrl', function($scope, $http, _, C, NodeData) {
 
     /*
      essence_ops_forum_node GET    /ops/forum_nodes/:id/essence(.:format)    ops/forum_nodes#essence
@@ -13,32 +53,22 @@ angular.module('moraApp')
       params = $scope.search.params();
 
       var category = params.filters.category, node = params.filters.node,
-        isDeleted, api;
+        api;
 
-      if (params.keyword) {
-        api = 'api/forum/search/';
-      } else if (node !== 'all'){
+      if (node !== 'all'){
         api = 'api/node/' + node + '/';
         if (_.include(['essence', 'recommend'], category)) {
           api += category;
         }
       } else {
-        if (params.filters.type !== 'visible' || params.filters.category !== 'all') {
-          $window.alert('请先选择版块');
-          return false;
-        }
         api = 'api/forum/';
       }
       api += '?' + params.toQuery();
 
       return $http.get(api)
         .success(function(data) {
-          //$scope.search.keyword = '';
           $scope.pager.total = data.total;
           $scope.list = _.map(data.topics || data, function(thread) {
-            if (isDeleted) {
-              thread.isDeleted = isDeleted;
-            }
             if (thread.audioUrl) {
               thread.audioUrl += C.res.audioPrefix;
             }
@@ -48,7 +78,9 @@ angular.module('moraApp')
     }
 
     $scope.$watch('pager.page', _.ignoreFirstCall(getList));
-    $scope.$on('search:init:finished', getList);
+    $scope.$on('search:init:finished', function() {
+      $scope.$watch('filters', getList, true);
+    });
 
 
     $scope.filters = [
@@ -84,14 +116,7 @@ angular.module('moraApp')
     ];
 
     $scope.search = {
-      async: {
-        target: '.thread-list'
-      },
-      keyword: '',
-      placeholder: '搜索帖子',
-      searchFn: function(e, params) {
-        return getList();
-      }
+      hide: true
     };
 
 

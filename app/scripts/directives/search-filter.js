@@ -34,6 +34,7 @@ angular.module('moraApp')
         search: '='
       },
       link: function postLink(scope, element, attrs) {
+
         _.each(scope.filters, updateListGroup);
         updateListGroup(scope.search.classify);
 

@@ -124,6 +124,13 @@ angular.module('moraApp')
             manual: true // 手动注册 state
           },
           {
+            key: 'search',
+            title: '帖子搜索',
+            controller: 'ForumSearchCtrl',
+            templateUrl: 'forum-all.html'
+            //manual: true
+          },
+          {
             key: 'hot',
             title: '热门贴',
             templateUrl: 'forum-hot.html'

@@ -9,7 +9,7 @@
   </form>
 
 
-  <form class="search-form row" bindonce="search" bo-class="{'has-keyword-classify': search.classify}">
+  <form class="search-form row" ng-hide="search.hide" bindonce="search" bo-class="{'has-keyword-classify': search.classify}">
 
     <div class="wrap form-group col-md-{{search.options.hideLatestSearch ? 12 : 8}}">
       <div class="wrap__keyword">
