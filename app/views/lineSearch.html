@@ -13,9 +13,8 @@
     </ul>
     <loading data-text="正在加载..." ng-show="isLoading"></loading>
 
-
     <div class="line-tip for-favorite vertical-mid">
-      <div class="no-favorite" ng-show="noFavorite">
+      <div class="no-favorite" ng-show="noResult">
         <p class="fg-6 text-center">你还没有收藏任何线路</p>
         <a class="btn center-block" onclick="document.searchForm.keyword.focus()">添加收藏</a>
       </div>
@@ -27,6 +26,7 @@
         <p class="fg-6 text-center">暂时无法确定您的位置</p>
         <a class="btn center-block" onclick="document.searchForm.keyword.focus()">手动搜索线路</a>
       </div>
+      <p class="no-result fg-6 vertical-mid" ng-show="noResult">没有搜索到合适的线路</p>
     </div>
 
 

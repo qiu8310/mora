@@ -40,7 +40,7 @@ angular.module('cheApp')
     },
 
     res: {
-      proxyUrl: 'http://mora.sinaapp.com/utils/proxy.php',
+      proxyUrl: 'http://mora.com/utils/proxy.php',
       uploaderUrl: 'http://mora.sinaapp.com/utils/uploader.php'
     }
   });

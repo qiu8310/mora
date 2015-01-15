@@ -1,9 +1,9 @@
 <div class="city-group city-group--{{::group.type}}" ng-show="group.list.length">
   <h3 class="city-group__title fg-3 f-14">{{::group.typeName}}</h3>
   <ul class="city-group__list list">
-    <li class="list__item" ng-repeat="city in ::group.list" ng-class="{'list__item--active': city.active, 'list__item--disabled': city.disabled}">
+    <li class="list__item" ng-repeat="city in ::group.list track by $index" ng-class="{'list__item--active': city.active, 'list__item--disabled': city.disabled}">
       <a class="list__item__link" ng-click="chose(city)">
-        <span class="list__item__link__text">{{::city.name}}</span>
+        <span class="list__item__link__text">{{city.name}}</span>
       </a>
     </li>
   </ul>

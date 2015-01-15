@@ -80,7 +80,6 @@ angular.module('cheApp')
         if (attrs.large) {
           element.addClass('loading--large');
         }
-        console.log(attrs);
         if (attrs.text) {
           element.find('.loading__text').text(attrs.text);
         }

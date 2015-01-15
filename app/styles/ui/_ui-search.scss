@@ -185,6 +185,7 @@
 
 .search--on-focus {
   .search__history { opacity: 1; height: auto; };
+  .search__result  { opacity: 0; height: 0; };
 }
 .search--on-keyword {
   .search__history { opacity: 0; height: 0; };

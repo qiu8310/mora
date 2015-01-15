@@ -1,7 +1,7 @@
 angular.module('cheApp')
   .service('HttpInterceptor', function ($q, $rootScope, Auth, Env, C) {
 
-    var API_BASE = Env.isTest ? 'http://web.chelaile.net.cn/datasource' : 'http://web.chelaile.net.cn/h5',
+    var API_BASE = Env.isTest ? 'http://182.92.66.104:6080/datasource' : 'http://web.chelaile.net.cn/h5',
       PREFIX = 'api';
 
     return {
@@ -21,6 +21,11 @@ angular.module('cheApp')
         params.src = Env.Platform.isWechat ? 'wechat' : Env.Platform.isAlipay ? 'alipay' : 'browser';
         params.userId = Auth.get('uid');
 
+        params.userId = 'alipay_12345';
+        params.cityId = '004';
+        //params.lat = '120.180353';
+        //params.lng = '30.271222';
+
         url = ng.appendQuery(url, params);
 
         // 把 token 写入到 header 中
@@ -34,7 +39,8 @@ angular.module('cheApp')
         //request.params = _.assign(request.params || {}, token);
         //request.data   = _.assign(request.data || {}, token);
 
-        request.url = Env.isTest ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
+        //request.url = url;
+        request.url = Env.isTest && C.res.proxyUrl ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
 
         ng.info('request', url, request.data || {}, 'verbose:', request);
 

@@ -1,6 +1,6 @@
 
 angular.module('cheApp')
-  .controller('LineSearchCtrl', function($scope, Storage, http, C, $location) {
+  .controller('LineSearchCtrl', function($scope, Storage, http, C, Env, $location) {
 
     var LIST_KEY = {AROUND: 'around', SEARCH: 'search', FAVORITE: 'favourite'};
 
@@ -24,51 +24,19 @@ angular.module('cheApp')
       $scope.list = [];
     }
 
-    function loadSuccess(data) {
-      data = data || {data: [
-        {
-          lineName: '1路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '11路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '111路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '1路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '11路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '111路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        },
-        {
-          lineName: '111路',
-          startStopName: '高新区地铁站',
-          endStopName: '曹庄子花卉市场'
-        }]}; // for test;
+    function loadSuccess(rtn) {
+      var data = rtn.data;
+      // 线路搜索返回 lineList, 周边返回 underlyingContent，收藏返回 favList
+      var list = data && (data.lineList || data.underlyingContent || data.favList) || [];
 
-      if (!$scope.list.length && data.data.length === 0) {
+      if (rtn.status && rtn.status.toLowerCase() !== 'ok' || list.length === 0) {
         $scope.noResult = true;
+        return true;
       }
 
-      $scope.list = $scope.list.concat(data.data);
+      $scope.list = $scope.list.concat(list);
 
-      if ((Math.random() * 100) < 20 && data.data.length < perPage) {
+      if (list.length < perPage) {
         $scope.loadEnded = true;
       }
     }
@@ -90,10 +58,9 @@ angular.module('cheApp')
         $scope.getCurrentPosition(locate);
 
       } else if ($scope.currentPage === LIST_KEY.FAVORITE) {
-        $scope.noFavorite = true;
+        favourite(); // 主动拉取收藏记录
       }
     });
-
 
 
     $scope.loadMore = function() {
@@ -111,22 +78,31 @@ angular.module('cheApp')
         loadedCount++;
 
         loadData.next = loadedCount * perPage;
-        loadData.CityId = '004';
+        loadData.cityId = Env.cityId;
 
         $scope.isLoading = true;
 
-        return http.post(loadPath, loadData).success(loadSuccess).finally(function() {
+        // 收藏页面用的是 get 请求
+        var method = $scope.listKey === LIST_KEY.FAVORITE ? 'get' : 'post';
+
+        return http[method](loadPath, loadData).success(loadSuccess).finally(function() {
           $scope.isLoading = false;
         });
       }
     }
 
-    function favourite() {
 
+    // 获取收藏
+    function favourite() {
+      loadPath = 'api/favlist';
+      loadData = {};
+      load();
     }
 
+    // 周边定位
     function locate(err, data) {
       $scope.isLocating = false;
+
       if (err) {
         $scope.locateError = true;
       } else {
@@ -140,6 +116,7 @@ angular.module('cheApp')
       $scope.$apply();
     }
 
+    // 线路搜索
     function search(keyword) {
       if (!keyword || keyword !== lastKeyword) {
         reset();
@@ -159,7 +136,9 @@ angular.module('cheApp')
     }
 
   })
-  .controller('SwitchCityCtrl', function($scope, Env) {
+
+
+  .controller('SwitchCityCtrl', function($scope, http, Env) {
 
     var currentCity = Env.getCurrentCity();
 
@@ -174,34 +153,14 @@ angular.module('cheApp')
       }
     };
 
-    var mockData = {
-      GPSCity: {
-        cityId: '009', cityName: '北京'
-      },
-      HotCity: [
-        {cityId: '001', cityName: '杭州'},
-        {cityId: '002', cityName: '东莞'},
-        {cityId: '004', cityName: '成都'},
-        {cityId: '005', cityName: '郑州'}
-      ],
-      AllCity: [
-        {cityId: '001', cityName: '杭州'},
-        {cityId: '002', cityName: '东莞'},
-        {cityId: '003', cityName: '天津'},
-        {cityId: '004', cityName: '成都'},
-        {cityId: '005', cityName: '郑州'},
-        {cityId: '006', cityName: '呼和浩特'}
-      ]
-    };
-
 
     function getCityMap (data) {
       var map = {};
 
-      ng.forEach(['HotCity', 'AllCity'], function(key) {
+      ng.forEach(['hotCity', 'allCity'], function(key) {
         ng.forEach(data[key], function(city) {
           var id = city.cityId, name = city.cityName;
-          if (id && name) {
+          if (id && name && !(id in map)) {
             map[id] = {id: id, name: name};
             if (id === Env.cityId) {
               map[id].active = true;
@@ -213,24 +172,51 @@ angular.module('cheApp')
       return map;
     }
 
-    function locateFn() {
-      var cityMap = getCityMap(mockData),
+    function locateFn(err, data) {
+      var gpsRef = $scope.city.gps.list[0];
+      if (err) {
+        gpsRef.name = '暂时无法定位你的城市';
+      } else {
+        request(data).success(function(rtn) {
+          var gpsCity = rtn.data.gpsCity;
+          // 无法定位
+          if (!gpsCity.cityName) {
+            gpsRef.name = '暂时无法定位你的城市';
+          }
+          // 定位成功，但无公交数据
+          else if (!gpsCity.cityId) {
+            gpsRef.name = gpsCity.cityName + '(暂时没有这个城 市的公交信息)';
+          }
+          // 成功
+          else {
+            gpsRef.name = gpsCity.cityName;
+            gpsRef.id = gpsCity.cityId;
+          }
+        });
+      }
+    }
+
+    function request(data) {
+      if (!data) { data = {latitude: '0', longitude: '0'}; }
+      return http.get('api/citylist?lat=:latitude&lng=:longitude', data);
+    }
+
+    request().success(function(rtn) {
+      var cityMap = getCityMap(rtn.data),
         city = {
           gps: {type: 'gps', typeName: 'GPS定位城市', list: [
-            {id: '009', name: '北京（暂时没有这个城市的公交信息）', disabled: true}
+            {id: '000', name: '定位中...', disabled: true}
           ]},
           hot: {type: 'hot', typeName: '热门城市', list: []},
           all: {type: 'all', typeName: '所有城市', list: []}
         };
 
-      ng.forEach(mockData.HotCity, function(item) { city.hot.list.push(cityMap[item.cityId]); });
-      ng.forEach(mockData.AllCity, function(item) { city.all.list.push(cityMap[item.cityId]); });
+      ng.forEach(rtn.data.hotCity, function(item) { city.hot.list.push(cityMap[item.cityId]); });
+      ng.forEach(rtn.data.allCity, function(item) { city.all.list.push(cityMap[item.cityId]); });
       $scope.city = city;
-    }
 
-    $scope.getCurrentPosition(locateFn);
+      $scope.getCurrentPosition(locateFn);
 
-  })
-  .controller('FavouriteCtrl', function() {
+    });
 
   });
