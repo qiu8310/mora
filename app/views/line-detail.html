@@ -1,0 +1,37 @@
+<div class="page page--line" ng-cloak="detail">
+
+
+  <div class="detail__top bt bb bg-white" ng-switch="status">
+    <span ng-switch-when="-1" class="status status--gray f-20">班车已过</span>
+    <span ng-switch-when="0" class="status status--pink f-20">即将到站</span>
+    <span ng-switch-default class="status status--skyblue f-20">距离{{status}}站</span>
+
+
+    <h2 class="f-17 fg-3 m0 lh-28">{{current.stationName}}</h2>
+    <p class="f-13 fg-3 lh-18">下一站：{{next.stationName || '无'}}</p>
+    <p class="f-13 fg-a lh-18">首末班：{{detail.firstTime}} - {{detail.lastTime}}</p>
+  </div>
+
+  <div class="detail__content">
+    <div class="hidden" data-line-detail-scroll="index" data-stations="stations">
+      <ul class="list fg-skyblue">
+        <li class="list__item" ng-repeat="item in stations" ng-click="choseStation(item)" ng-class="{'list__item--active': current === item}" data-line-detail="item">
+          <a class="list__item__link">{{$index + 1}}{{::item.stationName}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="detail__bottom">
+    <ul class="bt bb lh-50 text-center f-14 fg-3 bg-white">
+      <li><span class="control swap" ng-click="swap()">换向</span></li>
+      <li><span class="control refresh" ng-click="refresh()">刷新</span></li>
+      <li><span class="control {{detail.isFav ? 'star' : 'unstar'}}" ng-click="fav(detail)">收藏</span></li>
+    </ul>
+  </div>
+
+  <div class="in-refresh" ng-show="isLoading">
+    <loading data-large="true"></loading>
+    <p class="text-center">正在刷新...</p>
+  </div>
+</div>

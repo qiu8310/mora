@@ -14,17 +14,30 @@
     font-weight: 700;
   }
 
-  @include E(back) {
+  .header__back, .header__home {
     @include size(49px, block);
-    float: left;
     margin-top: -49px;
 
     &::after {
       content: '';
       display: block;
+    }
+  }
+
+  @include E(back) {
+    float: left;
+    &::after {
       margin: 14px 0 0 14px;
       @include sprite-2x(back);
+    }
+  }
 
+
+  @include E(home) {
+    float: right;
+    &::after {
+      margin: 16px 0 0 14px;
+      @include sprite-2x(home);
     }
   }
 }

@@ -1,5 +1,5 @@
 angular.module('cheApp')
-  .controller('RootCtrl', function($scope, Env, C, $window, $location) {
+  .controller('RootCtrl', function($scope, Env, C, $window, $location, http) {
     var storeKeyForFooter = 'hideFooter';
 
     var doc = $window.document,
@@ -19,15 +19,22 @@ angular.module('cheApp')
         isAlipay ? 'alipay' :
           Env.Mobile.isIOS ? 'ios': 'android'];
 
+    $scope.setTitle = function(title) {
+      if (isWechat || isAlipay) {
+        docTitle.textContent = title;
+      } else {
+        headerTitle.textContent = title;
+      }
+    };
+
     $scope.$on('$routeChangeStart', function(e, toRoute, fromRoute) {
-      var title = (toRoute.$$route.data || {title: C.app.title}).title,
+      var title = (toRoute.$$route && toRoute.$$route.data || {title: C.app.title}).title,
         shortTitle = title.split(/\s*-/).shift();
 
-      if (isWechat || isAlipay) {
-        docTitle.textContent = shortTitle;
-      } else {
-        headerTitle.textContent = shortTitle;
+      if (shortTitle) {
+        $scope.setTitle(shortTitle);
       }
+
     });
 
     $scope.$on('$routeChangeSuccess', function(e, currentRoute, lastRoute) {
@@ -35,12 +42,22 @@ angular.module('cheApp')
       currentPath = currentRoute.$$route.originalPath;
 
       $scope.isMainPage = currentPath === C.app.mainPage;
+      $scope.isDetailPage = currentPath.indexOf('/line/') === 0;
+      if (currentRoute.$$route.controller === 'LineListCtrl') {
+        $scope.showHeader = false;
+      } else {
+        $scope.showHeader = !isWechat && !isAlipay;
+      }
+
 
       if (!Env.cityId && currentPath !== '/switchCity') {
         $location.path('/switchCity');
       }
     });
 
+    $scope.home = function() {
+      $location.path(C.app.mainPage);
+    };
 
     $scope.closeFooter = function() {
       $scope.hideFooter = true;
@@ -57,6 +74,21 @@ angular.module('cheApp')
         $window.history.back();
       } else {
         $location.path(C.app.mainPage);
+      }
+    };
+
+
+    // 添加与删除收藏
+    $scope.fav = function(item) {
+      if (item) {
+        var type = item.isFav ? 'del' : 'add';
+        if (item.nearStation && !item.favStation) {
+          item.favStation = item.nearStation;
+          item.favStationId = item.nearStationId;
+        }
+
+        item.isFav = !item.isFav;
+        http.post('api/updatefav', {type: type, fav: JSON.stringify({data: {favlist: [item]}})});
       }
     };
 

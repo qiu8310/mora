@@ -19,7 +19,7 @@
   <div class="search__history transition-slow">
     <ul class="list simple-line-list">
       <li class="list__item" ng-repeat="item in history">
-        <a class="list__item__link fg-3" ng-click="clickHistoryItem(item)">{{item}}</a>
+        <a class="list__item__link fg-3" ng-click="clickHistoryItem(item)">{{item.lineName}}</a>
       </li>
     </ul>
     <div class="search__history__clear" ng-show="history.length">

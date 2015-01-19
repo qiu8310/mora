@@ -22,6 +22,7 @@
     @include BE(text) {
       &::before {
         @include sprite-2x(loading-lg);
+        display: inline-block;
       }
     }
   }

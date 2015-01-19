@@ -1,6 +1,6 @@
 
 angular.module('cheApp')
-  .controller('LineSearchCtrl', function($scope, Storage, http, C, Env, $location) {
+  .controller('LineListCtrl', function($scope, Storage, http, C, Env, $location) {
 
     var LIST_KEY = {AROUND: 'around', SEARCH: 'search', FAVORITE: 'favourite'};
 
@@ -32,6 +32,10 @@ angular.module('cheApp')
       if (rtn.status && rtn.status.toLowerCase() !== 'ok' || list.length === 0) {
         $scope.noResult = true;
         return true;
+      }
+
+      if ($scope.listKey === LIST_KEY.FAVORITE) {
+        ng.forEach(list, function(it) {it.isFav = true;});
       }
 
       $scope.list = $scope.list.concat(list);
@@ -67,9 +71,9 @@ angular.module('cheApp')
       return load();
     };
 
-    $scope.goLine = function() {
-      searchHandlers.writeHistoryItem(lastKeyword);
-      $location.path('/choseStation');
+    $scope.goLine = function(item) {
+      searchHandlers.writeHistoryItem(item);
+      $location.path('/line/' + item.lineNo + '/' + item.direction);
     };
 
 
@@ -98,6 +102,21 @@ angular.module('cheApp')
       loadData = {};
       load();
     }
+
+
+    // 全量保存收藏
+    //function saveFav() {
+    //  if ($scope.currentPage !== LIST_KEY.FAVORITE) {
+    //    return false;
+    //  }
+    //  var favlist = [];
+    //  ng.forEach($scope.list, function(item) {
+    //    if (item.faved) {
+    //      favlist.push(item);
+    //    }
+    //  });
+    //  http.post('api/updatefav', {type: 'all', fav: JSON.stringify({data: {favlist: favlist}})});
+    //}
 
     // 周边定位
     function locate(err, data) {
@@ -128,15 +147,94 @@ angular.module('cheApp')
 
         loadPath = 'api/query';
         loadData = {
-          type: 'LineList',
+          type: 'lineList',
           lineName: keyword
         };
         load();
       }
     }
 
+
   })
 
+
+  .controller('LineCtrl', function($scope, http, $routeParams) {
+
+    var lineNo = $routeParams.lineNo,
+      direction = $routeParams.direction || '0',
+      stationId = $routeParams.stationId;
+
+
+    $scope.isLoading = false;
+    $scope.status = -1;
+
+    $scope.choseStation = function(s) {
+      if (s.stationId !== stationId) {
+        stationId = s.stationId;
+        load();
+      }
+    };
+    $scope.swap = function() {
+      direction = direction === '1' ? '0' : '1';
+      load();
+    };
+    $scope.refresh = function() {
+      load();
+    };
+
+    $scope.fav = function(item) {
+      if ($scope.current) {
+        item.favStation = $scope.current.stationName;
+        item.favStationId = $scope.current.stationId;
+        $scope.$parent.fav(item);
+      }
+    };
+
+
+    function loadSuccess(data) {
+      data = data.data;
+      $scope.isLoading = false;
+      $scope.detail = data.line;
+      $scope.setTitle(data.line.lineName);
+
+      var stations = data.stations, index = data.line.order - 1;
+      $scope.stations = stations;
+
+      var current = $scope.current = stations[index];
+      $scope.next = stations[index + 1] || null;
+      $scope.index = index;
+
+      $scope.status = -1;
+      if (current.onTheWayNum > 0) {
+        $scope.status = 0;
+      }
+      // 计算最近的还有几站到
+      else {
+        var nearestBus = 0;
+        for (;index >= 0; index--) {
+          if (stations[index].arrivalNum > 0 || stations[index].onTheWayNum > 0 ) {
+            $scope.status = nearestBus;
+            break;
+          }
+          nearestBus++;
+        }
+      }
+    }
+
+    function load(cb) {
+      if ($scope.isLoading) { return false; }
+      $scope.isLoading = true;
+      http.post('api/query', {
+        type: 'lineDetail',
+        lineNo: lineNo,
+        direction: direction,
+        stationId: stationId
+      }).success(cb || loadSuccess);
+    }
+
+    load();
+
+  })
 
   .controller('SwitchCityCtrl', function($scope, http, Env) {
 
@@ -185,7 +283,7 @@ angular.module('cheApp')
           }
           // 定位成功，但无公交数据
           else if (!gpsCity.cityId) {
-            gpsRef.name = gpsCity.cityName + '(暂时没有这个城 市的公交信息)';
+            gpsRef.name = gpsCity.cityName + '(暂时没有这个城市的公交信息)';
           }
           // 成功
           else {

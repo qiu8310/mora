@@ -1,6 +1,7 @@
 <!doctype html>
-<!--[if lt IE 10]><html class="zh ie"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="zh"> <!--<![endif]-->
+<html class="zh" ng-app="cheApp" ng-controller="RootCtrl"
+      ng-class="{'has-footer': !hideFooter, 'has-header': showHeader, 'detail': isDetailPage}">
+
   <head>
 
     <meta charset="utf-8">
@@ -45,11 +46,12 @@
     <base href="/">
 
   </head>
-  <body ng-app="cheApp" ng-controller="RootCtrl" ng-class="{'has-footer': !hideFooter, 'has-header': showHeader}">
+  <body>
 
-    <header class="header bg-black">
+    <header class="header bg-skyblue">
       <h1 class="header__title fg-white f-17"></h1>
       <a ng-click="back()" ng-hide="isMainPage" class="header__back link text-hide">返回</a>
+      <a ng-click="home()" ng-show="isDetailPage" class="header__home link text-hide">主页</a>
     </header>
 
     <!-- Add your site or application content here -->

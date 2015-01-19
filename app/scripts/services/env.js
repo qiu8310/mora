@@ -16,7 +16,12 @@ angular.module('cheApp').service('Env', function (C, Storage, $window) {
 
   params = ng.parseQuery(location.href);
   Env.Params = params;
-
+  if (params.userId) {
+    Storage.set('userId', params.userId);
+  }
+  Env.getUserId = function() {
+    return params.userId || Storage.get('userId') || (Env.isTest ? 'alipay_12345' : 'browser_' + Date.now());
+  };
 
   /**
    * Debug

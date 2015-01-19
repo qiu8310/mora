@@ -176,8 +176,8 @@
 
 
 
-.page-line--around .search__result,
-.page-line--favourite .search__result {opacity: 1; height: auto;}
+.page-list--around .search__result,
+.page-list--favourite .search__result {opacity: 1; height: auto;}
 
 
 .search__history { opacity: 0; height: 0; };
@@ -193,9 +193,9 @@
 }
 
 
-.page-line {
+.page-list {
   .line-tip { display: none; }
-  &.page-line--search { .for-search { display: block; }}
-  &.page-line--around { .for-around { display: block; }}
-  &.page-line--favourite { .for-favorite { display: block; }}
+  &.page-list--search { .for-search { display: block; }}
+  &.page-list--around { .for-around { display: block; }}
+  &.page-list--favourite { .for-favorite { display: block; }}
 }

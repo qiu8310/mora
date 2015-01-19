@@ -30,33 +30,40 @@ angular
     $routeProvider
       .when('/switchCity', {
         controller: 'SwitchCityCtrl',
-        templateUrl: 'views/switchCity.html',
+        templateUrl: 'views/switch-city.html',
         data: {
           title: '切换城市'
         }
       })
       .when('/lineSearch', {
-        controller: 'LineSearchCtrl',
-        templateUrl: 'views/lineSearch.html',
+        controller: 'LineListCtrl',
+        templateUrl: 'views/line-list.html',
         data: {
           listKey: 'search',
           title: '线路查询'
         }
       })
       .when('/favourite', {
-        controller: 'LineSearchCtrl',
-        templateUrl: 'views/lineSearch.html',
+        controller: 'LineListCtrl',
+        templateUrl: 'views/line-list.html',
         data: {
           listKey: 'favourite',
           title: '我的收藏'
         }
       })
       .when('/lineAround', {
-        controller: 'LineSearchCtrl',
-        templateUrl: 'views/lineSearch.html',
+        controller: 'LineListCtrl',
+        templateUrl: 'views/line-list.html',
         data: {
           listKey: 'around',
           title: '周边线路'
+        }
+      })
+      .when('/line/:lineNo/:direction?/:stationId?', {
+        controller: 'LineCtrl',
+        templateUrl: 'views/line-detail.html',
+        data: {
+          title: ''
         }
       })
 
