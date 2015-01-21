@@ -11,29 +11,30 @@ angular.module('moraApp')
         //var url = C.res.uploader + '?prefix=' + (Env.isTest ? 'crm_test' : 'crm_dev');
 
         var url = 'http://up.qiniu.com/';
+        var prefix = Env.isTest ? 'crm_test_' : 'crm_';
 
         function up(file, token) {
-          var fd, key, xhr;
+          var fd, xhr, key, path;
           fd = new FormData();
-          key = 'file_' + _.now();
+          key = prefix + _.now() + '.' + file.name.split('.').pop();
           xhr = new XMLHttpRequest();
 
           fd.append('token', token);
-          fd.append('unique_names', false);
-          //fd.append('key', key);
+          fd.append('key', key);
           fd.append('file', file);
+
+          path = 'http://llss.qiniudn.com/' + key;
 
 
           xhr.open('POST', url, true);
           xhr.onload = function() {
-            console.log('===========', this.response);
-            //if (this.status === 200) {
-              //var data = JSON.parse(this.response);
-              //
-              //$timeout(function() {
-              //  scope.uploader = data._FILES[key].url;
-              //}, 0);
-            //}
+            if (this.status === 200) {
+              var data = JSON.parse(this.response);
+
+              $timeout(function() {
+                scope.uploader = path;
+              }, 0);
+            }
           };
           xhr.send(fd);
         }
