@@ -1,0 +1,41 @@
+@import "home";
+@import "game";
+
+
+.spring-page body {
+  width: 100%;
+}
+
+@include desktop {
+  .spring-page, .spring-page body {
+    width: 320px;
+    margin: 0 auto;
+  }
+}
+
+.spring-page body {
+  background-color: map-get($colors, red);
+  @include bg(bottom-stripe, 0.5, center bottom);
+  background-size: 100% image-height-ratio(bottom-stripe, 0.5);
+}
+
+.spring-page body > .view {
+  @include bg(top-stripe, 0.5, center top);
+  background-size: 100% image-height-ratio(top-stripe, 0.5);
+}
+
+.spring-page .fragment {
+  @include bg(fragment, 0.5, center top);
+  background-size: contain;
+}
+
+.spring-game-ctrl body {
+  background-color: #432723;
+  @include bg(game-bottom, 0.5, center bottom);
+  background-size: 100% image-height-ratio(game-bottom, 0.5);
+}
+
+.spring-game-ctrl body > .view {
+  @include bg(game-top, 0.5, center top);
+  background-size: 100% image-height-ratio(game-top, 0.5);
+}

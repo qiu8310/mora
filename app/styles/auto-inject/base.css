@@ -53,6 +53,10 @@ table.break-word {
 }
 
 
+.bfc {
+  overflow: hidden;
+}
+
 
 /* 浮动与清除浮动 */
 .pull-left {

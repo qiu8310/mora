@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="zh" ng-app="cheApp" ng-controller="RootCtrl"
-      ng-class="{'has-footer': !hideFooter, 'has-header': showHeader, 'detail': isDetailPage}">
+<html class="zh {{rootClass}}" ng-app="moraApp" ng-controller="RootCtrl"
+      ng-class="{'has-header': showHeader}">
 
   <head>
 
     <meta charset="utf-8">
-    <title>车来了 - 最精准的实时公交App</title>
-    <meta name="apple-mobile-web-app-title" content="车来了">
-    <meta name="description" content="最精准的实时公交App">
-    <meta name="keywords" content="车来了，实时公交">
+    <title>英语流利说</title>
+    <meta name="apple-mobile-web-app-title" content="英语流利说">
+    <meta name="description" content="英语流利说春节活动">
+    <meta name="keywords" content="英语流利说,春节活动">
 
     <!--顺序不可以变，要不360的不使用极速的内核-->
     <meta name="renderer" content="webkit">
@@ -48,25 +48,9 @@
   </head>
   <body>
 
-    <header class="header bg-skyblue">
-      <h1 class="header__title fg-white f-17"></h1>
-      <a ng-click="back()" ng-hide="isMainPage" class="header__back link text-hide">返回</a>
-      <a ng-click="home()" ng-show="isDetailPage" class="header__home link text-hide">主页</a>
-    </header>
-
     <!-- Add your site or application content here -->
-    <div class="view" ng-view autoscroll></div>
+    <div class="view" ng-view autoscroll onload="loaded()"></div>
 
-    <footer class="footer">
-      <div class="footer__left">
-        <h3 class="footer__title f-16 lh-24">车来了</h3>
-        <p class="footer__desc f-13 lh-16">最精准的实时公交应用</p>
-      </div>
-      <div class="footer__right">
-        <a ng-href="{{downloadUrl}}" class="btn">立即下载</a>
-        <a class="footer__closer text-hide" ng-click="closeFooter()">关闭</a>
-      </div>
-    </footer>
     <!--
       TODO 一个比较全的 analytics 工具
       https://segment.com/docs/libraries/analytics.js/quickstart/
@@ -103,21 +87,25 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/ng-extend.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers.js"></script>
-    <script src="scripts/controllers/root.js"></script>
 
-    <script src="scripts/directives.js"></script>
-    <script src="scripts/services.js"></script>
+
+    <script src="scripts/spring/app.js"></script>
+    <script src="scripts/spring/controllers.js"></script>
+    <script src="scripts/spring/directives.js"></script>
+    <script src="scripts/spring/services.js"></script>
+
+
+    <script src="scripts/controllers/root.js"></script>
 
     <script src="scripts/services/service-http-interceptor.js"></script>
     <script src="scripts/services/service-auth.js"></script>
+    <script src="scripts/services/service-http.js"></script>
     <script src="scripts/services/factory-storage.js"></script>
     <script src="scripts/services/factory-dialog.js"></script>
+    <script src="scripts/services/factory-media.js"></script>
 
     <script src="scripts/services/config.js"></script>
     <script src="scripts/services/env.js"></script>
-
     <!-- endbuild -->
 
 

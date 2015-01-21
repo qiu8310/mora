@@ -33,12 +33,13 @@ $ghostwhite:  ghostwhite !default;
 $cadetblue:   cadetblue !default;
 
 
-
+$color-0: #000;
 $color-3: #333;
 $color-6: #666;
 $color-9: #999;
 $color-a: #aaa;
 $color-c: #ccc;
+$color-f: #fff;
 
 $border-color: $color-c;
 $border-style: 1px solid $border-color;
@@ -49,12 +50,9 @@ $border-style: 1px solid $border-color;
 // my defined
 $colors: (
   black: black,
-  yellow: $yellow,
-  red: $red,
-  white: $white,
-  skyblue: #3498DB,
-  pink: #f98086,
-  green: #44cba9,
+  yellow: #ffe600,
+  red: #ef4a41,
+  white: #f7f5ed,
   gray: #aaa
 );
 
@@ -67,7 +65,8 @@ $colors: (
   }
 }
 
-@each $num in (3, 6, 9, a, c) {
+
+@each $num in (0, 3, 6, 9, a, c, f) {
   $_num_color: unquote('#' + $num + $num + $num);
   .bg-#{$num} {
     background-color: $_num_color;

@@ -14,7 +14,7 @@
  http://lesson-production.qiniudn.com/connett/3d0cc95e-c9c7-4a5b-9b6f-7f9b38458095
 
  */
-angular.module('cheApp')
+angular.module('mora.ui')
   .constant('C', {
     app: {
       html5Mode: false,
@@ -25,11 +25,9 @@ angular.module('cheApp')
       logVerbose: false,
 
 
-      title: '车来了 - 最精准的实时公交App',
-      mainPage: '/lineAround',
+      title: '英语流利说',
+      mainPage: '/spring',
 
-      searchHistoryLength: 10,
-      geolocationTimeout: 3000,
 
       download: {
         android: 'http://www.baidu.com?from=android',

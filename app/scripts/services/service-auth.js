@@ -1,4 +1,4 @@
-angular.module('cheApp')
+angular.module('mora.ui')
   .service('Auth', function Auth(Storage) {
 
     var AUTH_KEY = 'sjk-t';

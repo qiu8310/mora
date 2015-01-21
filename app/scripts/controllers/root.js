@@ -1,120 +1,75 @@
-angular.module('cheApp')
-  .controller('RootCtrl', function($scope, Env, C, $window, $location, http) {
-    var storeKeyForFooter = 'hideFooter';
+angular.module('mora.ui')
+  .controller('RootCtrl', function($scope, Env, $location, $timeout) {
 
-    var doc = $window.document,
-      sessionStore = $window.sessionStorage,
+    var doc = Env.doc,
+      C = Env.C,
       lastPath = false,
       currentPath = false,
       isWechat = Env.Platform.isWechat,
-      isAlipay = Env.Platform.isAlipay,
-      docTitle = doc.querySelector('title'),
-      headerTitle = doc.querySelector('.header__title');
+      isAlipay = Env.Platform.isAlipay;
 
     $scope.showHeader = !isWechat && !isAlipay;
-    $scope.hideFooter = !!sessionStore[storeKeyForFooter];
     $scope.isMainPage = false;
     $scope.downloadUrl = C.app.download[
       isWechat ? 'wechat' :
         isAlipay ? 'alipay' :
           Env.Mobile.isIOS ? 'ios': 'android'];
 
-    $scope.setTitle = function(title) {
-      if (isWechat || isAlipay) {
-        docTitle.textContent = title;
-      } else {
-        headerTitle.textContent = title;
-      }
+    $scope.$on('$routeChangeStart', function(e, next, cur) {
+
+    });
+
+    // happened after routeChangeSuccess
+    $scope.loaded = function() {
+
     };
 
-    $scope.$on('$routeChangeStart', function(e, toRoute, fromRoute) {
-      var title = (toRoute.$$route && toRoute.$$route.data || {title: C.app.title}).title,
-        shortTitle = title.split(/\s*-/).shift();
+    $scope.$on('$routeChangeSuccess', function(e, cur, prev) {
+      var prevRoute = prev && prev.$$route || {},
+        curRoute = cur && cur.$$route || {};
 
-      if (shortTitle) {
-        $scope.setTitle(shortTitle);
-      }
+      ng.info('Controller', curRoute.controller);
 
-    });
+      if (!cur.$$route) { return true; }
 
-    $scope.$on('$routeChangeSuccess', function(e, currentRoute, lastRoute) {
-      lastPath = lastRoute && lastRoute.$$route.originalPath;
-      currentPath = currentRoute.$$route.originalPath;
+      lastPath = prevRoute.originalPath;
+      currentPath = curRoute.originalPath;
 
       $scope.isMainPage = currentPath === C.app.mainPage;
-      $scope.isDetailPage = currentPath.indexOf('/line/') === 0;
-      if (currentRoute.$$route.controller === 'LineListCtrl') {
-        $scope.showHeader = false;
-      } else {
-        $scope.showHeader = !isWechat && !isAlipay;
+
+      var cls = ng.lineCase(curRoute.controller);
+      $scope.rootClass = cls + ' ' + cls.split('-').shift() + '-page';
+
+      // 设置页面的 Title (如果有的话)
+      var title = curRoute.data && curRoute.data.title || C.app.title;
+      if (title) {
+        $scope.setTitle(title.split(/\s*-/).shift());
       }
 
-
-      if (!Env.cityId && currentPath !== '/switchCity') {
-        $location.path('/switchCity');
-      }
     });
 
-    $scope.home = function() {
+    $scope.setTitle = function(title) {
+      if (isWechat || isAlipay) { doc.title = title; }
+    };
+
+    $scope.goHome = function() {
       $location.path(C.app.mainPage);
     };
 
-    $scope.closeFooter = function() {
-      $scope.hideFooter = true;
-      sessionStore[storeKeyForFooter] = '1';
-    };
-
     // 跳到上一个页面，不是用 history.back
-    $scope.goLastPath = function() {
+    $scope.goBack = function() {
       $location.path(lastPath || C.app.mainPage);
     };
 
     $scope.back = function() {
       if (lastPath) {
-        $window.history.back();
+        Env.win.history.back();
       } else {
         $location.path(C.app.mainPage);
       }
     };
 
 
-    // 添加与删除收藏
-    $scope.fav = function(item) {
-      if (item) {
-        var type = item.isFav ? 'del' : 'add';
-        if (item.nearStation && !item.favStation) {
-          item.favStation = item.nearStation;
-          item.favStationId = item.nearStationId;
-        }
-
-        item.isFav = !item.isFav;
-        http.post('api/updatefav', {type: type, fav: JSON.stringify({data: {favlist: [item]}})});
-      }
-    };
-
-
-    $scope.getCurrentPosition = function(fn) {
-      var navigator = $window.navigator;
-      fn = ng.isFunction(fn) ? fn : function(){};
-
-      var fnHandler = function(data) {
-        if (data.coords) {
-          // coords.latitude  纬度
-          // coords.longitude 径度
-          fn(false, data.coords);
-        } else {
-          fn(data || true, null);
-        }
-        $scope.$apply();
-      };
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(fnHandler, fnHandler, {
-          timeout: C.app.geolocationTimeout,
-          maximumAge: 60000
-        });
-      } else { fnHandler(); }
-    };
 
 
 

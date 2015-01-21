@@ -1,34 +1,29 @@
-angular.module('cheApp').service('Env', function (C, Storage, $window) {
+angular.module('mora.ui').service('Env', function (C, Storage, $window) {
 
   var doc = $window.document,
     Env = this,
     host = location.host,
-    params;
+    query;
 
 
-  Env.isStaging = host.indexOf('staging') >= 0 || host.indexOf('qiniudn.com') >= 0 || host.indexOf('test') >= 0;
+  // clouddn.com, qiniudn.com, test, staging
+  Env.isStaging = /(?:clouddn\.com|qiniudn\.com|test|staging)/.test(host);
 
   // localhost 可能会带有端口号，所以不能用全等，也可能是本地文件，即 host === ''
-  Env.isLocal = !host || host.indexOf('localhost') === 0 || ['192', '172', '127'].indexOf(host.split('.').shift()) > -1;
+  Env.isLocal = !host || /^(?:localhost|192\.|172\.|127\.|0\.0\.0\.0)/.test(host);
   Env.isOnline = !Env.isLocal && !Env.isStaging;
   Env.isTest = Env.isStaging || Env.isLocal;
 
 
-  params = ng.parseQuery(location.href);
-  Env.Params = params;
-  if (params.userId) {
-    Storage.set('userId', params.userId);
-  }
-  Env.getUserId = function() {
-    return params.userId || Storage.get('userId') || (Env.isTest ? 'alipay_12345' : 'browser_' + Date.now());
-  };
+  query = ng.parseQuery(location.href);
+
 
   /**
    * Debug
    */
   // 判断 DEBUG 与否
-  var DEBUG = Env.Params.DEBUG || (Env.isTest ? 'all' : false),
-    DEBUG_VERBOSE = Env.Params.DEBUG_VERBOSE || C.app.logVerbose,
+  var DEBUG = query.DEBUG || (Env.isTest ? 'all' : false),
+    DEBUG_VERBOSE = query.DEBUG_VERBOSE || C.app.logVerbose,
     nope = function() {},
     debug = function(fn) {
       return function() {
@@ -68,28 +63,23 @@ angular.module('cheApp').service('Env', function (C, Storage, $window) {
   Mobile.isAndroid = /Android/i.test(agent);
   Mobile.isAny = Mobile.isIOS || Mobile.isAndroid || /BlackBerry|Opera Mini|IEMobile/i.test(agent);
 
-  Platform.isWechat = /MicroMessenger/i.test(agent) || params.wechat;
+  Platform.isWechat = /MicroMessenger/i.test(agent) || query.wechat;
   Platform.isQQ = /\bQQ\b/.test(agent);
   Platform.isWeibo = /\bWeibo\b/i.test(agent);
-  Platform.isAlipay = /AlipayClient/i.test(agent) || params.alipay;
+  Platform.isAlipay = /AlipayClient/i.test(agent) || query.alipay;
 
 
   Env.Mobile = Mobile;
   Env.Platform = Platform;
 
 
+  // 设置其它变量，避免每次要用都用注入的方法
+  Env.win = $window;
+  Env.doc = doc;
   Env.now = function() { return Date.now(); };
-
-
-  Env.setCurrentCity = function(city) {
-    Env.cityId = city.id;
-    Env.cityName = city.name;
-    return Storage.set('activeCity', {id: city.id, name: city.name}, true);
-  };
-  Env.getCurrentCity = function() { return Storage.get('activeCity'); };
-
-  var currentCity = Env.getCurrentCity();
-  Env.cityId = currentCity && currentCity.id;
-  Env.cityName = currentCity && currentCity.name;
+  Env.QUERY = query;
+  Env.Storage = Storage;
+  Env.C = C;
+  Env.G = $window.G || {}; // 全局变量，可以是后台传给页面上的
 
 });

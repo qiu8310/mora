@@ -9,7 +9,7 @@
  */
 
 
-angular.module('cheApp')
+angular.module('moraApp')
   .directive('asyncClick', function ($parse) {
 
     return {

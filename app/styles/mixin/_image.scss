@@ -90,6 +90,21 @@ $_sprite-default-dir: sp;
   @return $sprite-map;
 }
 
+@mixin sprite-pos($icon, $ratio: 1, $folder: $_sprite-default-dir) {
+  // 算出整个 sprite 需要绽放的倍数
+  $ratio: _icon-ratio("#{$folder}/#{$icon}", $ratio);
+  $ratio_1: nth($ratio, 1);
+  $ratio_2: nth($ratio, 2);
+
+  $sprite-map: _get-sprite-map($folder);
+  $pos: sprite-position($sprite-map, $icon);
+  background-position: nth($pos, 1) * $ratio_1 nth($pos, 2) * $ratio_2;
+}
+
+@mixin sprite-2x-pos($icon, $folder: $_sprite-default-dir) {
+  @include sprite-pos($icon, 50%, $folder);
+}
+
 
 @mixin sprite($icon, $ratio: 1, $size: true, $folder: $_sprite-default-dir) {
   $sprite-map: _get-sprite-map($folder);
@@ -118,7 +133,7 @@ $_sprite-default-dir: sp;
   background-position: nth($pos, 1) * $ratio_1 nth($pos, 2) * $ratio_2;
 
   @if $size {
-    display: block;
+    display: if($size == true, inline-block, $size);
     width: round($icon-width * $ratio_1);
     height: round($icon-height * $ratio_2);
   }

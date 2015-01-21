@@ -1,5 +1,5 @@
 
-angular.module('cheApp')
+angular.module('mora.ui')
   .factory('Storage', function () {
     // https://github.com/marcuswestin/store.js 支持跨域
     var Storage = window.localStorage,

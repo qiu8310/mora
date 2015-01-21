@@ -1,15 +1,17 @@
-angular.module('cheApp')
-  .factory('Dialog', function($window, Env) {
+angular.module('mora.ui')
+  .factory('Dialog', function(Env) {
+
+    var win = Env.win;
 
     return {
       alert: function(msg) {
         if(Env.isLocal) {
-          console.error(msg);
+          console.error('Dialog.alert: ' + msg);
         } else {
-          $window.alert(msg);
+          win.alert(msg);
         }
       },
-      confirm:  function(msg) { return $window.confirm(msg); },
-      prompt:   function(msg, defaultValue) { return $window.prompt(msg, defaultValue); }
+      confirm:  function(msg) { return win.confirm(msg); },
+      prompt:   function(msg, defaultValue) { return win.prompt(msg, defaultValue); }
     };
   });

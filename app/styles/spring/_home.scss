@@ -1,0 +1,37 @@
+
+@keyframes homeAni {
+   0% { @include sprite-2x(1, false, home); }
+  25% { @include sprite-2x(2, false, home); }
+  50% { @include sprite-2x(3, false, home); }
+  75% { @include sprite-2x(4, false, home); }
+}
+
+.home-ani {
+  // 500 558
+  @include size(250px 279px);
+  animation: homeAni step-end .4s infinite;
+}
+
+
+.spring-home-ctrl {
+  .no-prize {
+    width: 246px;
+
+    &::before {
+      content: '';
+      @include sprite-2x(modal, true, home);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 10;
+    }
+  }
+
+  .modal-container {
+    margin-top: -12px;
+    @include size(100% 164px, block, 12px);
+  }
+}
+
+

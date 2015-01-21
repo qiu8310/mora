@@ -1,4 +1,4 @@
-angular.module('cheApp')
+angular.module('mora.ui')
   .service('HttpInterceptor', function ($q, $rootScope, Env, C) {
 
     var API_BASE = Env.isTest ? 'http://182.92.66.104:6080/datasource' : 'http://web.chelaile.net.cn/h5',

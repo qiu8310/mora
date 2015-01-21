@@ -100,11 +100,9 @@
 
  return _;
  })())
-
- .factory('$', function() {
- return window.$;
- });
  */
+
+
 /* jshint ignore:start */
 var ng = angular;
 /* jshint ignore:end */
@@ -143,6 +141,7 @@ var ng = angular;
   ng.element.prototype.find = function(selector) {
     return ng.element(this[0] ? this[0].querySelector(selector) : undefined);
   };
+
   ng.querySelector = function(selector, context) {
     return ng.element((context || document).querySelector(selector));
   };
@@ -157,20 +156,20 @@ var ng = angular;
   };
   ng.capitalize = function(str) {return str.charAt(0).toUpperCase() + str.substr(1);};
   ng.camelCase = function (obj, deep) {
-    return walkObj(obj, deep, function(str) {
+    return walkObj(obj, function(str) {
       return str.replace(/_+([a-z])/g, function(_, letter) { return letter.toUpperCase(); });
-    });
+    }, deep);
   };
   ng.lineCase = function(obj, deep) {
-    return walkObj(obj, deep, function(str) {
+    return walkObj(obj, function(str) {
       // 如果第一个字符是大写的，则不要在它前面加中划线，直接小写就行了
       return str.replace(/[A-Z]/g, function(letter, index) { return (index ? '-' : '') + letter.toLowerCase(); });
-    });
+    }, deep);
   };
-  ng.underscoreCase = function(obj, deep) {
-    return walkObj(obj, deep, function(str) {
+  ng.snakeCase = function(obj, deep) {
+    return walkObj(obj, function(str) {
       return str.replace(/[A-Z]/g, function(letter, index) { return (index ? '_' : '') + letter.toLowerCase(); });
-    });
+    }, deep);
   };
   ng.buildQuery = function(query) {
     if (ng.isObject(query)) {
@@ -219,6 +218,25 @@ var ng = angular;
     });
     return [].concat.apply([], args);
   };
+
+
+  ng.css3 = function(el, key, val) {
+    var style, t, unDef;
+    style = val === unDef ? window.getComputedStyle(el, null) : el.style;
+
+    key = key.replace(/-[a-z]/g, function(r) { return r.charAt(1).toUpperCase(); });
+    if (!(key in style)) {
+      ['Webkit', 'O', 'Moz', 'ms'].forEach(function(prefix) {
+        t = prefix + key.charAt(0).toUpperCase() + key.substr(1);
+        if (t in style) { key = t; }
+      });
+    }
+    return val === unDef ? style[key] : (style[key] = val);
+  };
+  ng.element.prototype.css3 = function(key, val) {
+    for (var i = 0; i < this.length; i++) { ng.css3(this[i], key, val); }
+  };
+
 
   ng.info = function(title, args) {
     try {

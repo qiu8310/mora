@@ -1,0 +1,23 @@
+<div class="container fragment">
+  <div class="slogan text-center fg-f f-bold f25 l31 pt23">
+    <p>猜一猜新年礼物</p>
+    <p>在哪个萌神背后</p>
+  </div>
+
+  <div class="home-ani center-block mt10"></div>
+
+  <div class="control">
+    <a class="btn block mt15" ng-click="goToGame()">开始游戏</a>
+    <a class="btn btn-white block mt13" ng-click="goToMyPrizes()">我的礼物</a>
+  </div>
+
+
+  <div class="mask ani-scale" ng-show="showNoPrizeTip">
+    <div class="modal no-prize">
+      <div class="modal-container bg-red bfc">
+        <p class="f22 fg-f text-center l35 mt28">我还没有礼物</p>
+        <a class="btn mt22" ng-click="closeNoPrizeTip()">关闭</a>
+      </div>
+    </div>
+  </div>
+</div>

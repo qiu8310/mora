@@ -1,6 +1,7 @@
 html {
   position: relative;
   overflow-x: hidden;
+  height: 100%;
 
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -33,59 +34,24 @@ body.has-footer {
 }
 
 
-.link, .btn {
-  cursor: pointer;
-}
+.flex {
+  display: flex;
 
-
-.link, .link:link, .link:visited {
-  color: map-get($colors, skyblue);
-}
-.link:active, .link:hover {
-  opacity: .8;
-}
-.link.disabled {
-  color: $color-c;
-}
-
-.bg-skyblue {
-  .link, .link:link, .link:visited {
-    color: #fff;
+  & > li {
+    flex: 1;
   }
 }
 
-.btn {
-  display: inline-block;
-  background-color: map-get($colors, skyblue);
-  font-size: 14px;
-  color: white;
-  border-radius: 2px;
-}
-.btn:active, .btn:hover {
-  opacity: .8;
-}
-.btn.disabled {
-  background-color: #E5E5EA;
-  color: $color-c;
-  opacity: .8;
-}
 
-.ng-click-active {
-  opacity: .8;
-}
+.mask {
+  @include position(fixed, 0);
+  @include z-index(mask);
+  background-color: rgba(0, 0, 0, .7);
 
-.touchable {
-  transition: .1s;
-  .touched {
-    opacity: .8;
+  & > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
-
-.disabled, [disabled], [class*=disabled] {
-  pointer-events: none !important;
-}
-
-
-
-
-
