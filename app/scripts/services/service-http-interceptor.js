@@ -87,10 +87,10 @@ angular.module('moraApp')
             $rootScope.$broadcast('HTTPError', 'You are not allowed to access this page!!');
           } else if (response.status >= 400 && response.status < 500) {
             $rootScope.$broadcast('HTTPError',
-              'Server was unable to find what you were looking for... Sorry!!');
+              '请求的链接有问题');
           } else if (response.status >= 500 && response.status < 600) {
             $rootScope.$broadcast('HTTPError',
-              'There is something wrong with the server, please contact the administrator!!');
+              '后台接口返回状态 ' + response.status + '; 请联系后台开发：【寿司】或【Jon】或【Ben】');
           }
         }
         return $q.reject(response);
