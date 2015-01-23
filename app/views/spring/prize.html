@@ -1,0 +1,63 @@
+<div class="container fragment">
+  <div ng-if="::isOwned">
+    <div class="slogan fg-f f-bold f20 l26 pt25 text-center">
+      <p ng-if="::untouched">招唤{{::prize.requireUsersTotal}}个小伙伴来帮你拆礼物！<br/>&nbsp;</p>
+      <p ng-if="::(touchUsersCount && !opened)">已有{{::touchUsersCount}}个小伙伴帮忙，召唤更多小伙伴来帮你拆礼物！</p>
+      <p ng-if="::opened">人缘太好了<br/>你的礼物已经被拆开</p>
+    </div>
+  </div>
+
+  <div ng-if="::(opened && isOwned)" class="f14 l17 fg-yellow text-center mt10">
+    <p>你获得了</p>
+    <p ng-if="::(prize.prize === 'freehand_greeting_card')">英语流利说独家新年手绘贺卡一张<br/>你想把它送给谁</p>
+    <p ng-if="::(prize.prize === 'music_greeting_card')">英语流利说独家新年电子贺卡一张<br/>你想把它送给谁</p>
+    <p ng-if="::(prize.prize === 'course')">英语流利说年底巨献大奖<br/>3/10000的概率，还不趁没人赶快拿走</p>
+  </div>
+
+
+  <div class="slogan fg-f f-bold f20 l26 pt20 text-center" ng-if="::(!isOwned)">
+    <p ng-if="::(!helped && !opened)">英语流利说送给{{::owner}}一个新年礼物，快来帮TA拆礼物吧！</p>
+    <p ng-if="::(helped && !opened)">已有{{::touchUsersCount}}小伙伴帮{{::owner}}拆礼物，召唤更多小伙伴来帮忙吧！</p>
+    <p ng-if="::(opened)">英语流利说送给{{::owner}}一个新年礼物，你来迟了，礼物已经拆开啦！</p>
+  </div>
+
+  <div class="prize prize-{{::prize.color}} center-block mt22" ng-class="::{opened: opened}">
+    <prize-box></prize-box>
+  </div>
+
+  <div ng-if="::(!opened && !untouched)">
+    <div class="fg-yellow f14 l17 mt12 text-center">
+      <div ng-if="::isOwned">
+        <p>果断帮你的朋友</p>
+        <p>这些朋友你要好好珍惜啊</p>
+      </div>
+      <p ng-if="::!isOwned">{{owner}}的好基友</p>
+    </div>
+
+    <ul class="list fg-f f14">
+      <li class="list__item" ng-repeat="user in ::prize.touchUsersInfo">
+        <img class="user-avatar" ng-src="{{::user.avatar}}">
+        <span class="user-name">{{::user.nickname}}</span>
+      </li>
+    </ul>
+  </div>
+
+
+  <div ng-show="::(opened && isOwned)">
+    <p ng-if="::(prize.prize === 'course' && !inputDisabled)" class="fg-f f14 l20 mt8 text-center">请输入你或你朋友的手机号码</p>
+    <p ng-if="::(prize.prize !== 'course' && !inputDisabled)" class="fg-f f14 l20 mt8 text-center">请输入TA的名字</p>
+    <input class="input mt15 mb15" type="text" ng-disabled="inputDisabled" autocomplete="off" placeholder="点击输入" ng-model="input"/>
+    <a class="btn btn-white mb15" ng-click="open()">打开礼物</a>
+  </div>
+
+
+
+  <a class="btn mt36 mb50" ng-if="::(isOwned && !opened)" ng-click="showTip()">分享求打开</a>
+  <a class="btn mt36 mb50" ng-if="::(!isOwned && !opened && !helped)" ng-click="helpOpen()" >帮TA拆礼物</a>
+  <a class="btn mt36 mb50" ng-if="::(!isOwned && !opened && helped)" ng-click="showTip()" >分享</a>
+  <a class="btn mt36 mb50" ng-if="::(!isOwned && opened )" ng-click="goHome()">我也要玩</a>
+
+  <div class="mask ani-scale" ng-show="showShareTip" ng-click="closeTip()">
+    <div class="modal share-tip"></div>
+  </div>
+</div>

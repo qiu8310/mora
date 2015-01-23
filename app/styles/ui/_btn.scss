@@ -30,6 +30,11 @@
   @include size(200px 52px true, block, 26px);
 }
 
+.btn-small {
+  font-size: 14px;
+  @include size(68px 30px true, block, 15px);
+}
+
 .btn-white {
   background-color: map-get($colors, white);
   box-shadow: inset 0 -3px #c9cdd0, 0 4px rgba(0,0,0,.14);

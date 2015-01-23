@@ -1,13 +1,16 @@
 <div class="container">
 
-  <p class="slogan text-center fg-f f-bold f20 l26 pt41">晃动停止后，选择一个萌神</p>
-  <p class="slogan text-center fg-f f-bold f20 l26">祝你好运哦</p>
+  <div class="slogan text-center fg-f f-bold f20 l26 pt30">
+    <p>晃动停止后，选择一个萌神</p>
+    <p>祝你好运哦</p>
+  </div>
+
 
   <ul class="game-ani flex">
     <li>
       <div class="box box-left center-block flipper-container">
         <div class="flipper">
-          <div class="front" ng-click="pick($event)"></div>
+          <div class="front" async-click="pick($event)"></div>
           <div class="back"></div>
         </div>
       </div>
@@ -15,7 +18,7 @@
     <li>
       <div class="box box-right center-block flipper-container">
         <div class="flipper">
-          <div class="front" ng-click="pick($event)"></div>
+          <div class="front" async-click="pick($event)"></div>
           <div class="back"></div>
         </div>
       </div>

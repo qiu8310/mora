@@ -25,15 +25,19 @@ angular.module('mora.ui')
       logVerbose: false,
 
 
-      title: '英语流利说',
+      title: '英语流利说春节活动',
       mainPage: '/spring',
 
 
+      allowAccessFrom: ['wechat'],  // qq, weibo, wechat, alipay, lls, all
+
+
       download: {
-        android: 'http://www.baidu.com?from=android',
-        ios: 'http://www.baidu.com?from=ios',
-        wechat: 'http://www.baidu.com?from=wechat',
-        alipay: 'http://www.baidu.com?from=alipay'
+        android: 'http://www.liulishuo.com/android',
+        ios: 'http://www.liulishuo.com/ios',
+        iosOrigin: 'https://itunes.apple.com/us/app/liu-li-shuo-hui-da-fen-zhi/id597364850?ls=1&mt=8',
+        wechat: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.liulishuo.engzo&g_f=991653',
+        other: 'http://www.liulishuo.com'
       }
     },
 

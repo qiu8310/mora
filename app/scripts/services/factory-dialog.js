@@ -5,11 +5,7 @@ angular.module('mora.ui')
 
     return {
       alert: function(msg) {
-        if(Env.isLocal) {
-          console.error('Dialog.alert: ' + msg);
-        } else {
-          win.alert(msg);
-        }
+        win.alert(msg);
       },
       confirm:  function(msg) { return win.confirm(msg); },
       prompt:   function(msg, defaultValue) { return win.prompt(msg, defaultValue); }

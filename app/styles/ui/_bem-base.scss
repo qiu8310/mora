@@ -36,6 +36,21 @@
   }
 }
 
+@mixin bem-list-first-item {
+  @at-root {
+    #{&} .list__item:first-child {
+      @content;
+    }
+  }
+}
+@mixin bem-list-last-item {
+  @at-root {
+    #{&} .list__item:last-child {
+      @content;
+    }
+  }
+}
+
 @mixin bem-list-active-item {
   @at-root {
     #{&} .list__item--active {

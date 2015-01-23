@@ -1,6 +1,17 @@
 @import "home";
 @import "game";
+@import "prize";
+@import "card";
 
+.slogan {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.container {
+  width: 320px;
+  margin: 0 auto;
+}
 
 .spring-page body {
   width: 100%;

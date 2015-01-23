@@ -37,6 +37,7 @@ angular.module('mora.ui')
       }
 
       this.isPlay = false;
+      this._handlers = [];
     }
 
     Player.prototype = {
@@ -62,12 +63,20 @@ angular.module('mora.ui')
         }
       },
       destroy: function() {
-        this.pause();
-        this.player.ref = null;
+        var self = this;
         var parent = this.player.parentNode;
+
+        this.pause();
+        this._handlers.forEach(function(args) {
+          self.player.removeEventListener(args[0], args[1], args[2]);
+        });
+        this._handlers = [];
+
         if (parent) {
           parent.removeChild(this.player);
         }
+
+        this.player.ref = null;
         this.player = null;
       },
       time     : function(val) {
@@ -89,6 +98,7 @@ angular.module('mora.ui')
           };
 
         types.forEach(function(type) {
+          self._handlers.push([type, handler, false]);
           self.player.addEventListener(type, handler, false);
         });
       }

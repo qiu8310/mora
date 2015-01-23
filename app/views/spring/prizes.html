@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="slogan fg-f f-bold f20 l26 pt35 text-center">
+    <p>英语流利说送给你的新年礼物</p>
+    <p class="l16">&nbsp;</p>
+  </div>
+
+  <div class="box center-block mt20" ng-show="::closedLength">
+    <h3 class="mp0 fg-yellow f14">尚未拆开：x{{::closedLength}}{{closedLength > 9 ? '（最多显示前9个）' : ''}}</h3>
+    <div class="row" ng-repeat="group in closed">
+      <a ng-repeat="it in group" class="{{::it.color}}" ng-click="goToPrize(it)"></a>
+    </div>
+  </div>
+
+  <div class="box opened center-block mt20" ng-show="::openedLength">
+    <h3 class="mp0 fg-yellow f14">已经拆开：</h3>
+
+    <ul class="list fg-f f14">
+      <li class="list__item" ng-repeat="it in opened">
+        <p>{{::it.label}}</p>
+        <div class="pull-right">
+          <span>1张</span>
+          <a class="btn btn-small" ng-click="goToPrize(it)">查看</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>

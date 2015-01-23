@@ -1,8 +1,8 @@
 angular.module('mora.ui')
   .service('HttpInterceptor', function ($q, $rootScope, Env, C) {
 
-    var API_BASE = Env.isTest ? 'http://182.92.66.104:6080/datasource' : 'http://web.chelaile.net.cn/h5',
-      PREFIX = 'api';
+    var loc = Env.win.location, PREFIX = 'api';
+    var API_BASE = (Env.isLocal ? 'http://192.168.1.140:3000' : 'http://' +  loc.host) + '/neo_huodong/api/huodongs/2';
 
     return {
       // requestError: function(rejection) {}
@@ -17,13 +17,7 @@ angular.module('mora.ui')
         }
 
         url = API_BASE + url.substr(PREFIX.length);
-        params = {s: 'h5', v: '1.0.0'};
-        params.src = Env.Platform.isWechat ? 'wechat' : Env.Platform.isAlipay ? 'alipay' : 'browser';
-
-        params.userId = Env.getUserId();
-        params.cityId = Env.cityId;
-        //params.lat = '120.180353';
-        //params.lng = '30.271222';
+        params = {wechat: '1', refreshToken: Env.G.currentUser.refreshToken};
 
         url = ng.appendQuery(url, params);
 
@@ -38,8 +32,8 @@ angular.module('mora.ui')
         //request.params = _.assign(request.params || {}, token);
         //request.data   = _.assign(request.data || {}, token);
 
-        //request.url = url;
-        request.url = Env.isTest && C.res.proxyUrl ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
+        request.url = url;
+        //request.url = Env.isTest && C.res.proxyUrl ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
 
         ng.info('request', url, request.data || {}, 'verbose:', request);
 
@@ -64,6 +58,7 @@ angular.module('mora.ui')
         //  Auth.setToken(response.data.token);
         //}
 
+        response.data = ng.camelCase(response.data);
         ng.info('response', url, response.data, 'verbose:', response);
         return response;
       },

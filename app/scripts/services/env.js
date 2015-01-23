@@ -1,7 +1,9 @@
 angular.module('mora.ui').service('Env', function (C, Storage, $window) {
 
-  var doc = $window.document,
+  var win = $window,
+    doc = win.document,
     Env = this,
+    location = win.location,
     host = location.host,
     query;
 
@@ -20,6 +22,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
 
   /**
    * Debug
+   * 包括移动端(Env.L) 和 电脑端(console)
    */
   // 判断 DEBUG 与否
   var DEBUG = query.DEBUG || (Env.isTest ? 'all' : false),
@@ -37,10 +40,69 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
       };
     };
 
+  var _log = function(elem, msg, append) {
+    if (append || append === undefined) {
+      msg = elem.textContent + '\r\n' + msg;
+    }
+    elem.textContent = msg;
+  };
+  var wrap = function(key) {
+    return function() {
+      if (!query.__DEBUG) { return false; }
+
+      var container = doc.querySelector('.__debug'),
+        holder = doc.querySelector('.__debug .holder'),
+        toggle = doc.querySelector('.__debug .toggle');
+      if (!container) {
+        container = doc.createElement('div');
+        container.className = '__debug toggle-visible';
+        (doc.getElementById('root') || doc.body).appendChild(container);
+      }
+      if (!toggle) {
+        container.innerHTML = '';
+        toggle = doc.createElement('a');
+        toggle.textContent = 'Toggle Visible';
+        toggle.className = 'toggle';
+
+        holder = document.createElement('div');
+        holder.className = 'holder';
+
+        container.appendChild(toggle);
+        container.appendChild(holder);
+        toggle.onclick = function() { container.classList.toggle('toggle-visible'); };
+      }
+
+
+      var elem = doc.createElement('div');
+      elem.className = key;
+      holder.appendChild(elem);
+
+      var args = [].slice.call(arguments, 0);
+      var msg = [], append = true;
+
+      if (typeof args[args.length - 1] === 'boolean') {
+        append = args.pop();
+      }
+
+      args.forEach(function(arg) {
+        if (typeof arg === 'object') {
+          try {
+            arg = JSON.stringify(arg);
+          } catch (e) { arg = arg.toString(); }
+        }
+        msg.push(arg);
+      });
+
+      _log(elem, msg.join(', '), append);
+    };
+  };
+
+  var L = {};
   ng.forEach('log info error debug'.split(' '), function(key) {
     if (DEBUG && (DEBUG === 'all' || DEBUG === key)) {
       console['_' + key] = console[key]; // backup old method
       console[key] = debug(console[key]);
+      L[key] = wrap(key);
     } else {
       console[key] = nope;
     }
@@ -48,6 +110,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
 
   Env.DEBUG = DEBUG;
   Env.DEBUG_VERBOSE = DEBUG_VERBOSE;
+
 
 
   /**
@@ -63,11 +126,47 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
   Mobile.isAndroid = /Android/i.test(agent);
   Mobile.isAny = Mobile.isIOS || Mobile.isAndroid || /BlackBerry|Opera Mini|IEMobile/i.test(agent);
 
+
+  var allPlatform = {Wechat: '微信', QQ: 'QQ', Weibo: '新浪微博', Alipay: '支持宝', LLS: '流利说'};
+
   Platform.isWechat = /MicroMessenger/i.test(agent) || query.wechat;
   Platform.isQQ = /\bQQ\b/.test(agent);
   Platform.isWeibo = /\bWeibo\b/i.test(agent);
   Platform.isAlipay = /AlipayClient/i.test(agent) || query.alipay;
+  Platform.isLLS = query.token && query.token.length > 10;
 
+  // 访问平台限制
+  var allowAccessFrom = [].concat(C.app.allowAccessFrom || []);
+  if (Env.isOnline && allowAccessFrom.length > 0 && allowAccessFrom.indexOf('all') === -1) {
+    var _all = {}, _allows = [], _hit = false, _item;
+
+    Object.keys(allPlatform).forEach(function(key) {
+      _all[key.toLowerCase()] = {label: allPlatform[key], id: 'is' + key};
+    });
+
+    allowAccessFrom.forEach(function(key) {
+      _item = _all[key.toLowerCase()];
+      _allows.push(_item.label);
+      if (Platform[_item.id]) { _hit = true; }
+    });
+
+    if (!_hit) {
+      $window.alert('请在【' + _allows.join('】或【') + '】APP内访问');
+    }
+  }
+
+
+  // 平台相关的下载地址
+  var downloads = C.app.download;
+  Object.keys(allPlatform).forEach(function(key) {
+    if (Platform['is' + key]) {
+      key = key.toLowerCase();
+      if (key in downloads) { Env.downloadUrl = downloads[key]; }
+    }
+  });
+  if (!Env.downloadUrl) {
+    Env.downloadUrl = Mobile.isIOS ? downloads.ios : Mobile.isAndroid ? downloads.android : downloads.other;
+  }
 
   Env.Mobile = Mobile;
   Env.Platform = Platform;
@@ -80,6 +179,8 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
   Env.QUERY = query;
   Env.Storage = Storage;
   Env.C = C;
+  Env.L = L;
   Env.G = $window.G || {}; // 全局变量，可以是后台传给页面上的
 
+  win.Env = Env;
 });

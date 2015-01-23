@@ -1,5 +1,5 @@
 angular.module('mora.ui')
-  .controller('RootCtrl', function($scope, Env, $location, $timeout) {
+  .controller('RootCtrl', function($scope, Env, $location, $timeout, Dialog) {
 
     var doc = Env.doc,
       C = Env.C,
@@ -21,12 +21,14 @@ angular.module('mora.ui')
 
     // happened after routeChangeSuccess
     $scope.loaded = function() {
-
+      ng.info('Scope', ng.element(doc.querySelector('[ng-view]')).scope());
     };
 
     $scope.$on('$routeChangeSuccess', function(e, cur, prev) {
       var prevRoute = prev && prev.$$route || {},
         curRoute = cur && cur.$$route || {};
+
+      if (!curRoute.controller) { return true; }
 
       ng.info('Controller', curRoute.controller);
 
@@ -46,6 +48,10 @@ angular.module('mora.ui')
         $scope.setTitle(title.split(/\s*-/).shift());
       }
 
+    });
+
+    $scope.$on('HTTPError', function(e, msg) {
+      Dialog.alert(msg);
     });
 
     $scope.setTitle = function(title) {

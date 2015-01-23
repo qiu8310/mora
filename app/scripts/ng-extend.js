@@ -1,113 +1,119 @@
-/*
- angular
- .module('vendors', [])
-
- // 用 constant 是为了使它可以用在 angular.config 中
- .constant('_', (function() {
- var _ = window._, $ = window.jQuery;
-
-
- (function registerAsyncClickToLoDash() {
- function isTextNode(el) {
- return $.trim(el.text()) && el.children().length === 0;
- }
-
- function findTextNode(el) {
- var find = null;
- if (isTextNode(el)) { return el; }
-
- el.children().each(function() {
- if (find) { return false; }
-
- var el = $(this);
- find = isTextNode(el) ? el : findTextNode(el);
- });
-
- return find;
- }
-
- _.mixin({asyncClickOn: function(element, fn, options) {
- options = options || {};
- element = $(element);
-
- var promise,
- textNode = findTextNode(element),
- originalText = textNode.text(),
- asyncText = options.asyncText || originalText + '...',
- asyncClass = options.asyncClass || 'disabled',
- asyncTarget = options.asyncTarget && $(options.asyncTarget);
-
- if (element.hasClass(asyncClass)) {
- return false;
- }
- if (options.asyncConfirm && !window.confirm(options.asyncConfirm)) {
- return false;
- }
-
- asyncClass += ' async-loading';
- asyncTarget = asyncTarget && asyncTarget.length ? asyncTarget.eq(0) : null;
-
-
- var spinElement;
-
- function start() {
- textNode.text(asyncText);
- element.addClass(asyncClass);
- if (asyncTarget) {
- spinElement = $('<div class="async-loading"><i class="fa fa-spinner fa-2x fa-spin"></i></div>');
- var style = {
- width: asyncTarget.width(),
- height: asyncTarget.height()
- };
- spinElement.css(style);
- spinElement.find('.fa').css({
- marginLeft: style.width / 2 - 8,
- marginTop: Math.min(style.height / 2 - 8, 100)
- });
-
-
- asyncTarget.fadeOut(300, function() {
- asyncTarget.before(spinElement);
- });
- }
- }
-
- function finish() {
- textNode.text(originalText);
- element.removeClass(asyncClass);
- if (asyncTarget) {
- spinElement.remove();
- spinElement = null;
- asyncTarget.fadeIn(500);
- }
- }
-
-
- element[0].blur();
- promise = fn.apply(options.context, options.args || []);
-
- // promise 结束时的回调
- var promiseFn = promise && (promise.always || promise.finally);
- if (typeof promiseFn === 'function') {
- start();
- promiseFn.call(promise, finish);
- }
-
- }});
-
- })();
-
-
- return _;
- })())
- */
-
 
 /* jshint ignore:start */
 var ng = angular;
 /* jshint ignore:end */
 
+
+(function registerAsyncClick() {
+
+  function isTextNode(el) {
+    return el.textContent.trim() && el.children.length === 0;
+  }
+
+  function findTextNode(el) {
+    var find = null;
+    if (isTextNode(el)) { return el; }
+
+    [].slice.call(el.children).forEach(function(it) {
+      if (find) { return false; }
+      find = isTextNode(it) ? it : findTextNode(it);
+    });
+
+    return find;
+  }
+
+  /**
+   * @param el
+   * @param fn
+   * @param options {object}  text, confirm, style, loadingStyle, context, args, target [ 暂不支持 target ]
+   *
+   * @returns {boolean}
+   */
+  function asyncClick(el, fn, options) {
+    options = options || {};
+
+    if (!el.nodeType) { el = el[0]; }
+
+    var promise,
+      textNode = findTextNode(el) || {},
+      originalText = textNode.textContent,
+
+      text = options.text || originalText + '...',
+      confirm = options.confirm,
+      style = options.style || 'disabled',
+      loadingStyle = options.loadingStyle || 'async-loading';
+
+    //var target = options.target && options.target.nodeName ? options.target : null;
+
+    if (el.classList.contains(style) || confirm && !window.confirm(confirm)) {
+      return false;
+    }
+
+
+
+    //var spinElement;
+
+    function start() {
+      textNode.textContent = text;
+      el.classList.add(style);
+      el.classList.add(loadingStyle);
+
+      //if (target) {
+        //spinElement = $('<div class="async-loading"><i class="fa fa-spinner fa-2x fa-spin"></i></div>');
+        //var style = {
+        //  width: asyncTarget.width(),
+        //  height: asyncTarget.height()
+        //};
+        //spinElement.css(style);
+        //spinElement.find('.fa').css({
+        //  marginLeft: style.width / 2 - 8,
+        //  marginTop: Math.min(style.height / 2 - 8, 100)
+        //});
+        //
+        //
+        //asyncTarget.fadeOut(300, function() {
+        //  asyncTarget.before(spinElement);
+        //});
+      //}
+    }
+
+    function finish() {
+      textNode.textContent = originalText;
+      el.classList.remove(style);
+      el.classList.remove(loadingStyle);
+
+      //if (target) {
+        //spinElement.remove();
+        //spinElement = null;
+        //asyncTarget.fadeIn(500);
+      //}
+    }
+
+
+    el.blur();
+    promise = fn.apply(options.context, options.args || []);
+
+    // promise 结束时的回调
+    var promiseFn = promise && (promise.always || promise.finally);
+    if (typeof promiseFn === 'function') {
+      start();
+      promiseFn.call(promise, finish);
+    }
+
+  }
+
+  ng.asyncClick = asyncClick;
+  ng.element.prototype.asyncClick = function(fn, options) {
+    for (var i = 0; i < this.length; i++) { asyncClick(this[i], fn, options); }
+  };
+
+})();
+
+
 (function() {
+  ng.isPlainObject = function(obj) {
+    return ({}).toString.call(obj) === '[object Object]';
+  };
 
   function walkObj(obj, processFn, deep) {
     if (ng.isUndefined(deep)) {
@@ -118,7 +124,7 @@ var ng = angular;
     } else {
       var result,
         isArray = ng.isArray(obj),
-        isObject = ng.isObject(obj);
+        isObject = ng.isPlainObject(obj);
       if (isArray || isObject) {
         result = isArray ? [] : {};
 
@@ -127,8 +133,8 @@ var ng = angular;
             key = processFn(key);
           }
 
-          result[key] = deep && (ng.isArray(val) || ng.isObject(val)) ?
-            walkObj(val, deep, processFn) :
+          result[key] = deep && (ng.isArray(val) || ng.isPlainObject(val)) ?
+            walkObj(val, processFn, deep) :
             val;
         });
 
@@ -219,8 +225,21 @@ var ng = angular;
     return [].concat.apply([], args);
   };
 
+  ng.random = function() {
+    var args = [].slice.call(arguments);
+    if (ng.type(args[0]) === 'array') {
+      var arr = args[0], len = arr.length;
+      return len ? arr[ng.random(0, len - 1)] : null;
+    } else {
+      var min = 0, max;
+      if (args.length === 1) { max = args[0]; }
+      else { min = args[0]; max = args[1]; }
+      return min + Math.floor(Math.random() * (max - min + 1));
+    }
+  };
 
   ng.css3 = function(el, key, val) {
+    if (!el) { return false; }
     var style, t, unDef;
     style = val === unDef ? window.getComputedStyle(el, null) : el.style;
 

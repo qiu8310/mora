@@ -59,7 +59,7 @@ module.exports = function (grunt) {
           accessKey: qiniuConfig.accessKey,
           secretKey: qiniuConfig.secretKey,
           bucket: 'liulishuo',
-          prefix: 'che-'
+          prefix: 'act-'
         },
 
         angularTplTransform: function(tplPath, tplCalledBy) {
@@ -92,13 +92,13 @@ module.exports = function (grunt) {
           return 'http://mora.sinaapp.com/spa-bootstrap.php?m=' + m;
           //return 'http://mora.com/spa-bootstrap.php?m=' + m;
         },
-        token: secretConfig.spaBootstrapCheToken
+        token: secretConfig.spaBootstrapCrmToken
       },
-      che: {
+      activity: {
         options: {
           //index: '<%= yeoman.dist %>/index.html',
-          app: 'chelaile',
-          secureCode: secretConfig.spaBootstrapCheSecure,
+          app: 'activity',
+          secureCode: secretConfig.spaBootstrapActivitySecure,
           bootstrap: '<%= yeoman.dist %>/bootstrap.html'
         }
       }
@@ -313,7 +313,7 @@ module.exports = function (grunt) {
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
-        browsers: ['last 2 version']
+        browsers: ['last 8 version']
       },
       dist: {
         files: [{
@@ -651,7 +651,7 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'classImport',
     'autoprefixer',
-    'ngtemplates',
+    //'ngtemplates',
     'concat',
     'ngAnnotate',
     'copy:dist',

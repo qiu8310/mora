@@ -22,6 +22,7 @@
   "globals": {
     "angular": false,
     "ng": false,
+    "Debug": false,
     "_": false,
     "Kinetic": false
   }

@@ -73,7 +73,6 @@ $_sprites: ();
 $_sprites-call: ();
 $_sprite-default-dir: sp;
 
-
 @function _get-sprite-map($folder) {
   $sprite-map: null;
   @if map-has-key($_sprites, $folder) {
@@ -83,7 +82,8 @@ $_sprite-default-dir: sp;
     $_sprites-call: map-set($_sprites-call, $folder, $call-time + 1) !global;
 
   } @else {
-    $sprite-map: sprite-map("#{$folder}/*.png", $layout: smart, $spacing: 2px);
+    // $sprite-map: sprite-map("#{$folder}/*.png", $layout: smart, $spacing: 4px);
+    $sprite-map: sprite-map("#{$folder}/*.png", $spacing: 4px);
     $_sprites: map-set($_sprites, $folder, $sprite-map) !global;
     $_sprites-call: map-set($_sprites-call, $folder, 1) !global;
   }

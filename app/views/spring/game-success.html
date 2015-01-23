@@ -1,22 +1,17 @@
-<div class="container">
-  <div class="slogan fg-f f-bold f20 l26 pt41 text-center">
+<div class="container fragment">
+  <div class="slogan fg-f f-bold f20 l26 pt20 text-center">
     <p>哇塞，你运气惊人</p>
     <p>2015年，你绝对一顺到底！</p>
   </div>
-  <div class="text-center fg-yellow l17 f14 mt20">
+  <div class="text-center fg-yellow l17 f14 mt15">
     <p>想知道新年礼包里有什么吗？</p>
     <p>赶快分享，让你的小伙伴帮你打开！</p>
   </div>
-  <div class="prize prize-red center-block">
-    <i class="star star-a"></i>
-    <i class="star star-b"></i>
-    <i class="eyes-pink eyes"></i>
-    <i class="eyes-white eyes"></i>
-    <i class="gift"></i>
+  <div class="prize prize-{{prize.color}} center-block">
+    <prize-box></prize-box>
   </div>
 
-
-  <a class="btn mt36 mb20" ng-click="showShareTip = true">分享求打开</a>
+  <a class="btn mt25 mb20" ng-click="showShareTip = true">分享求打开</a>
 
   <div class="mask ani-scale" ng-show="showShareTip" ng-click="showShareTip = false">
     <div class="modal share-tip"></div>
