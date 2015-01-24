@@ -1,5 +1,15 @@
 ## TODO 把我写的一些有用的代码放进来
 
+## One time bindings
+
+[https://docs.google.com/document/d/1fTqaaQYD2QE1rz-OywvRKFSpZirbWUPsnfaZaMq8fWI/edit#](https://docs.google.com/document/d/1fTqaaQYD2QE1rz-OywvRKFSpZirbWUPsnfaZaMq8fWI/edit#)
+
+```
+ng-if="::(user.isSomething && user.isSomethingElse)"
+ng-class="::{classNameFoo: user.isSomething}"
+ng-repeat="item in ::items"
+
+```
 
 ## 优化建议
 
