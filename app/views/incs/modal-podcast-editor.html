@@ -1,0 +1,76 @@
+<form class="clearfix form-horizontal">
+
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title">编辑播客</h3>
+  </div>
+  <div class="modal-body" bindonce>
+
+    <form-control label="图片" ref="background_image">
+      <div class="banner">
+        <img id="backgroundImage" ng-src="{{podcast.background_image}}"/>
+      </div>
+      <div class="btn-group" ng-init="uploaderType='a'">
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'a'">填写图片URL</label>
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'b'">上传本地图片</label>
+      </div>
+      <div class="radio-btn-group-types type-{{uploaderType}}">
+        <div class="type-a">
+          <input class="form-control" type="url"
+          ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }"
+          ng-model="podcast.background_image"
+          name="background_image"
+          required>
+        </div>
+        <div class="type-b">
+          <input class="form-control" uploader="podcast.background_image" type="file">
+        </div>
+      </div>
+    </form-control>
+
+    <form-control label="用户" ref="user_login" ng-if="isNew">
+      <div class="row">
+        <div class="col-xs-6">
+          <input class="form-control" placeholder="user id" ng-model="podcast.user_login" name="user_login" required></input>
+        </div>
+        <div class="col-xs-2">
+          <a class="btn btn-info" ng-click="findUser(podcast.user_login)">验证</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 banner">
+            <img id="bannerImg" ng-src="{{foundUser.avatar}}"/>
+        </div>
+      </div>
+      <!-- <select ng-options="item.subItem as item.label for item in values track by item.id" ng-model="selected"> -->
+    </form-control>
+
+    <form-control label="版块" ref="node_id" ng-if="isNew">
+      <select class="form-control" ng-model="podcast.node_id" ng-options="item.name for item in nodes track by item.id" name="node_id" required>
+      </select>
+      <!-- <select ng-options="item.subItem as item.label for item in values track by item.id" ng-model="selected"> -->
+    </form-control>
+
+    <form-control label="标题" ref="title" ng-if="isNew">
+      <input type="text" class="form-control"
+      name="title"
+      ng-model="podcast.title"
+      required
+      />
+    </form-control>
+
+    <form-control label="描述" ref="body" ng-if="isNew">
+      <textarea class="form-control" rows="8"
+      name="body"
+      ng-model="podcast.body"
+      required></textarea>
+    </form-control>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">取消</button>
+    <button class="btn btn-primary" async-click="save()">保存</button>
+  </div>
+
+</form>

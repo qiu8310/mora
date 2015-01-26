@@ -322,6 +322,26 @@ angular
         url: '/team/detail/{id}',
         templateUrl: 'views/partials/team-detail.html',
         controller: 'TeamDetailCtrl'
+      })
+      .state('home.podcastAll', {
+        url: '/podcast/all',
+        templateUrl: 'views/partials/podcast-all.html',
+        controller: 'PodcastAllCtrl',
+        resolve: {
+          NodeData: ['ForumSer', function(ForumSer) {
+            return ForumSer.nodes();
+          }]
+        }
+      })
+      .state('home.podcastDetail', {
+        url: '/podcast/detail/{id}',
+        templateUrl: 'views/partials/podcast-detail.html',
+        controller: 'PodcastDetailCtrl',
+        resolve: {
+          NodeData: ['ForumSer', function(ForumSer) {
+            return ForumSer.nodes();
+          }]
+        }
       });
 
 

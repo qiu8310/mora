@@ -215,7 +215,22 @@ angular.module('moraApp')
       }).result;
     };
 
-
+    $rootScope.editPodcast = function (podcast, nodes, podcasts) {
+      var isNew = !podcast;
+      return $modal.open({
+        templateUrl: 'views/incs/modal-podcast-editor.html',
+        controller: 'PodcastEditorCtrl',
+        backdrop: 'static',
+        windowClass: 'podcast-editor-modal',
+        resolve: {
+          PodcastData: function() { return _.cloneDeep(podcast); },
+          Nodes: function() { return nodes; }
+        }
+      }).result.then(function(data) {
+        _.assign(podcast, data);
+        return data;
+      });
+    };
 
     $scope.hotThread = function(thread) {
       var api = thread.isHot ? 'calm_down' : 'make_hot';

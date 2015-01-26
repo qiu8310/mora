@@ -25,7 +25,8 @@ angular.module('moraApp')
         ACTIVITY: 'huo_dong',
         TEAM: 'study_group',
         COURSE: 'course',
-        THREAD: 'forum_topic'
+        THREAD: 'forum_topic',
+        PODCAST: 'podcast'
       },
       STREAM_TYPE: {
         THREAD: 'forum_topic',
@@ -139,6 +140,20 @@ angular.module('moraApp')
             key: 'index',
             title: '首页帖子',
             templateUrl: 'forum-index.html'
+          }
+        ]
+      },
+      {
+        key: 'podcast',
+        title: '播客',
+        fa: 'microphone',
+
+        children: [
+          {
+            key: 'all',
+            title: '所有播客',
+            templateUrl: 'podcast-all.html',
+            manual: true
           }
         ]
       },
