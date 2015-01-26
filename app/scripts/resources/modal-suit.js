@@ -266,4 +266,55 @@ angular.module('moraApp')
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
+  })
+
+  .controller('PodcastEditorCtrl', function($scope, $modalInstance, PodcastData, Nodes, $http, _) {
+    var isNew = !(PodcastData && PodcastData.id);
+    $scope.isNew = isNew;
+
+    PodcastData = PodcastData || {};
+
+    $scope.podcast = {};
+    $scope.nodes = Nodes;
+    var defaultNode = _.find(Nodes, function(node) { return node.id === PodcastData.nodeId; });
+    $scope.node_id = defaultNode ? defaultNode.id : null;
+
+    var fields = ['title', 'body', 'background_image', 'user_login'];
+
+    _.each(fields, function(key) {
+      $scope.podcast[key] = PodcastData[key];
+    });
+
+    $scope.save = function() {
+      if (_.any(fields, function(key) { return $scope.podcast[key] !== PodcastData[key]; })) {
+        if (isNew && (!$scope.podcast.title || !$scope.podcast.body)) {
+          return;
+        }
+
+        var data = $scope.podcast;
+        var method = isNew ? $http.post : $http.put;
+        var path = isNew ? 'api/podcasts' : 'api/podcasts/' + PodcastData.id;
+        return method(path, data).success(function(new_data) {
+          _.each(new_data, function(val, key) {
+            PodcastData[key] = val;
+            $scope.podcast[key] = val;
+          });
+          $modalInstance.close(new_data);
+        });
+      } else {
+        $modalInstance.dismiss('nothing_change');
+      }
+
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.findUser = function(login) {
+      $http.get('api/podcasts/users/' + login).success(function(user) {
+        $scope.foundUser = user;
+      });
+    };
+
   });

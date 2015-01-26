@@ -1,0 +1,53 @@
+<div class="podcast-detail detail">
+
+  <table class="table">
+    <tr class="podcast">
+      <td class="no-select"><label>播主</label></td>
+      <td class="avatar"><a user="podcast.user" avatar></a></td>
+      <td>
+        <h1>{{podcast.title}}<a class="fa fa-edit quick-edit" ng-click="editPodcast(podcast, nodes)">编辑</a></h1>
+        <div post="podcast"></div>
+        <img ng-src="{{podcast.backgroundImage}}" />
+      </td>
+      <td class="opts">
+        <time>{{podcast.updatedAt | time}}</time>
+      </td>
+    </tr>
+  </table>
+
+  <div class="no-item" ng-hide="episodes.length">没有任何节目</div>
+
+  <div ng-show="episodes.length">
+    <div class="clearfix table-top">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+
+    <tr class="batch-opts">
+      <td colspan="9">
+        <a class="new-podcast text-ellipsis btn btn-primary" ng-click="newPodcast(podcast)">新建节目</a>
+      </td>
+    </tr>
+
+    <table class="table episode-list">
+      <tr class="episode animate-repeat" ng-repeat="episode in episodes">
+        <td>
+          <h3 class="title text-ellipsis">
+            <a ui-sref="home.forumDetail({id: episode.topicId})">{{episode.title}}</a>
+          </h3>
+          <div post="episode"></div>
+        </td>
+        <td class="opts">
+          <time>{{episode.pubDate | time}}</time>
+          <div class="btns">
+            <button class="btn btn-danger btn-sm btn-delete" async-click="remove(episode)" async-confirm="确认删除节目吗？(帖子不会删除)">删除</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="clearfix table-bottom">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+  </div>
+
+</div>

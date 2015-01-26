@@ -1,0 +1,56 @@
+<div class="podcast-all" ng-cloak>
+
+  <div class="no-item" ng-hide="list.length">没有任何播客</div>
+
+  <div ng-show="list.length">
+
+    <div class="clearfix table-top">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+    <table class="table podcast-list">
+
+      <tr class="batch-opts">
+        <td colspan="9">
+          <a class="new-podcast text-ellipsis btn btn-primary" ng-click="editPodcast(null, nodes, list)">新建播客</a>
+        </td>
+      </tr>
+
+      <tr class="podcast" ng-repeat="podcast in list">
+        <td>
+          <div class="podcast__brand">
+            <div class="brand-img" style="background: url({{podcast.backgroundImage}}); background-size: cover"></div>
+            <a class="author text-ellipsis" user="podcast.user"></a>
+            <time class="update-time">{{podcast.updatedAt | time }}</time>
+          </div>
+        </td>
+        <td>
+          <div class="btn-group item__status">
+            <!-- <label class="btn btn-primary fa fa-angellist" async-click="official(podcast)" ng-class="{active: podcast.isOfficial}">官方</label> -->
+            <label class="btn btn-primary fa fa-fire" async-click="hot(podcast)" ng-class="{active: podcast.isHot}">热门</label>
+            <!-- <span class="label label-info">名师高徒</label> -->
+          </div>
+
+          <div class="podcast__desc">
+            <h3 class="title text-ellipsis"><a ui-sref="home.podcastDetail({id: podcast.id})">{{podcast.title}}</a></h3>
+            <p>
+              <!-- <span class="category">{{podcast.categoryName}}</span> -->
+              <span class="capacity">{{podcast.episodesCount}}节目 {{podcast.subscribes_count}}订阅</span>
+            </p>
+            <p class="desc">{{ podcast.body }}</p>
+          </div>
+        </td>
+        <td>
+          <ul class="podcast__ops">
+            <li><a async-click="dismiss(podcast)" async-confirm="确认删除播客: {{podcast.title}}">删除</a></li>
+          </ul>
+        </td>
+      </tr>
+
+    </table>
+    <div class="clearfix table-bottom">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+
+  </div>
+
+</div>

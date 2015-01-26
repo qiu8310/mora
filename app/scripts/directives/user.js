@@ -12,8 +12,8 @@ angular.module('moraApp')
             destroy();
 
             var username = user.name || user.userName || '',
-              id = user.resourceId || user.userId,
-              avatar = user.imageUrl || user.userAvatar || C.res.defaultAvatar;
+              id = user.id || user.resourceId || user.userId,
+              avatar = user.avatar || user.imageUrl || user.userAvatar || C.res.defaultAvatar;
 
             avatar = avatar + '?imageView2/5/w/100/h/100';
             element.attr('href', $state.href('home.userDetail', {id: id}));
