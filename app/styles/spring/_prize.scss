@@ -33,7 +33,7 @@
     font-size: 0;
     margin-top: 6px;
     padding: 15px 5px 0;
-    @include sprite-2x(prize-box, block);
+    @include sprite-2x(prize-box, block, 'spring/sp');
 
     a {
       @include size(90px, inline-block);
@@ -45,9 +45,9 @@
       }
     }
 
-    a.green::after { @include sprite(green, 59px); };
-    a.blue::after { @include sprite(blue, 59px); };
-    a.red::after { @include sprite(red, 59px); };
+    a.green::after { @include sprite(green, 59px, true, 'spring/sp'); };
+    a.blue::after { @include sprite(blue, 59px, true, 'spring/sp'); };
+    a.red::after { @include sprite(red, 59px, true, 'spring/sp'); };
   }
 
 

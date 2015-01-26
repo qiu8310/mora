@@ -26,27 +26,32 @@
 
 .spring-page body {
   background-color: map-get($colors, red);
-  @include bg(bottom-stripe, 0.5, center bottom);
-  background-size: 100% image-height-ratio(bottom-stripe, 0.5);
+  @include bg('spring/bottom-stripe', 0.5, center bottom);
+  background-size: 100% image-height-ratio('spring/bottom-stripe', 0.5);
 }
 
 .spring-page body > .view {
-  @include bg(top-stripe, 0.5, center top);
-  background-size: 100% image-height-ratio(top-stripe, 0.5);
+  @include bg('spring/top-stripe', 0.5, center top);
+  background-size: 100% image-height-ratio('spring/top-stripe', 0.5);
 }
 
 .spring-page .fragment {
-  @include bg(fragment, 0.5, center top);
+  @include bg('spring/fragment', 0.5, center top);
+  background-repeat: repeat-y;
   background-size: contain;
+}
+
+.spring-info-ctrl body {
+  @include bg('spring/info-bottom', 0.5, center bottom);
 }
 
 .spring-game-ctrl body {
   background-color: #432723;
-  @include bg(game-bottom, 0.5, center bottom);
-  background-size: 100% image-height-ratio(game-bottom, 0.5);
+  @include bg('spring/game-bottom', 0.5, center bottom);
+  background-size: 100% image-height-ratio('spring/game-bottom', 0.5);
 }
 
 .spring-game-ctrl body > .view {
-  @include bg(game-top, 0.5, center top);
-  background-size: 100% image-height-ratio(game-top, 0.5);
+  @include bg('spring/game-top', 0.5, center top);
+  background-size: 100% image-height-ratio('spring/game-top', 0.5);
 }

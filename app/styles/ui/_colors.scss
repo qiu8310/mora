@@ -57,10 +57,13 @@ $colors: (
 );
 
 @each $key, $val in $colors {
-  .bg-#{$key} {
+  $bg: selector-append('.bg', '-' + $key);
+  $fg: selector-append('.fg', '-' + $key);
+
+  #{$bg} {
     background-color: $val;
   }
-  .fg-#{$key} {
+  #{$fg} {
     color: $val;
   }
 }

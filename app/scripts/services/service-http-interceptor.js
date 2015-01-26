@@ -2,7 +2,7 @@ angular.module('mora.ui')
   .service('HttpInterceptor', function ($q, $rootScope, Env, C) {
 
     var loc = Env.win.location, PREFIX = 'api';
-    var API_BASE = (Env.isLocal ? 'http://192.168.1.140:3000' : 'http://' +  loc.host) + '/neo_huodong/api/huodongs/2';
+    var API_BASE = (Env.isLocal ? 'http://location:3000' : 'http://' +  loc.host) + '/neo_huodong/api/huodongs/2';
 
     return {
       // requestError: function(rejection) {}

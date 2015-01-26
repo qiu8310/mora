@@ -1,0 +1,149 @@
+@import "setting";
+
+@import "lib/bootstrap";
+@import "mixin/bootstrap";
+@import "ui/bootstrap";
+
+
+.container {
+  width: 320px;
+  margin: 0 auto;
+}
+
+.lover-home-ctrl {
+  body {
+    background-image: repeating-linear-gradient(90deg, #363e61, #363e61 16px, #394166 16px, #394166 32px);
+    background-position: -6px 0;
+  }
+
+  .title {
+    @include sprite-2x(title, block, 'lover/sp');
+  }
+
+  .hearts {
+    padding: 0 16px;
+    li {
+      @include size(24px 20px, inline-block);
+    }
+    li::after {
+      content: '';
+      margin: 0 auto;
+      @include size(13px 12px, block);
+    }
+    li:nth-child(2n+1) {
+      &::after {
+        @include sprite-2x(red-heart, false, 'lover/sp');
+      }
+    }
+    li:nth-child(2n+2) {
+      &::after {
+        @include sprite-2x(blue-heart, false, 'lover/sp');
+      }
+    }
+  }
+
+  .sub-title {
+    position: relative;
+    color: #d1d2d9;
+
+    &::before, &::after {
+      content: '';
+      display: block;
+      width: 42px;
+      height: 2px;
+      position: absolute;
+      top: 9px;
+    }
+    &::before {
+      left: 18px;
+      @include sprite-2x(mid-dots, false, 'lover/sp');
+    }
+    &::after  {
+      right: 18px;
+      @include sprite-2x(mid-dots, false, 'lover/sp');
+    }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+
+    &::before {
+      content: '';
+      @include sprite-2x(footer, block, 'lover/sp');
+    }
+
+    .sing-bird {
+      position: absolute;
+      top: - image-height-ratio('lover/ani/sing-bird-1', 0.5);
+      left: 84px;
+    }
+
+    .start {
+      position: absolute;
+      top: 0;
+      left: 25px;
+      @include size(263px 68px true, block);
+    }
+  }
+}
+
+
+
+
+
+// 动画相关
+@keyframes ani-guitar-bird {
+   0% { @include sprite-2x-pos(guitar-bird-1, 'lover/ani'); }
+  50% { @include sprite-2x-pos(guitar-bird-2, 'lover/ani'); }
+}
+
+@keyframes ani-lover-bird {
+  0% { @include sprite-2x-pos(lover-bird-1, 'lover/ani'); }
+  50% { @include sprite-2x-pos(lover-bird-2, 'lover/ani'); }
+}
+
+@keyframes ani-sing-bird {
+  0% { @include sprite-2x-pos(sing-bird-1, 'lover/ani'); }
+  50% { @include sprite-2x-pos(sing-bird-2, 'lover/ani'); }
+}
+
+@keyframes ani-star-bird {
+  0% { @include sprite-2x-pos(star-bird-1, 'lover/ani'); }
+  50% { @include sprite-2x-pos(star-bird-2, 'lover/ani'); }
+}
+
+@keyframes ani-double-bird {
+  0% { @include sprite-2x-pos(double-bird-1, 'lover/ani'); }
+  50% { @include sprite-2x-pos(double-bird-2, 'lover/ani'); }
+}
+
+@keyframes ani-lover-letter{
+  0% { @include sprite-2x-pos(lover-letter-1, 'lover/ani'); }
+  50% { @include sprite-2x-pos(lover-letter-2, 'lover/ani'); }
+}
+
+.guitar-bird {
+  @include sprite-2x(guitar-bird-1, block, 'lover/ani');
+  animation: ani-guitar-bird step-end 1s infinite;
+}
+.lover-bird {
+  @include sprite-2x(lover-bird-1, block, 'lover/ani');
+  animation: ani-lover-bird step-end 1s infinite;
+}
+.sing-bird {
+  @include sprite-2x(sing-bird-1, block, 'lover/ani');
+  animation: ani-sing-bird step-end 1s infinite;
+}
+.star-bird {
+  @include sprite-2x(star-bird-1, block, 'lover/ani');
+  animation: ani-star-bird step-end 1s infinite;
+}
+.double-bird {
+  @include sprite-2x(double-bird-1, block, 'lover/ani');
+  animation: ani-double-bird step-end 1s infinite;
+}
+.lover-letter {
+  @include sprite-2x(lover-letter-1, block, 'lover/ani');
+  animation: ani-lover-letter step-end 1s infinite;
+}

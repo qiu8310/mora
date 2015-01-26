@@ -8,6 +8,8 @@ angular
   ])
   .config(function (C, $locationProvider, $httpProvider, $sceDelegateProvider, $routeProvider) {
 
+    C.app.mainPage = '/spring';
+
     $locationProvider.html5Mode(C.app.html5Mode).hashPrefix(C.app.hashPrefix);
 
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -74,6 +76,10 @@ angular
         templateUrl: 'views/spring/course.html',
         resolve: {prize: function(Prize, $route) {return Prize.get($route.current.params.id);}}
       })
+      .when('/spring/info', {
+        controller: 'SpringInfoCtrl',
+        templateUrl: 'views/spring/info.html'
+      })
       .otherwise(C.app.mainPage);
 
   })
@@ -82,11 +88,10 @@ angular
     // 强制运行一下 Env，让它里面的变量都生效
     ng.info('run at', Env.now());
 
-
     var G = Env.G;
 
     // 伪造数据
-    if (Env.isLocal) {
+    if (Env.isLocal && !Env.win.G) {
       var uid = Env.QUERY.refreshToken || 'r_' + Env.now();
       Env.Platform.isWechat = true;
       G.currentUser = {

@@ -1,0 +1,31 @@
+<div class="container fragment">
+  <h1 class="slogan text-center fg-f f-bold f25 l31 pt25 m0">
+    新年到，萌神到<br/>流利说给你发新年大礼包
+  </h1>
+  <div class="home-ani center-block mt20"></div>
+  <div style="padding: 0 20px;">
+    <h2 class="fg-yellow f14 mt20 mb15">如何领礼包：</h2>
+    <p class="f14 l18 fg-f">
+      1.关注微信公众号：英语流利说<br/>
+      2.在菜单栏点击“更多”——“春节送礼”<br/>
+      3.开始游戏，猜猜礼物藏在哪个萌神背后，游戏次数不限<br/>
+      4.所有礼物都需要你的小伙伴帮你打开<br/>
+      5.在活动首页点击"我的礼物"可查看所有得到的礼物
+    </p>
+  </div>
+  <div style="padding: 0 20px 85px;">
+    <h2 class="fg-yellow f14 mt20 mb15">领取礼包：</h2>
+    <p class="f14 l18 fg-f text-center">请输入课程提取码</p>
+    <input class="input mt15 mb15" type="text" autocomplete="off" placeholder="点击输入" ng-model="input"/>
+    <a class="btn btn-white mb15" async-click="fetch()">领走课程</a>
+  </div>
+
+  <div class="mask ani-scale" ng-show="showTip">
+    <div class="modal no-prize">
+      <div class="modal-container bg-red bfc">
+        <p class="f22 fg-f text-center l35 mt20">提取码有误<br/>请重新输入</p>
+        <a class="btn mt8" ng-click="showTip = false">关闭</a>
+      </div>
+    </div>
+  </div>
+</div>

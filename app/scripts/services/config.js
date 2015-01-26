@@ -25,10 +25,6 @@ angular.module('mora.ui')
       logVerbose: false,
 
 
-      title: '英语流利说春节活动',
-      mainPage: '/spring',
-
-
       allowAccessFrom: ['wechat'],  // qq, weibo, wechat, alipay, lls, all
 
 

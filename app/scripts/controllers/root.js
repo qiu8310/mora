@@ -43,7 +43,7 @@ angular.module('mora.ui')
       $scope.rootClass = cls + ' ' + cls.split('-').shift() + '-page';
 
       // 设置页面的 Title (如果有的话)
-      var title = curRoute.data && curRoute.data.title || C.app.title;
+      var title = curRoute.data && curRoute.data.title;
       if (title) {
         $scope.setTitle(title.split(/\s*-/).shift());
       }

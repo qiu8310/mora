@@ -64,13 +64,15 @@
 .game-ani {
   width: 320px;
   position: absolute;
-  top: 50%;
+  top: 138px;
   left: 50%;
-  transform: translate(-50%, -60%);
+  transform: translateX(-50%);
+  transform-origin: center top;
+  @include bg('spring/game-card-bg', 0.5);
 
   .box {
-    width: image-width-ratio('game/left', 0.5);
-    height: image-height-ratio('game/left', 0.5);
+    width: image-width-ratio('spring/game/left', 0.5);
+    height: image-height-ratio('spring/game/left', 0.5);
   }
 
 
@@ -80,16 +82,16 @@
   .box-right {
     animation: box-right-ani linear .4s 10;
     .front {
-      @include sprite-2x-pos(right, game);
+      @include sprite-2x-pos(right, 'spring/game');
     }
   }
 
-  .front, .back { @include sprite-2x(left, block, game); }
+  .front, .back { @include sprite-2x(left, block, 'spring/game'); }
 
-  .prize-no    .back { @include sprite-2x-pos(prize-no,   game); }
-  .prize-red   .back { @include sprite-2x-pos(prize-red,  game); }
-  .prize-green .back { @include sprite-2x-pos(prize-green,game); }
-  .prize-blue  .back { @include sprite-2x-pos(prize-blue, game); }
+  .prize-no    .back { @include sprite-2x-pos(prize-no,   'spring/game'); }
+  .prize-red   .back { @include sprite-2x-pos(prize-red,  'spring/game'); }
+  .prize-green .back { @include sprite-2x-pos(prize-green,'spring/game'); }
+  .prize-blue  .back { @include sprite-2x-pos(prize-blue, 'spring/game'); }
 }
 
 .spring-game-ctrl {
@@ -100,16 +102,16 @@
 
 .spring-game-error-ctrl {
   .slogan { padding-left: 23px; padding-right: 23px; }
-  .audio { @include sprite-2x(play, block, game); }
+  .audio { @include sprite-2x(play, block, 'spring/game'); }
   .playing.audio {
-    @include sprite-2x-pos(pause, game);
+    @include sprite-2x-pos(pause, 'spring/game');
   }
 }
 
 $star: "../images/star.svg";
 
 .share-tip {
-  @include bg(share-tip, 0.5, right top);
+  @include bg('spring/share-tip', 0.5, right top);
   @include size(320px 100%);
   margin: 0 auto;
 }
@@ -126,12 +128,12 @@ $star: "../images/star.svg";
       top: 29px;
 
       // height: 252px;  向上剪到 511px，向下剪到 504px
-      @include sprite-2x(prize-bg);
+      @include sprite-2x(prize-bg, true, 'spring/sp');
     }
     .decorate {
       position: absolute;
       top: 128px;
-      @include sprite-2x(prize-decorate);
+      @include sprite-2x(prize-decorate, true, 'spring/sp');
     }
   }
   &.opened {
@@ -207,12 +209,12 @@ $star: "../images/star.svg";
     position: absolute;
     top: 21px;
     left: 72px;
-    @include sprite-2x(red);
+    @include sprite-2x(red, true, 'spring/sp');
     animation: ani-gift-box step-end 3s infinite;
   }
 
-  &.prize-blue .gift { @include sprite-2x-pos(blue); }
-  &.prize-green .gift { @include sprite-2x-pos(green); }
+  &.prize-blue .gift { @include sprite-2x-pos(blue, 'spring/sp'); }
+  &.prize-green .gift { @include sprite-2x-pos(green, 'spring/sp'); }
   &.opened {
     height: 215px;
     .bg {
@@ -244,8 +246,8 @@ $star: "../images/star.svg";
 
 
 @keyframes open-ani {
-  0%  { @include sprite-2x(1, true, open); }
-  25% { @include sprite-2x(2, true, open); }
-  50% { @include sprite-2x(3, true, open); }
-  75% { @include sprite-2x(4, true, open); }
+  0%  { @include sprite-2x(1, true, 'spring/open'); }
+  25% { @include sprite-2x(2, true, 'spring/open'); }
+  50% { @include sprite-2x(3, true, 'spring/open'); }
+  75% { @include sprite-2x(4, true, 'spring/open'); }
 }

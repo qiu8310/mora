@@ -35,9 +35,17 @@ angular.module('moraApp')
     $scope.closeNoPrizeTip = function() {
       $scope.showNoPrizeTip = false;
     };
-
   })
-
+  .controller('SpringInfoCtrl', function($scope, http) {
+    $scope.fetch = function() {
+      if ($scope.input) {
+        return http.post('api/prizes?ignoreError=yes', {'prize_code': $scope.input})
+          .success(function() { window.alert('领取成功！'); })
+          .error(function() { $scope.showTip = true; });
+      }
+    };
+    $scope.showTip = false;
+  })
   .controller('SpringGameCtrl', function($scope, $timeout, $location, http, Env) {
 
     $scope.pickEnable = false;
@@ -46,7 +54,17 @@ angular.module('moraApp')
       $scope.pickEnable = true;
     }, 4000);
 
-    Env.win.scrollTo(0, 1);
+    var win = Env.win, doc = win.document, h = 262, scale,
+      winH = doc.documentElement.clientHeight;
+
+    if (winH < 550) {
+      scale = 1 - (550 - winH) / h;
+      $timeout(function() {
+        ng.css3(doc.querySelector('.game-ani'), 'transform', 'translateX(-50%) scale('+scale+')');
+      }, 10);
+    }
+
+    win.scrollTo(0, 1);
 
 
     function goTo(status, id) {

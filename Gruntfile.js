@@ -79,7 +79,7 @@ module.exports = function (grunt) {
         }
       },
       dist: [
-        '<%= yeoman.dist %>/index.html',
+        '<%= yeoman.dist %>/*.html',
         '<%= yeoman.dist %>/views/**/*.html',
         '<%= yeoman.dist %>/styles/**/*.css',
         '<%= yeoman.dist %>/scripts/*scripts.js'
@@ -94,9 +94,9 @@ module.exports = function (grunt) {
         },
         token: secretConfig.spaBootstrapCrmToken
       },
-      activity: {
+      spring: {
         options: {
-          //index: '<%= yeoman.dist %>/index.html',
+          index: '<%= yeoman.dist %>/spring.html',
           app: 'activity',
           secureCode: secretConfig.spaBootstrapActivitySecure,
           bootstrap: '<%= yeoman.dist %>/bootstrap.html'
@@ -104,6 +104,26 @@ module.exports = function (grunt) {
       }
     },
 
+    // 自动注入需要的 class 到 main.css 中
+    classImport: {
+      options: {
+        classFiles: '<%= yeoman.app %>/styles/auto-inject/{,*/}*.css'
+      },
+      spring: {
+        src: [
+          '<%= yeoman.app %>/spring.html',
+          '<%= yeoman.app %>/views/spring/**/*.html',
+          '.tmp/**/*.html'],
+        dest: '.tmp/styles/spring.css'
+      },
+      lover: {
+        src: [
+          '<%= yeoman.app %>/lover.html',
+          '<%= yeoman.app %>/views/lover/**/*.html',
+          '.tmp/**/*.html'],
+        dest: '.tmp/styles/lover.css'
+      }
+    },
 
     ngtemplates: {
       options: {
@@ -138,18 +158,28 @@ module.exports = function (grunt) {
       }
     },
 
-    // 自动注入需要的 class 到 main.css 中
-    classImport: {
-      options: {
-        classFiles: '<%= yeoman.app %>/styles/auto-inject/{,*/}*.css'
-      },
-      dev: {
-        src: [
-          '<%= yeoman.app %>/*.html',
-          '<%= yeoman.app %>/{views,demo}/**/*.html',
-          '.tmp/**/*.html'],
-        dest: '.tmp/styles/main.css'
+    replace: {
+      dist: {
+        options: {
+          patterns: [
+            {
+              match: /\/\/@INJECT\s+/g,
+              replacement: ''
+            },
+            {
+              match: /\/\*@INJECT_START([\s\S]*?)@INJECT_END\*\//g,
+              replacement: '$1'
+            }
+          ]
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          dest: '<%= yeoman.dist %>',
+          src: '*.html'
+        }]
       }
+
     },
 
     textFree: {
@@ -168,7 +198,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['views/*.html', 'index.html'],
+          //src: ['views/*.html', 'index.html'],
+          src: ['404.html'],
           dest: '.tmp'
         }]
       }
@@ -203,9 +234,16 @@ module.exports = function (grunt) {
         }
       },
       classImport: {
-        files: ['<%= classImport.options.classFiles %>', '<%= classImport.dev.src %>'],
+        files: [
+          '<%= classImport.options.classFiles %>',
+          '<%= yeoman.app %>/**/*.html',
+          '.tmp/**/*.html'
+        ],
         //files: ['<%= classImport.options.classFiles %>'],
-        tasks: 'classImport'
+        tasks: 'classImport',
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
       },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
@@ -213,7 +251,8 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'classImport', 'autoprefixer']
+        tasks: ['compass:server', 'classImport', 'autoprefixer'],
+        options: { livereload: '<%= connect.options.livereload %>'}
       },
       jade: {
         files: ['<%= yeoman.app %>/{,**/}*.jade', '../jade/{,**/}*.jade'],
@@ -223,13 +262,11 @@ module.exports = function (grunt) {
         files: ['Gruntfile.js']
       },
       livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
+        options: { livereload: '<%= connect.options.livereload %>'},
         files: [
-          '<%= yeoman.app %>/{,**/}*.html',
-          '.tmp/{,**/}*.html',
-          '.tmp/styles/{,*/}*.css',
+          //'<%= yeoman.app %>/{,**/}*.html',
+          //'.tmp/{,**/}*.html',
+          //'.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -245,7 +282,8 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          open: 'http://localhost:9999#!/',
+          //open: 'http://localhost:9999#!/',
+          open: false,
           middleware: getConnectMiddleWares(['.tmp', yeomanConfig.app])
           /*
           base: [
@@ -313,7 +351,7 @@ module.exports = function (grunt) {
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
-        browsers: ['last 8 version']
+        browsers: ['last 5 version']
       },
       dist: {
         files: [{
@@ -328,7 +366,7 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the app
     bowerInstall: {
       app: {
-        src: ['<%= yeoman.app %>/index.html'],
+        src: ['<%= yeoman.app %>/*.html'],
         ignorePath: '<%= yeoman.app %>/'
       },
       sass: {
@@ -669,10 +707,9 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('bootstrap', 'spaBootstrap');
-  grunt.registerTask('deploy', ['build', 'deployAsset:dist']);
+  grunt.registerTask('deploy', ['build', 'deployAsset:dist', 'replace']);
 
-  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap']);
+  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:spring']);
 
 
   //grunt.registerTask('publish', function(comment) {

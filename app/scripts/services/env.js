@@ -180,7 +180,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
   Env.Storage = Storage;
   Env.C = C;
   Env.L = L;
-  Env.G = $window.G || {}; // 全局变量，可以是后台传给页面上的
+  Env.G = ng.camelCase($window.G || {}); // 全局变量，可以是后台传给页面上的
 
   win.Env = Env;
 });
