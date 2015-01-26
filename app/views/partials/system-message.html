@@ -44,6 +44,60 @@
     </div>
   </form-control>
 
+
+
+  <form-control label="是否发push">
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="message.push"><span>Push</span>
+    </label>
+  </form-control>
+
+
+  <form-control label="活动链接">
+    <div class="col-sm-12 no-padding-left">
+      <input class="form-control" type="url" ng-model="message.event_url">
+    </div>
+  </form-control>
+
+
+  <form-control label="活动内容文字" ref="title">
+    <textarea type="text" class="form-control"
+           name="event_details"
+           ng-model="message.event_details"
+           required></textarea>
+  </form-control>
+
+
+  <form-control label="活动图片" ref="event_cover_img">
+    <div class="banner">
+      <img id="backgroundImage" ng-src="{{message.event_cover_img}}"/>
+    </div>
+    <div class="btn-group" ng-init="uploaderType='a'">
+      <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'a'">填写图片URL</label>
+      <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'b'">上传本地图片</label>
+    </div>
+    <div class="radio-btn-group-types type-{{uploaderType}}">
+      <div class="type-a">
+        <input class="form-control" type="url"
+        ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }"
+        ng-model="message.event_cover_img"
+        name="event_cover_img"
+        required>
+      </div>
+      <div class="type-b">
+        <input class="form-control" uploader="message.event_cover_img" type="file">
+      </div>
+    </div>
+  </form-control>
+
+
+  <form-control label="测试模式（只推给自己，否则群发）">
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="message.test"><span>Test</span>
+    </label>
+  </form-control>
+
+
   <form-control label="">
     <button class="btn btn-success" ng-disabled="messageForm.$invalid" type="submit">提交</button>
   </form-control>
