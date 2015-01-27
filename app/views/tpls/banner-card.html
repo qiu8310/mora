@@ -85,4 +85,15 @@
       <h3><a href="{{cmsBaseUrl}}courses/{{banner.data.id}}/units" target="_blank">{{banner.data.title}}</a></h3>
     </div>
   </div>
+
+  <div class="box box-podcast" ng-if="banner.type === TYPE.PODCAST">
+    <div class="box-left">
+      <img ng-src="{{banner.data.backgroundImage || res.noImg}}">
+    </div>
+    <div class="box-right">
+      <h3><a ui-sref="home.podcastDetail({id: banner.data.id})" m-blank>{{banner.data.title}}</a></h3>
+      <p>{{banner.data.body}}</p>
+    </div>
+
+  </div>
 </div>

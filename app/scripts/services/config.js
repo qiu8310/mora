@@ -32,7 +32,8 @@ angular.module('moraApp')
         THREAD: 'forum_topic',
         COURSE_SET: 'course_set',
         TEAM_SET: 'study_group_set',
-        SMALL_BANNER: 'banner'
+        SMALL_BANNER: 'banner',
+        PODCAST_SET: 'podcast_set'
       }
     },
 

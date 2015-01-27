@@ -65,6 +65,19 @@
     </div>
 
 
+    <div bo-if="type === TYPE.PODCAST_SET">
+      <form-control ng-repeat="no in [1, 2, 3]" label="No. {{no}}">
+        <div class="col-sm-9 no-padding-left">
+          <banner-card class="form-control-text" banner="stream.data[$index]"></banner-card>
+        </div>
+        <div class="col-sm-3 no-padding-right">
+          <a ng-show="stream.data.length >= $index" ng-click="findPodcast(stream.data, $index)"
+             class="btn btn-info btn-sm pull-right">{{stream.data.length === $index ? '选择播客' : '更换播客'}}</a>
+        </div>
+      </form-control>
+    </div>
+
+
     <form-control label="定时">
       <div class="btn-group" ng-init="publishType=(stream.pubtimeCountdown ? 'b' : 'a')">
         <label class="btn btn-default btn-sm" ng-model="publishType" ng-click="setPublishAtNow()" btn-radio="'a'">立即发布</label>

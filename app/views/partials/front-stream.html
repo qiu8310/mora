@@ -41,6 +41,9 @@
         <div ng-if="item.type === TYPE.THREAD">
           <banner-card banner="item"></banner-card>
         </div>
+        <div ng-if="item.type === TYPE.PODCAST_SET">
+          <banner-card ng-repeat="it in item.data" banner="it"></banner-card>
+        </div>
       </div>
       <div class="col-sm-2">
         <label ng-show="item.pubtimeCountdown" class="label label-info">{{item.pubtimeCountdown|countDown}}</label>
