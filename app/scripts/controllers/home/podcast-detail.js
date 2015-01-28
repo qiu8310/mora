@@ -42,7 +42,7 @@ angular.module('moraApp')
   }
 
   $scope.remove = function(episode) {
-    $http.delete('api/episode/' + episode.id).success(function() {
+    $http.delete('api/podcasts/' + $scope.podcast.id + '/episodes/' + episode.id).success(function() {
       filterEpisodes(episode);
     });
   };
