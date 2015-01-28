@@ -23,8 +23,8 @@ angular.module('moraApp')
 
     // 删除指定的播客
     $scope.dismiss = function(podcast) {
-      return $http.delete('api/podcasts/' + podcast.resourceId).success(function() {
-        var index = _.findIndex($scope.list, function(item) { return item.resourceId === podcast.resourceId; });
+      return $http.delete('api/podcasts/' + podcast.id).success(function() {
+        var index = _.findIndex($scope.list, function(item) { return item.id === podcast.id; });
         if (index !== -1) {
           $scope.list.splice(index, 1);
         }
