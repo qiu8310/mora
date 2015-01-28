@@ -93,6 +93,11 @@ angular.module('moraApp')
             key: 'course',
             title: '课程首页Banner',
             templateUrl: 'front-course.html'
+          },
+          {
+            key: 'podcast',
+            title: '播客首页Banner',
+            templateUrl: 'front-podcast.html'
           }
         ]
       },

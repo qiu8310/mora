@@ -166,6 +166,11 @@ angular.module('moraApp')
             type: 'podcast_set',
             data: _.map(datas, function(o) { return o.id || o.data.id; })
           }; break;
+        case BANNER_TYPE.PODCAST:
+          result = {
+            type: 'podcast',
+            data: data.id || data.data.id
+          }; break;
         default :
           throw new Error('不支持数据类型');
       }
@@ -224,6 +229,8 @@ angular.module('moraApp')
             };
           });
           break;
+        case 'podcast':
+          type = BANNER_TYPE.PODCAST; break;
         default : throw new Error('不支持数据类型' + card.type);
       }
 
