@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <h3 class="modal-title">选择播客</h3>
+</div>
+<div class="modal-body">
+  <!-- <search-filter search="search"></search-filter> -->
+  <div class="no-item" ng-hide="list.length">没有任何播客~~~</div>
+  <div ng-show="list.length">
+    <h2 class="modal-list-title">{{listTitle}}</h2>
+    <ul class="modal-podcast-list modal-list">
+      <li class="modal-item row" ng-repeat="podcast in list">
+        <div class="col-sm-{{podcast.backgroundImage ? 9 : 10}}">
+          <h3>
+            <a class="title text-ellipsis" title="{{podcast.title}}" ui-sref="home.podcastDetail({id: podcast.resourceId})" m-blank>{{podcast.categoryName + ': ' + podcast.title}}</a>
+            <a class="author text-ellipsis" title="{{podcast.userName}}" ui-sref="home.userDetail({id: podcast.owner.resourceId})" m-blank>{{podcast.userName}}</a>
+          </h3>
+          <p class="desc text-ellipsis">
+            {{podcast.body}}
+          </p>
+
+        </div>
+        <div class="col-sm-1" ng-if="podcast.backgroundImage">
+          <img ng-src="{{podcast.backgroundImage}}?imageView2/5/w/50/h/50" width="50" height="50">
+        </div>
+        <div class="col-sm-2">
+          <button class="btn btn-info btn-xs pull-right" ng-click="select(podcast)">选择</button>
+        </div>
+      </li>
+    </ul>
+    <div class="clearfix">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+  </div>
+
+</div>

@@ -229,6 +229,8 @@ angular.module('moraApp')
         case TYPE.COURSE_SET:
         case TYPE.TEAM_SET:
           return stream.data && stream.data.length === 3;
+        case TYPE.PODCAST_SET:
+          return stream.data && stream.data.length === 3;
         default :
           return false;
       }
@@ -315,6 +317,34 @@ angular.module('moraApp')
       $http.get('api/podcasts/users/' + login).success(function(user) {
         $scope.foundUser = user;
       });
+    };
+
+  })
+
+  .controller('PodcastFinderCtrl', function($scope, $http, $modalInstance) {
+    $scope.pager = {
+      page: 1,
+      pageSize: 6,
+      maxSize: 10
+    };
+
+    function getList() {
+      $scope.listTitle = '播客列表';
+      return $http.get('api/podcasts')
+        .success(function(data) {
+          $scope.pager.total = data.total;
+          $scope.list = data.podcasts;
+        });
+    }
+
+    $scope.$watch('pager.page', _.ignoreFirstCall(getList));
+    // $scope.$on('search:init:finished', getList);
+    getList();
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.select = function(podcast) {
+      $modalInstance.close(podcast);
     };
 
   });

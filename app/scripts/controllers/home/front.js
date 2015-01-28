@@ -3,7 +3,9 @@
 angular.module('moraApp')
 
   .controller('FrontBannerCtrl', function($scope, C, Dialog, $http, _){
-    $scope.TYPE = C.constants.BANNER_TYPE;
+    $scope.TYPE = _.filter(C.constants.BANNER_TYPE, function(_, k) {
+      return k !== 'PODCAST';
+    });
     $scope.list = [];
 
     var isUpdated = false;
@@ -137,6 +139,47 @@ angular.module('moraApp')
     $scope.editStream = function(stream) {
       dialog(_.cloneDeep(stream)).then(function(data) {
         _.assign(stream, data);
+      });
+    };
+
+  })
+
+
+  .controller('FrontPodcastCtrl', function($scope, $rootScope, $timeout, $http, Dialog) {
+    var podcastType = $rootScope.BANNER_TYPE.PODCAST;
+
+    function reset() {
+      $scope.list = [{type: podcastType, data: {}}, {type: podcastType, data: {}}];
+    }
+    reset();
+
+    $http.get('api/cards_banners/?position=podcast_home_top').success(function(data) {
+      if (data.data.cards.length === 2) {
+        $scope.list = _.map(data.data.cards, function(item) {
+          return $rootScope.backCardToFront(item);
+        });
+      }
+    });
+
+    $scope.reset = function(index) {
+      $scope.list[index] = {type: podcastType, data: {}};
+    };
+
+    $scope.save = function() {
+      var list = $scope.list, data,
+      len = _.reduce(list, function(sum, item) { return sum + (item.img ? 1 : 0); }, 0);
+
+      if (len === 0) {
+        data = [];
+      } else if (len === 2) {
+        data = $rootScope.frontCardToBack($scope.list, true);
+      } else {
+        Dialog.alert('必须设置两个播客');
+        return false;
+      }
+
+      return $http.post('api/cards_banners/?position=podcast_home_top', {cards: data}).success(function() {
+        Dialog.alert('保存成功!');
       });
     };
 

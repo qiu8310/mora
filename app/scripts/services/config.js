@@ -32,7 +32,8 @@ angular.module('moraApp')
         THREAD: 'forum_topic',
         COURSE_SET: 'course_set',
         TEAM_SET: 'study_group_set',
-        SMALL_BANNER: 'banner'
+        SMALL_BANNER: 'banner',
+        PODCAST_SET: 'podcast_set'
       }
     },
 
@@ -92,6 +93,11 @@ angular.module('moraApp')
             key: 'course',
             title: '课程首页Banner',
             templateUrl: 'front-course.html'
+          },
+          {
+            key: 'podcast',
+            title: '播客首页Banner',
+            templateUrl: 'front-podcast.html'
           }
         ]
       },

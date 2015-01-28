@@ -59,6 +59,26 @@ angular.module('moraApp')
         });
     };
 
+    $rootScope.findPodcast = function(container, index) {
+      return $modal.open({
+        templateUrl: 'views/incs/modal-podcast-finder.html',
+        controller: 'PodcastFinderCtrl',
+        backdrop: 'static',
+        size: 'lg',
+        windowClass: 'podcast-finder-modal'
+      }).result.then(function(data) {
+          if (container) {
+            var con;
+            if (_.isArray(container)) {
+              con = container[index];
+            } else {
+              con = container;
+            }
+            if (con) { con.img = data.backgroundImage; }
+          }
+          return _appendFinderToContainer(data, container, index, C.constants.BANNER_TYPE.PODCAST);
+        });
+    };
 
     $rootScope.createBanner = function(type, list, commit) {
       commit = _.isUndefined(commit) ? true : !!commit;
@@ -141,6 +161,16 @@ angular.module('moraApp')
               })
             }
           }; break;
+        case STREAM_TYPE.PODCAST_SET:
+          result = {
+            type: 'podcast_set',
+            data: _.map(datas, function(o) { return o.id || o.data.id; })
+          }; break;
+        case BANNER_TYPE.PODCAST:
+          result = {
+            type: 'podcast',
+            data: data.id || data.data.id
+          }; break;
         default :
           throw new Error('不支持数据类型');
       }
@@ -190,6 +220,17 @@ angular.module('moraApp')
         case 'huo_dong':
           data = {title: card.data.name, url: card.data.url};
           type = BANNER_TYPE.ACTIVITY; break;
+        case 'podcast_set':
+          type = STREAM_TYPE.PODCAST_SET;
+          data = _.map(card.data.podcasts, function(d) {
+            return {
+              type: BANNER_TYPE.PODCAST,
+              data: d
+            };
+          });
+          break;
+        case 'podcast':
+          type = BANNER_TYPE.PODCAST; break;
         default : throw new Error('不支持数据类型' + card.type);
       }
 

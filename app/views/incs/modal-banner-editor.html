@@ -69,6 +69,19 @@
         </div>
       </form-control>
     </div>
+
+
+    <div bo-if="type === TYPE.PODCAST">
+      <form-control label="播客信息">
+        <div class="col-sm-9 no-padding-left">
+          <banner-card banner="banner" class="form-control-text"></banner-card>
+        </div>
+        <div class="col-sm-3 no-padding-right">
+          <a class="btn btn-info btn-sm pull-right" ng-click="findPodcast(banner)">{{banner.data.title ? '更换播客' : '选择播客'}}</a>
+        </div>
+      </form-control>
+    </div>
+
   </div>
 
   <div class="modal-footer">
