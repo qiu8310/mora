@@ -15,30 +15,66 @@
 
  */
 angular.module('mora.ui')
-  .constant('C', {
-    app: {
-      html5Mode: false,
-      hashPrefix: '!',
+  .constant('C', (function() {
 
-      // console.x(..., 'verbose:', ...)
-      // 如果 logVerbose 为 false，则 verbose 之后的数据是不会显示的
-      logVerbose: false,
+    var C = {
+      app: {
+        set: function(appName, options) {
+
+          // http://staging-neo.llsapp.com/neo_huodong/api/huodongs/1/view/spring/b/c
+
+          var pathname = window.location.pathname,
+            pathParts = pathname.split('/'),
+            basePath = '', index, id = 0;
+          index = pathParts.indexOf(appName);
 
 
-      allowAccessFrom: ['wechat'],  // qq, weibo, wechat, alipay, lls, all
+          if (index > 0) {
+            basePath = pathParts.slice(0, index + 1).join('/');
+            if (/\/(\d+)\//.test(basePath)) { id = parseInt(RegExp.$1, 10); }
+          } else {
+            // 如果没有 path，则使用非 html5 模式
+            C.app.html5Mode = false;
+            basePath = '/' + appName;
+          }
+
+          if (!id && /\bid=(\d+)\b/.test(window.location.search)) {id = parseInt(RegExp.$1, 10); }
+
+          C.app.id = id;
+          C.app.name = appName;
+          C.app.basePath = basePath;
+          C.app.mainPage = basePath;
+
+          ng.forEach(options || {}, function(val, key) {C.app[key] = val; });
+        },
+
+        html5Mode: true,
+        hashPrefix: '!',
+
+        // console.x(..., 'verbose:', ...)
+        // 如果 logVerbose 为 false，则 verbose 之后的数据是不会显示的
+        logVerbose: false,
 
 
-      download: {
-        android: 'http://www.liulishuo.com/android',
-        ios: 'http://www.liulishuo.com/ios',
-        iosOrigin: 'https://itunes.apple.com/us/app/liu-li-shuo-hui-da-fen-zhi/id597364850?ls=1&mt=8',
-        wechat: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.liulishuo.engzo&g_f=991653',
-        other: 'http://www.liulishuo.com'
+        // 单独配置在 app.js 的 config 中
+        // allowAccessFrom: ['wechat'],  // qq, weibo, wechat, alipay, lls, all
+        // mainPage: '/2'
+
+        download: {
+          android: 'http://www.liulishuo.com/android',
+          ios: 'http://www.liulishuo.com/ios',
+          iosOrigin: 'https://itunes.apple.com/us/app/liu-li-shuo-hui-da-fen-zhi/id597364850?ls=1&mt=8',
+          wechat: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.liulishuo.engzo&g_f=991653',
+          other: 'http://www.liulishuo.com'
+        }
+      },
+
+      res: {
+        proxyUrl: 'http://mora.sinaapp.com/utils/proxy.php',
+        uploaderUrl: 'http://mora.sinaapp.com/utils/uploader.php'
       }
-    },
+    };
 
-    res: {
-      proxyUrl: 'http://mora.sinaapp.com/utils/proxy.php',
-      uploaderUrl: 'http://mora.sinaapp.com/utils/uploader.php'
-    }
-  });
+    return C;
+
+  })());

@@ -8,22 +8,56 @@
 // 'test/spec/**/*.js'
 var LIVERELOAD_PORT = 35999;
 var TF = require('text-free');
+var path = require('path');
 var modRewrite = require('connect-modrewrite');
+
+var APPS = ['spring', 'lover'];
 
 
 module.exports = function (grunt) {
 
+  var APPS_PATH_STRING = APPS.length === 1 ? APPS[0] : '{' + APPS.join(',') + '}';
+
+  grunt.loadTasks('plugins/grunt/tasks');
+
+  //grunt.loadNpmTasks('text-free');
+  //function getConnectMiddleWares(webRootDirs) {
+  //  return TF.connectHelper(grunt, webRootDirs, function() {
+  //    this.push(modRewrite(['!\\.\\w+([#\\?].*)?$ /index.html [L]']));
+  //  });
+  //}
+
+  // Disable text-free
   function getConnectMiddleWares(webRootDirs) {
-    return TF.connectHelper(grunt, webRootDirs, function() {
-      this.push(modRewrite(['!\\.\\w+([#\\?].*)?$ /index.html [L]']));
-    });
+    if (!Array.isArray(webRootDirs)) { webRootDirs = [webRootDirs]; }
+    return function(connect) {
+      var result = [];
+
+      //result.push(modRewrite(['!\\.\\w+([#\\?].*)?$ /index.html [L]']));
+      result.push(modRewrite([
+
+        // http://x.com/a/b/c/styles/spring => http://x.com/spring.html
+        '^/(?:[\\w\\/]+\\/)?(' + APPS.join('|') + ')([^\\.]*)$ /$1.html [L]',
+
+        // http://x.com/a/b/c/styles/spring.css => http://x.com/styles/spring.css
+        '^.*?(styles|images|scripts|views)(\\/.*)$ /$1$2 [L]'
+
+      ]));
+
+      webRootDirs.forEach(function(dir) {
+        result.push(connect.static(path.resolve(dir)));
+      });
+
+      return result;
+    };
   }
 
 
-
-
-  grunt.loadTasks('plugins/grunt/tasks');
-  grunt.loadNpmTasks('text-free');
+  function getSafeJsonFromFile(file) {
+    var result;
+    try {result = require(path.resolve(file));} catch (e) {result = {};}
+    return result;
+  }
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -32,13 +66,17 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
 
   var yeomanConfig = {
-    app : require('./bower.json').appPath || 'app',
+    app : getSafeJsonFromFile('./bower.json').appPath || 'app',
     dist: 'dist'
   };
 
   // http://mora.sinaapp.com/spa-bootstrap-manager.php?token=d7P843348fa7ea4LedDae155380aKdDfdO4dKQ10
-  var qiniuConfig = require(process.env.HOME + '/qiniu.json'),
-    secretConfig = require(process.env.HOME + '/.secret.json');
+  var qiniuConfig = getSafeJsonFromFile(process.env.HOME + '/qiniu.json'),
+    secretConfig = getSafeJsonFromFile(process.env.HOME + '/.secret.json');
+
+
+  var appCache = getSafeJsonFromFile('./.app-cache.json'),
+    saveAppCache = function(){ grunt.file.write('./.app-cache.json', JSON.stringify(appCache, null, 4)); };
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -59,7 +97,7 @@ module.exports = function (grunt) {
           accessKey: qiniuConfig.accessKey,
           secretKey: qiniuConfig.secretKey,
           bucket: 'liulishuo',
-          prefix: 'act-'
+          prefix: 'ac-'
         },
 
         angularTplTransform: function(tplPath, tplCalledBy) {
@@ -79,11 +117,19 @@ module.exports = function (grunt) {
         }
       },
       dist: [
-        '<%= yeoman.dist %>/*.html',
-        '<%= yeoman.dist %>/views/**/*.html',
-        '<%= yeoman.dist %>/styles/**/*.css',
-        '<%= yeoman.dist %>/scripts/*scripts.js'
-      ]
+        '<%= yeoman.dist %>/' + APPS_PATH_STRING + '.html',
+        '<%= yeoman.dist %>/views/' + APPS_PATH_STRING + '/**/*.html',
+        '<%= yeoman.dist %>/styles/*' + APPS_PATH_STRING + '*.css',
+        '<%= yeoman.dist %>/scripts/*' + APPS_PATH_STRING + '*.js',
+        '!<%= yeoman.dist %>/scripts/*vendor.js'
+      ],
+
+      replace: {
+        options: {
+          assetMapJsonFile: null
+        },
+        src: ['<%= yeoman.dist %>/replace/*.html']
+      }
     },
 
     spaBootstrap: {
@@ -109,25 +155,24 @@ module.exports = function (grunt) {
       options: {
         classFiles: '<%= yeoman.app %>/styles/auto-inject/{,*/}*.css'
       },
-      spring: {
-        src: [
-          '<%= yeoman.app %>/spring.html',
-          '<%= yeoman.app %>/views/spring/**/*.html',
-          '.tmp/**/*.html'],
-        dest: '.tmp/styles/spring.css'
-      },
-      lover: {
-        src: [
-          '<%= yeoman.app %>/lover.html',
-          '<%= yeoman.app %>/views/lover/**/*.html',
-          '.tmp/**/*.html'],
-        dest: '.tmp/styles/lover.css'
+      dist: {
+        files: (function() {
+          var obj = {};
+          APPS.forEach(function(app) {
+            obj['.tmp/styles/' + app + '.css'] = [
+              '<%= yeoman.app %>/' + app + '.html',
+              '<%= yeoman.app %>/views/' + app + '/**/*.html',
+              '.tmp/**/*.html'
+            ];
+          });
+          return obj;
+        })()
       }
     },
 
     ngtemplates: {
       options: {
-        module: 'cheApp',
+        module: 'moraApp',
         htmlmin: '<%= htmlmin.dist.options %>',
         usemin: '/scripts/scripts.js'
       },
@@ -163,20 +208,79 @@ module.exports = function (grunt) {
         options: {
           patterns: [
             {
+              match:  /\/\/@REMOVE\s+.*?$/mg,
+              replacement: ''
+            },
+            {
+              match: /\/\*@REMOVE_START([\s\S]*?)@REMOVE_END\*\//g,
+              replacement: ''
+            },
+            {
               match: /\/\/@INJECT\s+/g,
               replacement: ''
             },
             {
               match: /\/\*@INJECT_START([\s\S]*?)@INJECT_END\*\//g,
               replacement: '$1'
+            },
+            {
+              match: /@@([A-Z_]+)@@/g,
+              replacement: function(match, key) {
+                // 版本号每次都递增，方便跟踪最新的版本是否部署上去了; 另外加上当前时间在 VERSION 后面
+                if (key.indexOf('VERSION') >= 0) {
+                  appCache[key] = appCache[key] ? appCache[key] + 1 : 1;
+                  saveAppCache();
+                  return 'Version: ' + appCache[key] + ', publish at ' + (new Date());
+                }
+                return (key in appCache) ? appCache[key] : match;
+              }
+            },
+            {
+              match: /__UPLOADED(?:__(IMAGES|VIEWS|INDEX|ALL))?__ASSETS__/,
+              replacement: function(match, need, offset, string, source, target) {
+                need = (need || 'ALL').toLocaleLowerCase();
+
+                var allAssets = getSafeJsonFromFile(grunt.config.get('deployAsset.options.assetMapJsonFile'));
+                var key = path.basename(source).split('.').shift();
+                var dir = path.dirname(path.resolve(source)) + path.sep;
+
+
+                var result = {images: {}, views: {}, index: false};
+                var assetKeys = Object.keys(result);
+
+                Object.keys(allAssets).forEach(function(local) {
+                  if (local.indexOf(dir) === 0) {
+                    var parts, remote, type, cate, localKey;
+                    remote = allAssets[local];
+                    local = local.substr(dir.length);
+                    parts = local.split(path.sep);
+                    type = parts.shift();
+                    cate = parts.shift();
+
+                    localKey = parts.join('/');
+                    if (local === key + '.html') {
+                      result.index = remote;
+                    } else if (cate === key) {
+                      if (type === 'images') { result.images[localKey] = remote; }
+                      else if (type === 'views') { result.views[localKey] = remote; }
+                    }
+                  }
+                });
+
+                //console.log(result);
+                //return match;
+
+                result = (need in result) ? result[need] : result;
+                return JSON.stringify(result);
+              }
             }
           ]
         },
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          dest: '<%= yeoman.dist %>',
-          src: '*.html'
+          dest: '<%= yeoman.dist %>/replace',
+          src: ['*.html', '!404.html']
         }]
       }
 
@@ -229,9 +333,6 @@ module.exports = function (grunt) {
         files: '<%= jshint.all %>',
         //files: ['<%= yeoman.app %>/scripts/{,**/}*.js', 'plugins/grunt/tasks/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
-        options: {
-          livereload: true
-        }
       },
       classImport: {
         files: [
@@ -241,9 +342,7 @@ module.exports = function (grunt) {
         ],
         //files: ['<%= classImport.options.classFiles %>'],
         tasks: 'classImport',
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
+        options: { livereload: '<%= connect.options.livereload %>' }
       },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
@@ -351,7 +450,8 @@ module.exports = function (grunt) {
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
-        browsers: ['last 5 version']
+        //browsers: ['last 5 version']
+        browsers: ['last 40 Chrome versions']
       },
       dist: {
         files: [{
@@ -523,19 +623,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // ngmin tries to make the code safe for minification automatically by
-    // using the Angular long form for dependency injection. It doesn't work on
-    // things like resolve or inject so those have to be done manually.
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: ['*.js', '!vendor.js', '!templates.js'],
-          dest: '.tmp/concat/scripts'
-        }]
-      }
-    },
 
     ngAnnotate: {
       options: {
@@ -550,7 +637,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-
 
     // Replace Google CDN references
     cdnify: {
@@ -707,9 +793,9 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('deploy', ['build', 'deployAsset:dist', 'replace']);
+  grunt.registerTask('deploy', ['build', 'deployAsset:dist', 'replace', 'deployAsset:replace']);
 
-  grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:spring']);
+  //grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:spring']);
 
 
   //grunt.registerTask('publish', function(comment) {

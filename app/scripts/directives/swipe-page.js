@@ -2,7 +2,7 @@ angular.module('mora.ui')
   .directive('swipePage', function (Env) {
     return {
       restrict: 'C',
-      link: function(scope, element) {
+      link: function(scope, element, attrs) {
 
         var win = Env.win,
           el = element[0],
@@ -16,6 +16,11 @@ angular.module('mora.ui')
           INVALID_GAP = 50,  // 如果拖动的距离小于 此值，则不翻页
           INVALID_SPEED = 200,  // 无效拖动时，需要把页面恢复到原始位置所用的时间（ms）
           VALID_SPEED = 500; // 有效拖动时，将页面设置成新状态需要要用的时间（ms）
+
+
+        var TYPE = {};
+        ['SCROLL', 'SCALE'].forEach(function(key) { TYPE[key] = (attrs.swipe || 'scale').toUpperCase() === key; });
+
 
         var css = ng.css3;
 
@@ -127,8 +132,8 @@ angular.module('mora.ui')
             pos = this.pos;
             this.direction = direction = pos.ay < 0 ? 'up' : pos.ay > 0 ? 'down' : false;
 
-            translateY = pos.ay / 4;
-            scale = (winHeight - Math.abs(translateY)) / winHeight;
+            translateY = TYPE.SCALE ? pos.ay / 4 : pos.ay;
+            scale = TYPE.SCALE ? (winHeight - Math.abs(translateY)) / winHeight : 1;
 
             translate(curr(), {scale: scale, y: translateY});
             toggleClass(el, direction, ['up', 'down']);

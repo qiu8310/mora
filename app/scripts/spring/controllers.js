@@ -14,7 +14,7 @@ function getFriendlyPrize(prize) {
 
 angular.module('moraApp')
 
-  .controller('SpringHomeCtrl', function($scope, $location, http) {
+  .controller('SpringHomeCtrl', function($scope, Env, http) {
 
     $scope.showNoPrizeTip = false;
 
@@ -23,7 +23,7 @@ angular.module('moraApp')
     $scope.goToMyPrizes = function() {
       return http.get('api/lottery').success(function(data) {
         if (data.prizes.length) {
-          $location.path('/spring/prizes');
+          Env.path('/prizes');
         } else {
           $scope.showNoPrizeTip = true;
         }
@@ -46,7 +46,7 @@ angular.module('moraApp')
     };
     $scope.showTip = false;
   })
-  .controller('SpringGameCtrl', function($scope, $timeout, $location, http, Env) {
+  .controller('SpringGameCtrl', function($scope, $timeout, http, Env) {
 
     $scope.pickEnable = false;
 
@@ -54,22 +54,23 @@ angular.module('moraApp')
       $scope.pickEnable = true;
     }, 4000);
 
-    var win = Env.win, doc = win.document, h = 262, scale,
+    // 126 [10] 262 [10] 147 => 555
+    var win = Env.win, doc = win.document, h = 126 + 147, scale,
       winH = doc.documentElement.clientHeight;
 
-    if (winH < 550) {
-      scale = 1 - (550 - winH) / h;
+    if (winH < 555) {
+      scale = (555 - winH) / h;
       $timeout(function() {
-        ng.css3(doc.querySelector('.game-ani'), 'transform', 'translateX(-50%) scale('+scale+')');
-      }, 10);
+        ng.css3(doc.querySelector('.container'), 'height', '555px');
+        win.scrollTo(0, scale * 126);
+      }, 100);
     }
-
     win.scrollTo(0, 1);
 
 
     function goTo(status, id) {
       $timeout(function() {
-        $location.path('/spring/game-' + status + (id ? '/' + id : ''));
+        Env.path('/game-' + status + (id ? '/' + id : ''));
       }, 1000);
     }
 
@@ -86,7 +87,7 @@ angular.module('moraApp')
         goTo('error');
       }
 
-      if (Math.round(Math.random() * 100) % 2) {
+      if (!Env.isLocal && Math.round(Math.random() * 100) % 2) {
         goToError();
         goTo('error');
         return false;
@@ -103,11 +104,11 @@ angular.module('moraApp')
     };
 
   })
-  .controller('SpringGameSuccessCtrl', function(prize, $scope, $location) {
+  .controller('SpringGameSuccessCtrl', function(prize, $scope, Env) {
     getFriendlyPrize(prize);
 
     if (!prize.isOwned) {
-      $location.path('/spring/prize/' + prize.id);
+      Env.path('/prize/' + prize.id);
       return false;
     }
 
@@ -128,7 +129,7 @@ angular.module('moraApp')
 
     $scope.$on('$routeChangeStart', function() { player.destroy(); });
   })
-  .controller('SpringPrizeCtrl', function($scope, $location, prize, http) {
+  .controller('SpringPrizeCtrl', function($scope, Env, prize, http) {
 
     getFriendlyPrize(prize);
     $scope.prize = prize;
@@ -142,7 +143,7 @@ angular.module('moraApp')
 
     $scope.showTip = function() { $scope.showShareTip = true; };
     $scope.closeTip = function() { $scope.showShareTip = false; };
-    $scope.helpOpen = function() { $location.path('/spring/prize/open/' + prize.id); };
+    $scope.helpOpen = function() { Env.path('/prize/open/' + prize.id); };
 
     $scope.input = prize.username || prize.mobile;
     $scope.inputDisabled = !!$scope.input;
@@ -150,9 +151,9 @@ angular.module('moraApp')
       if (!$scope.input) { return false; }
       var next = function() {
         if (prize.username) {
-          $location.path('/spring/card/' + prize.id);
+          Env.path('/card/' + prize.id);
         } else if (prize.mobile) {
-          $location.path('/spring/course/' + prize.id);
+          Env.path('/course/' + prize.id);
         }
       };
 
@@ -220,13 +221,13 @@ angular.module('moraApp')
     $scope.texts = texts;
 
   })
-  .controller('SpringPrizesCtrl', function($scope, http, $location) {
+  .controller('SpringPrizesCtrl', function($scope, http, Env) {
 
     $scope.closed = [];
     $scope.opened = [];
 
     $scope.goToPrize = function(prize) {
-      $location.path('/spring/prize/' + prize.id);
+      Env.path('/prize/' + prize.id);
     };
 
     http.get('api/lottery').success(function(data) {

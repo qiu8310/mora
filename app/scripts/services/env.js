@@ -1,4 +1,4 @@
-angular.module('mora.ui').service('Env', function (C, Storage, $window) {
+angular.module('mora.ui').service('Env', function (C, Storage, $window, $location) {
 
   var win = $window,
     doc = win.document,
@@ -137,7 +137,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
 
   // 访问平台限制
   var allowAccessFrom = [].concat(C.app.allowAccessFrom || []);
-  if (Env.isOnline && allowAccessFrom.length > 0 && allowAccessFrom.indexOf('all') === -1) {
+  if (!Env.isLocal && allowAccessFrom.length > 0 && allowAccessFrom.indexOf('all') === -1) {
     var _all = {}, _allows = [], _hit = false, _item;
 
     Object.keys(allPlatform).forEach(function(key) {
@@ -172,15 +172,39 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window) {
   Env.Platform = Platform;
 
 
+  // 流利说相关数据
+  var LLSDeviceInfo = {};
+  if (Platform.isLLS) {
+    LLSDeviceInfo = {
+      token: query.token,
+      version: query.version || 'events', // 版本号, 要么是v6，要么是老版本的events, v6版的app和之前的 token 不兼容
+      appId: query.appId,
+      sDeviceId: query.sDeviceId,
+      deviceId: query.deviceId,
+      appVersion: query.appVersion  // 在做 上传图片、上传音频、播放视频时新加的一个参数，所以用它可以来判断支不支持这些功能
+    };
+  }
+
+  // 提供给 android 主 APP，方便它打点
+  document.cookie = 'activity_id=' + C.app.id + ';path=/';
+  Env.LLSDeviceInfo = LLSDeviceInfo;
+
+
+
+  win.G = ng.camelCase(win.G || {});
+
   // 设置其它变量，避免每次要用都用注入的方法
-  Env.win = $window;
+  Env.win = win;
   Env.doc = doc;
   Env.now = function() { return Date.now(); };
   Env.QUERY = query;
   Env.Storage = Storage;
   Env.C = C;
   Env.L = L;
-  Env.G = ng.camelCase($window.G || {}); // 全局变量，可以是后台传给页面上的
+  Env.G = win.G; // 全局变量，可以是后台传给页面上的
+
+  var basePath = C.app.basePath;
+  Env.path = function(url) { $location.path( basePath + url ); };
 
   win.Env = Env;
 });

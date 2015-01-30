@@ -55,6 +55,7 @@ table.break-word {
 
 .bfc {
   overflow: hidden;
+  zoom: 1;
 }
 
 

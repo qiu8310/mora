@@ -64,6 +64,7 @@
 .game-ani {
   width: 320px;
   position: absolute;
+  z-index: 10;
   top: 138px;
   left: 50%;
   transform: translateX(-50%);
@@ -108,7 +109,7 @@
   }
 }
 
-$star: "../images/star.svg";
+$star: "../images/spring/star.svg";
 
 .share-tip {
   @include bg('spring/share-tip', 0.5, right top);

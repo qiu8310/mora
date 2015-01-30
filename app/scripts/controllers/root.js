@@ -1,8 +1,9 @@
 angular.module('mora.ui')
-  .controller('RootCtrl', function($scope, Env, $location, $timeout, Dialog) {
+  .controller('RootCtrl', function($scope, Env, $timeout, Dialog) {
 
     var doc = Env.doc,
       C = Env.C,
+      basePathLen = C.app.basePath.length,
       lastPath = false,
       currentPath = false,
       isWechat = Env.Platform.isWechat,
@@ -16,7 +17,7 @@ angular.module('mora.ui')
           Env.Mobile.isIOS ? 'ios': 'android'];
 
     $scope.$on('$routeChangeStart', function(e, next, cur) {
-
+      $scope.rootClass = ($scope.rootClass || '') + ' loading';
     });
 
     // happened after routeChangeSuccess
@@ -34,8 +35,8 @@ angular.module('mora.ui')
 
       if (!cur.$$route) { return true; }
 
-      lastPath = prevRoute.originalPath;
-      currentPath = curRoute.originalPath;
+      lastPath = prevRoute.originalPath && prevRoute.originalPath.substr(basePathLen);
+      currentPath = curRoute.originalPath && curRoute.originalPath.substr(basePathLen);
 
       $scope.isMainPage = currentPath === C.app.mainPage;
 
@@ -59,24 +60,20 @@ angular.module('mora.ui')
     };
 
     $scope.goHome = function() {
-      $location.path(C.app.mainPage);
+      Env.path(C.app.mainPage);
     };
 
     // 跳到上一个页面，不是用 history.back
     $scope.goBack = function() {
-      $location.path(lastPath || C.app.mainPage);
+      Env.path(lastPath || C.app.mainPage);
     };
 
     $scope.back = function() {
       if (lastPath) {
         Env.win.history.back();
       } else {
-        $location.path(C.app.mainPage);
+        Env.path(C.app.mainPage);
       }
     };
-
-
-
-
 
   });

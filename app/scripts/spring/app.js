@@ -8,7 +8,11 @@ angular
   ])
   .config(function (C, $locationProvider, $httpProvider, $sceDelegateProvider, $routeProvider) {
 
-    C.app.mainPage = '/spring';
+    C.app.set('spring', {allowAccessFrom: ['wechat']});
+
+
+    var basePath = C.app.basePath;
+
 
     $locationProvider.html5Mode(C.app.html5Mode).hashPrefix(C.app.hashPrefix);
 
@@ -19,64 +23,53 @@ angular
     ]);
 
     $httpProvider.interceptors.push('HttpInterceptor');
-    $httpProvider.defaults.transformRequest = function(query) {
-      return ng.buildQuery(query);
-    };
-    angular.extend($httpProvider.defaults.headers.post, {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-    angular.extend($httpProvider.defaults.headers.put, {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
+    $httpProvider.defaults.transformRequest = function(query) { return ng.buildQuery(query); };
+    angular.extend($httpProvider.defaults.headers.post, {'Content-Type': 'application/x-www-form-urlencoded'});
+    angular.extend($httpProvider.defaults.headers.put, {'Content-Type': 'application/x-www-form-urlencoded'});
 
-    // 加上一个默认的头部信息（不被七牛接受，无法请求其上的模板文件）
-    angular.extend($httpProvider.defaults.headers.common, {
-      //'Powered-By': 'Angular-Mora',
-      //'Mora-Version': 'v1'
-    });
 
     $routeProvider
-      .when('/spring', {
+      .when(basePath, {
         controller: 'SpringHomeCtrl',
         templateUrl: 'views/spring/home.html'
       })
-      .when('/spring/game', {
+      .when(basePath + '/game', {
         controller: 'SpringGameCtrl',
         templateUrl: 'views/spring/game.html'
       })
-      .when('/spring/game-success/:id', {
+      .when(basePath + '/game-success/:id', {
         controller: 'SpringGameSuccessCtrl',
         templateUrl: 'views/spring/game-success.html',
         resolve: {prize: function(Prize, $route) {return Prize.get($route.current.params.id);}}
       })
-      .when('/spring/game-error', {
+      .when(basePath + '/game-error', {
         controller: 'SpringGameErrorCtrl',
         templateUrl: 'views/spring/game-error.html'
       })
-      .when('/spring/prizes', {
+      .when(basePath + '/prizes', {
         controller: 'SpringPrizesCtrl',
         templateUrl: 'views/spring/prizes.html'
       })
-      .when('/spring/prize/:id', {
+      .when(basePath + '/prize/:id', {
         controller: 'SpringPrizeCtrl',
         templateUrl: 'views/spring/prize.html',
         resolve: {prize: function(Prize, $route) {return Prize.get($route.current.params.id);}}
       })
-      .when('/spring/prize/open/:id', {
+      .when(basePath + '/prize/open/:id', {
         controller: 'SpringPrizeOpenCtrl',
         templateUrl: 'views/spring/prize-open.html'
       })
-      .when('/spring/card/:id', {
+      .when(basePath + '/card/:id', {
         controller: 'SpringCardCtrl',
         templateUrl: 'views/spring/card.html',
         resolve: {prize: function(Prize, $route) {return Prize.get($route.current.params.id);}}
       })
-      .when('/spring/course/:id', {
+      .when(basePath + '/course/:id', {
         controller: 'SpringCourseCtrl',
         templateUrl: 'views/spring/course.html',
         resolve: {prize: function(Prize, $route) {return Prize.get($route.current.params.id);}}
       })
-      .when('/spring/info', {
+      .when(basePath + '/info', {
         controller: 'SpringInfoCtrl',
         templateUrl: 'views/spring/info.html'
       })
@@ -91,7 +84,7 @@ angular
     var G = Env.G;
 
     // 伪造数据
-    if (Env.isLocal && !Env.win.G) {
+    if (Env.isLocal && !G.currentUser) {
       var uid = Env.QUERY.refreshToken || 'r_' + Env.now();
       Env.Platform.isWechat = true;
       G.currentUser = {
@@ -106,7 +99,7 @@ angular
     Env.L.log(Env.win.location.href);
 
     $rootScope.goToGame = function() {
-      $location.path('/spring/game');
+      Env.path('/game');
     };
 
   });

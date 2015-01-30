@@ -8,7 +8,8 @@ angular
   ])
   .config(function (C, $locationProvider, $httpProvider, $sceDelegateProvider, $routeProvider) {
 
-    C.app.mainPage = '/lover';
+    C.app.set('lover');
+    var basePath = C.app.basePath;
 
     $locationProvider.html5Mode(C.app.html5Mode).hashPrefix(C.app.hashPrefix);
 
@@ -19,15 +20,9 @@ angular
     ]);
 
     $httpProvider.interceptors.push('HttpInterceptor');
-    $httpProvider.defaults.transformRequest = function(query) {
-      return ng.buildQuery(query);
-    };
-    angular.extend($httpProvider.defaults.headers.post, {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-    angular.extend($httpProvider.defaults.headers.put, {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
+    $httpProvider.defaults.transformRequest = function(query) { return ng.buildQuery(query); };
+    ng.extend($httpProvider.defaults.headers.post, {'Content-Type': 'application/x-www-form-urlencoded'});
+    ng.extend($httpProvider.defaults.headers.put, { 'Content-Type': 'application/x-www-form-urlencoded'});
 
     // 加上一个默认的头部信息（不被七牛接受，无法请求其上的模板文件）
     //angular.extend($httpProvider.defaults.headers.common, {
@@ -36,22 +31,37 @@ angular
     //});
 
     $routeProvider
-      .when('/lover', {
+      .when(basePath, {
         controller: 'LoverHomeCtrl',
         templateUrl: 'views/lover/home.html'
       })
-      .when('/lover/letter', {
+      .when(basePath + '/letter', {
         controller: 'LoverLetterCtrl',
         templateUrl: 'views/lover/letter.html'
       })
       .otherwise(C.app.mainPage);
 
   })
-  .run(function(Env, $rootScope, $location) {
+  .run(function(Env) {
 
     // 强制运行一下 Env，让它里面的变量都生效
     ng.info('run at', Env.now());
     ng.info('Env', Env);
     Env.L.log(Env.win.location.href);
+
+    if (!Env.G) {
+      Env.G = {};
+    }
+    if (!Env.G.ASSETS && Env.isTest) {
+      Env.G.ASSETS = {
+        images: {
+          'hill.png': 'http://localhost:9999/images/lover/hill.png',
+          'tree-lines.png': 'http://localhost:9999/images/lover/tree-lines.png'
+        },
+        views: {
+          'letter.html' : 'views/lover/letter.html'
+        }
+      };
+    }
 
   });

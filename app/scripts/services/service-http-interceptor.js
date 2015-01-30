@@ -1,8 +1,12 @@
 angular.module('mora.ui')
-  .service('HttpInterceptor', function ($q, $rootScope, Env, C) {
+  .service('HttpInterceptor', function ($q, $rootScope, Env) {
 
-    var loc = Env.win.location, PREFIX = 'api';
-    var API_BASE = (Env.isLocal ? 'http://location:3000' : 'http://' +  loc.host) + '/neo_huodong/api/huodongs/2';
+    var C = Env.C,
+      host = Env.win.location.host,
+      PREFIX = 'api';
+
+    var API_BASE = 'http://' + (Env.isLocal && (/9999/.test(host)) ?  'localhost:3000' : host) +
+      '/neo_huodong/api/huodongs/' + C.app.id;
 
     return {
       // requestError: function(rejection) {}
@@ -10,14 +14,20 @@ angular.module('mora.ui')
       request: function(request) {
         // 放行非 api 开头的请求，主要是请求一些模板类的文件
         var url = request.url,
-          params;
+          params = {};
 
         if (url.indexOf(PREFIX) !== 0) {
           return request;
         }
 
         url = API_BASE + url.substr(PREFIX.length);
-        params = {wechat: '1', refreshToken: Env.G.currentUser.refreshToken};
+        if (Env.Platform.isWechat) {
+          ng.extend(params, {wechat: '1', refreshToken: Env.G.currentUser.refreshToken});
+        } else if (Env.Platform.isLLS) {
+          ng.extend(params, Env.LLSDeviceInfo);
+        }
+
+
 
         url = ng.appendQuery(url, params);
 
@@ -74,6 +84,7 @@ angular.module('mora.ui')
             $rootScope.$broadcast('HTTPError',
               'Server was unable to find what you were looking for... Sorry!!');
           } else if (response.status >= 500 && response.status < 600) {
+            Env.L.error(response);
             $rootScope.$broadcast('HTTPError',
               'There is something wrong with the server, please contact the administrator!!');
           }

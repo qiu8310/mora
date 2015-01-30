@@ -2,7 +2,11 @@
 
 @import "lib/bootstrap";
 @import "mixin/bootstrap";
-@import "ui/bootstrap";
+//@import "ui/bootstrap";
+@import "ui/reset";
+@import "ui/layout";
+@import "ui/colors";
+@import "ui/swipe-page";
 
 
 .container {
@@ -10,10 +14,32 @@
   margin: 0 auto;
 }
 
+.btn {
+  cursor: pointer;
+}
+.btn:active, .btn:hover {
+  opacity: .8;
+}
+.ng-click-active {
+  opacity: .8;
+}
+
+
+
 .lover-home-ctrl {
   body {
     background-image: repeating-linear-gradient(90deg, #363e61, #363e61 16px, #394166 16px, #394166 32px);
     background-position: -6px 0;
+  }
+
+  .loading {
+    @include position(fixed, 0);
+    background-color: rgba(0, 0, 0, .9);
+    z-index: 100;
+    .lover-letter {
+      margin: auto;
+      @include position(absolute, 0);
+    }
   }
 
   .title {
@@ -64,9 +90,13 @@
     }
   }
 
-  footer {
-    position: fixed;
+  .top {
+    transform-origin: center top;
+  }
+  .footer {
+    position: absolute;
     bottom: 0;
+    transform-origin: center bottom;
 
     &::before {
       content: '';
@@ -86,10 +116,404 @@
       @include size(263px 68px true, block);
     }
   }
+
+
+  //@media only screen and (min-height: 450px) and (max-height: 520px) { .footer, .top { transform: scale(0.85); } }
+  //@media only screen and (min-height: 350px) and (max-height: 449px) { .footer, .top { transform: scale(0.65); } }
+  @media only screen and (max-height: 520px) { .container { height: 520px; position: relative; } }
 }
 
 
+.lover-letter-ctrl {
 
+
+  .cloud { position: absolute; }
+  .cloud-1 {@include sprite-2x(cloud-1, true, 'lover/page');}
+  .cloud-2 {@include sprite-2x(cloud-2, true, 'lover/page');}
+  .cloud-3 {@include sprite-2x(cloud-3, true, 'lover/page');}
+  .cloud-4 {@include sprite-2x(cloud-4, true, 'lover/page');}
+
+  .tree {
+    @include position(absolute, 0);
+    z-index: 100;
+    &::before {
+      content: '';
+      @include size(45px 100%, block);
+      background: url("../images/lover/tree-lines.png") repeat-y center top #272c45;
+      background-size: 42px 100%;
+      float: right;
+      margin-right: 24px;
+    }
+    &::after {
+      content: '';
+      @include sprite-2x(top-branch, true, 'lover/page');
+      position: absolute;
+      right: 0;
+      top: 80px;
+    }
+
+    .branch {
+      @include sprite-2x(branch, true, 'lover/page');
+      position: absolute;
+      bottom: 30px;
+      right: 68px;
+    }
+
+    .double-bird {
+      margin-top: -100px;
+      margin-left: 37px;
+    }
+
+    .guitar-bird {
+      margin-top: -127px;
+      margin-left: -20px;
+    }
+
+    .heart {
+      position: absolute;
+      right: 0;
+      bottom: 150px;
+      @include sprite-2x(heart, true, 'lover/page');
+    }
+  }
+
+  .page {
+    @include position(fixed, 0);
+    min-width: 320px;
+    overflow: hidden;
+  }
+
+  .page-1 {
+    background: url("../images/lover/hill.png") no-repeat center bottom #363e61;
+    background-size: 100% image-height-ratio('lover/hill', 0.5);
+
+    .heart-txt {
+      transition: opacity ease-out 1.5s;
+      opacity: 0;
+      margin-top: 34px;
+      margin-left: 26px;
+    }
+
+    &.active .heart-txt {
+      opacity: 1;
+    }
+
+    .cloud-1 {
+      top: 15px;
+      left: -10px;
+    }
+    .cloud-2 {
+      right: 25px;
+      top: -10px;
+    }
+    .cloud-3 {
+      right: 40px;
+      bottom: 300px;
+    }
+    .cloud-4 {
+      left: 10px;
+      bottom: 270px;
+    }
+
+  }
+
+  .page-2 {
+    background: url("../images/lover/hill.png") no-repeat center bottom #363e61;
+    background-size: 100% image-height-ratio('lover/hill', 0.5);
+    .cloud-1 {
+      top: 20px;
+      left: -6px;
+    }
+    .cloud-2 {
+      right: 40px;
+      top: 2px;
+    }
+    .cloud-3 {
+      right: 50px;
+      top: 150px;
+    }
+    .cloud-4 {
+      left: 106px;
+      top: 260px;
+    }
+
+
+  }
+
+  .page-3 {
+    background: url("../images/lover/hill-3.png") no-repeat center bottom #474470;
+    background-size: 100% image-height-ratio('lover/hill-3', 0.5);
+
+    .branch {
+      top: 360px;
+      bottom: auto;
+    }
+
+    .cloud-1 {
+      top: 36px;
+      right: 30px;
+    }
+    .cloud-2 {
+      top: 23px;
+      left: 12px;
+    }
+    .cloud-3 {
+      top: 154px;
+      right: 14px;
+    }
+    .cloud-4 {
+      left: 145px;
+      top: 195px;
+    }
+  }
+  .page-4 {
+    background-color: #e2534c;
+
+    .time {
+      @include sprite-2x(time, block, 'lover/sp');
+      position: relative;
+    }
+    .lover-bird {
+      position: absolute;
+      right: -6px;
+      top: -24px;
+    }
+    p {
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  .page-5 {
+    background: url("../images/lover/heart-bg.png") repeat #e14864;
+    background-size: 23px 23px;
+
+    .bless {
+      @include sprite-2x(bless, true, 'lover/sp');
+      margin-left: 26px;
+    }
+
+
+    .share {
+      position: relative;
+      margin-top: 60px;
+    }
+
+    .btn {
+      @include size(245px 60px true, block);
+      background: linear-gradient(to bottom, #6763a8 0%, #6763a8 49%, #706cb0 50%);
+      box-shadow: -3px 5px rgba(0,0,0,.2);
+    }
+
+    .star-bird {
+      position: absolute;
+      top: -107px;
+      left: 30px;
+    }
+  }
+
+  .wrap {
+    overflow: hidden;
+    @include size(320px 568px, true);
+    transform: translateX(-50%);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 200;
+  }
+
+  color: white;
+  font-size: 14px;
+  .r, .b, .y, .w { font-size: 15px; vertical-align: baseline; font-weight: 700; }
+  .r { color: #f24e6c; }
+  .b { color: #479eb5; }
+  .y { color: #fed156; }
+  .w { color: #ffffff; }
+  p  { line-height: 24px; padding: 0 28px; }
+  p i {
+    position: relative;
+    margin-left: 5px;
+    @include size(25px 17px, inline-block);
+  }
+  p i::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+  }
+  .shy::after { @include sprite-2x(shy, true, 'lover/page'); }
+  .pride::after { @include sprite-2x(pride, true, 'lover/page'); }
+  .happy::after { @include sprite-2x(happy, true, 'lover/page'); }
+}
+
+
+@keyframes zoomInDown {
+  0% {
+    opacity: 0;
+    transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+
+.active .ani-zoomInDown {
+  animation-name: zoomInDown;
+}
+
+@keyframes flipInX {
+  0% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    transition-timing-function: ease-in;
+    opacity: 0;
+  }
+
+  40% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    transition-timing-function: ease-in;
+  }
+
+  60% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+
+  80% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+  }
+
+  100% {
+    transform: perspective(400px);
+  }
+}
+
+.active .ani-flipX {
+  backface-visibility: visible !important;
+  animation-name: flipInX;
+}
+@keyframes bounceInUp {
+  0%, 60%, 75%, 90%, 100% {
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0);
+  }
+
+  75% {
+    transform: translate3d(0, 10px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, -5px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes bounceInRight {
+  0%, 60%, 75%, 90%, 100% {
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(3000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(-25px, 0, 0);
+  }
+
+  75% {
+    transform: translate3d(10px, 0, 0);
+  }
+
+  90% {
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+@keyframes bounceInLeft {
+  0%, 60%, 75%, 90%, 100% {
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(-3000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(25px, 0, 0);
+  }
+
+  75% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  90% {
+    transform: translate3d(5px, 0, 0);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+@keyframes bounceInDown {
+  0%, 60%, 75%, 90%, 100% {
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0);
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+.ani {
+  animation-duration: .8s;
+  animation-fill-mode: both;
+  opacity: 0;
+}
+.active .ani { opacity: 1; }
+.active .delay-1 { animation-delay: .7s; }
+.active .delay-2 { animation-delay: 1.4s; }
+.active .delay-3 { animation-delay: 2.1s; }
+.active .ani-down {  animation-name: bounceInDown;  }
+.active .ani-left {  animation-name: bounceInLeft; }
+.active .ani-right { animation-name: bounceInRight; }
+.active .ani-up { animation-name: bounceInUp; }
 
 
 // 动画相关

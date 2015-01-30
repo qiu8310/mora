@@ -1,7 +1,7 @@
 <div class="container fragment">
   <div ng-if="::isOwned">
     <div class="slogan fg-f f-bold f20 l26 pt25 text-center">
-      <p ng-if="::untouched">招唤{{::prize.requireUsersTotal}}个小伙伴来帮你拆礼物！<br/>&nbsp;</p>
+      <p ng-if="::untouched">招唤{{prize.requireUsersTotal}}个小伙伴来帮你拆礼物！<br/>&nbsp;</p>
       <p ng-if="::(touchUsersCount && !opened)">已有{{::touchUsersCount}}个小伙伴帮忙，召唤更多小伙伴来帮你拆礼物！</p>
       <p ng-if="::opened">人缘太好了<br/>你的礼物已经被拆开</p>
     </div>
@@ -53,9 +53,12 @@
 
 
   <a class="btn mt36 mb50" ng-if="::(isOwned && !opened)" ng-click="showTip()">分享求打开</a>
-  <a class="btn mt36 mb50" ng-if="::(!isOwned && !opened && !helped)" ng-click="helpOpen()" >帮TA拆礼物</a>
-  <a class="btn mt36 mb50" ng-if="::(!isOwned && !opened && helped)" ng-click="showTip()" >分享</a>
-  <a class="btn mt36 mb50" ng-if="::(!isOwned && opened )" ng-click="goHome()">我也要玩</a>
+  <div class="mt36 mb50" ng-if="::(!isOwned)">
+    <a class="btn" ng-if="::(!opened && !helped)" ng-click="helpOpen()" >帮TA拆礼物</a>
+    <a class="btn" ng-if="::(!opened && helped)" ng-click="showTip()" >分享</a>
+    <a class="btn btn-white mt13" ng-click="goHome()">我也要玩</a>
+  </div>
+
 
   <div class="mask ani-scale" ng-show="showShareTip" ng-click="closeTip()">
     <div class="modal share-tip"></div>
