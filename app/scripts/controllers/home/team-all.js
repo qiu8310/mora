@@ -104,7 +104,9 @@ angular.module('moraApp')
     // 将指定的小组 设置或取消 官方
     $scope.official = function(team) {
       if (team.isOfficial) {
-        Dialog.alert('后台暂不支持!');
+        return $http.put('api/team/' + team.resourceId + '/unofficial').success(function() {
+          team.isOfficial = false;
+        });
       } else {
         return $http.put('api/team/' + team.resourceId + '/official').success(function() {
           team.isOfficial = true;

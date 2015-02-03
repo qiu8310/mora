@@ -33,7 +33,7 @@ angular.module('moraApp')
 
     // 将指定的小组 设置或取消 热门
     $scope.hot = function(podcast) {
-      var base = podcast.isHot ? '/calm_down' : '/hot';
+      var base = podcast.isHot ? '/calm_down' : '/heat_up';
       return $http.put('api/podcasts/' + podcast.id + base).success(function() {
         podcast.isHot = !podcast.isHot;
       });
