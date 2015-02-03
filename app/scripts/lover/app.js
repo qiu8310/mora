@@ -37,7 +37,12 @@ angular
       })
       .when(basePath + '/letter', {
         controller: 'LoverLetterCtrl',
-        templateUrl: 'views/lover/letter.html'
+        templateUrl: 'views/lover/letter.html',
+        resolve: {
+          Data: function(http, Env) {
+            return http.get('api/userinfo', {cache: true}).then(function(d) { return d.data; });
+          }
+        }
       })
       .otherwise(C.app.mainPage);
 
@@ -49,9 +54,7 @@ angular
     ng.info('Env', Env);
     Env.L.log(Env.win.location.href);
 
-    if (!Env.G) {
-      Env.G = {};
-    }
+
     if (!Env.G.ASSETS && Env.isTest) {
       Env.G.ASSETS = {
         images: {
@@ -62,6 +65,7 @@ angular
           'letter.html' : 'views/lover/letter.html'
         }
       };
+      Env.G.currentTimestamp = Math.round(Env.now()/1000);
     }
 
   });

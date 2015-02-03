@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="pages swipe-page" data-swipe="scroll">
+  <div class="pages swipe-page" data-swipe="scroll" data-swipe-children="{{pageNumber}}">
 
     <div class="page page-1">
       <div class="cloud cloud-1"></div>
@@ -12,9 +12,9 @@
           <div class="double-bird"></div>
           <div class="heart">
             <p class="heart-txt">亲爱滴，<br/>
-              我们相遇在 <span class="y">XXXX</span><br/>
-              已经相伴了 <span class="y">XXX</span> 天<br/>
-              <span class="y">XX</span> 小时了<i class="shy"></i></p>
+              我们相遇在 <span class="y">{{createdAt|date:'yyyy'}}</span><br/>
+              已经相伴了 <span class="y">{{elapsedDays}}</span> 天<br/>
+              <span class="y">{{elapsedHours}}</span> 小时了<i class="shy"></i></p>
 
           </div>
         </div>
@@ -34,20 +34,20 @@
       <div class="wrap">
         <p class="mt40 ani ani-down">
           亲爱滴<br/>
-          我们相遇在 <span class="r">XXXX</span> <br/>
-          已经相伴了 <span class="r">XXX</span> 天<br/>
-          <span class="r">XX</span> 小时了
+          我们相遇在 <span class="r">{{createdAt|date:'yyyy'}}</span> <br/>
+          已经相伴了 <span class="r">{{elapsedDays}}</span> 天<br/>
+          <span class="r">{{elapsedHours}}</span> 小时了
         </p>
 
         <p class="mt25 ani ani-left delay-1">
           从我们认识到现在，你对我说过<br/>
-          了 <span class="r">XXXX</span> 句话<br/>
+          了 <span class="r">{{data.sentenceCount}}</span> 句话<br/>
           每一句都是我们的回忆!
         </p>
 
         <p class="mt25 ani ani-right delay-2">
-          <span class="b">XXXX</span> 年你还只有 <span class="r">XX</span> 分<br/>
-          现在你都是 <span class="r">XX</span> 分了<br/>
+          <span class="b">{{lowestScoreDate|date:'yyyy'}}</span> 年你还只有 <span class="r">{{data.lowScore}}</span> 分<br/>
+          现在你都是 <span class="r">{{data.highScore}}</span> 分了<br/>
           进步的不止一点点哦<i class="shy"></i>
         </p>
       </div>
@@ -64,14 +64,14 @@
           <div style="position: absolute; top: -360px; left: -56px;">
             <p class="mt35 ani ani-right">
               在流利吧，<br/>
-              你发表过 <span class="r">XX</span> 个帖子<br/>
-              有 <span class="r">XX</span> 人阅读过哦<br/>
+              你发表过 <span class="r">{{data.topicsCount}}</span> 个帖子<br/>
+              有 <span class="r">{{data.topicsVisitorCount}}</span> 人阅读过哦<br/>
               人气旺，人气王哦
             </p>
 
             <p class="mt20 ani ani-left delay-1">
               <span class="r">XX</span> 人和你互动交流过<br/>
-              收到和送出过 <span class="r">XX</span> 个赞<br/>
+              收到和送出过 <span class="r">{{data.likedCount}}</span> 个赞<br/>
               你这么有爱，我果然有眼光
             </p>
           </div>
@@ -79,7 +79,7 @@
           </div>
           <p style="position: absolute; top: 20px; left: -56px;" class="ani ani-up delay-2">
             告诉你个小秘密：<br/>
-            <span class="r">XX</span> 人看过你的个人主页~<br/>
+            <span class="r">{{data.visitorCount}}</span> 人看过你的个人主页~<br/>
             伦家吃醋了<i class="pride"></i>
           </p>
         </div>
@@ -87,7 +87,7 @@
     </div>
 
     <div class="page page-4">
-      <p class="mt25 ani ani-down">我从 <span class="y">2013.2.14</span> 出现到现在，有 <span class="y">1700万</span> 萌萌哒来学习过 <span class="y">XXX</span> 个句子，录音时长已达到 <span class="y">XXX</span> 分钟</p>
+      <p class="mt25 ani ani-down">我从 <span class="y">2013.2.14</span> 出现到现在，有 <span class="y">1700万</span> 萌萌哒来学习过 <span class="y">1,796,355,266</span> 个句子，录音时长已达到 <span class="y">1,873,220,056</span> 分钟</p>
       <div class="time text-hide center-block mt20 ani ani-flipX delay-1">2013.02.14<div class="lover-bird"></div></div>
       <p class="mt18 ani ani-up delay-2">我很荣幸遇到了这么多爱我的人更加庆幸你在这中间，<span class="w">陪伴，鼓励，支持我！</span></p>
       <p class="mt18 ani ani-up delay-3">今天的我不够完美，有时候也会耍耍小脾气，但是我知道你会理解我，信任我，并一直支持我！因为这就是爱啊~<i class="happy"></i></p>
@@ -107,7 +107,7 @@
 
         <div class="share ani ani-flipX delay-2">
           <div class="star-bird"></div>
-          <a class="btn fg-f center-block text-center f26">晒幸福</a>
+          <a class="btn fg-f center-block text-center f26" ng-click="share()">晒幸福</a>
         </div>
 
       </div>

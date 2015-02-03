@@ -3,9 +3,11 @@ angular.module('mora.ui')
 
     var C = Env.C,
       host = Env.win.location.host,
+      stageHost = 'staging-neo.llsapp.com',
+      localHost = 'localhost:3000',
       PREFIX = 'api';
 
-    var API_BASE = 'http://' + (Env.isLocal && (/9999/.test(host)) ?  'localhost:3000' : host) +
+    var API_BASE = 'http://' + (Env.isLocal ? (Env.QUERY.staging ? stageHost : localHost) : host) +
       '/neo_huodong/api/huodongs/' + C.app.id;
 
     return {

@@ -174,7 +174,10 @@ angular.module('moraApp')
   .controller('SpringCourseCtrl', function($scope, prize, Env) {
     getFriendlyPrize(prize);
     $scope.prize = prize;
-    $scope.downloadUrl = Env.downloadUrl;
+    $scope.claim = function() {
+      Env.path('info');
+    };
+    //$scope.downloadUrl = Env.downloadUrl;
   })
   .controller('SpringCardCtrl', function($scope, prize, Media) {
     var texts = [], allTexts = [

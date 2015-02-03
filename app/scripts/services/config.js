@@ -58,7 +58,6 @@ angular.module('mora.ui')
 
         // 单独配置在 app.js 的 config 中
         // allowAccessFrom: ['wechat'],  // qq, weibo, wechat, alipay, lls, all
-        // mainPage: '/2'
 
         download: {
           android: 'http://www.liulishuo.com/android',

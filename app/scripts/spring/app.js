@@ -8,7 +8,7 @@ angular
   ])
   .config(function (C, $locationProvider, $httpProvider, $sceDelegateProvider, $routeProvider) {
 
-    C.app.set('spring', {allowAccessFrom: ['wechat']});
+    C.app.set('spring', {allowAccessFrom: ['lls', 'wechat']});
 
 
     var basePath = C.app.basePath;

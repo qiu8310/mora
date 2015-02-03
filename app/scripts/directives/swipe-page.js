@@ -12,6 +12,13 @@ angular.module('mora.ui')
           supportTouch = 'ontouchstart' in win,
           events;
 
+        // 指定子页面的次数
+        if (attrs.swipeChildren) {
+          pageElLen = parseInt(attrs.swipeChildren) || pageElLen;
+          pageEls = pageEls.slice(0, pageElLen);
+        }
+
+
         var ACTIVE = 'active',
           INVALID_GAP = 50,  // 如果拖动的距离小于 此值，则不翻页
           INVALID_SPEED = 200,  // 无效拖动时，需要把页面恢复到原始位置所用的时间（ms）
@@ -57,8 +64,6 @@ angular.module('mora.ui')
             el.classList[cls === key ? 'add' : 'remove'](key);
           });
         }
-
-        if (pageElLen < 2) { return false; }
 
         var winHeight;
         events = {
