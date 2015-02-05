@@ -127,7 +127,7 @@ angular.module('moraApp')
     $scope.Data = Data;
 
     $scope.vote = function() {
-      http.post('api/user_vote', {'user_id': $routeParams.uid})
+      http.post('api/user_vote?user_id=' + $routeParams.uid, {'user_id': $routeParams.uid})
         .success(function(data) {
           $scope.voteSuccessToast = true;
           Data.tickets = data.tickets;
