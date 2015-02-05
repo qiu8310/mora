@@ -49,6 +49,14 @@ angular.module('mora.ui')
       },
       play     : function() {
         this.isPlay = true;
+        /*
+         iPhone 及部分 Android 下无法自动播放，非要 click 触发播放，解决方案
+         if (Env.Mobile.isAny) {
+            Env.doc.addEventListener('touchstart', play, false);
+         } else {
+            play();
+         }
+         */
         this.player.play();
       },
       pause    : function() {

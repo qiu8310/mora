@@ -29,7 +29,9 @@ angular.module('mora.ui')
           ng.extend(params, Env.LLSDeviceInfo);
         }
 
-
+        // 设置 user_id，如果有的话
+        var uid = Env.QUERY.uid || Env.G.currentUser && Env.G.currentUser.id;
+        if (!(/\buser_id=/.test(url)) && uid) { ng.extend(params, {'user_id': uid}); }
 
         url = ng.appendQuery(url, params);
 

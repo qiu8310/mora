@@ -11,7 +11,7 @@ var TF = require('text-free');
 var path = require('path');
 var modRewrite = require('connect-modrewrite');
 
-var APPS = ['spring', 'lover'];
+var APPS = ['spring', 'lover', 'course'];
 
 
 module.exports = function (grunt) {
@@ -67,7 +67,8 @@ module.exports = function (grunt) {
 
   var yeomanConfig = {
     app : getSafeJsonFromFile('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    deploy: '/Users/mora/Workspace/angular/neo_huodong/app/views/neo_huodong/api/huodongs'
   };
 
   // http://mora.sinaapp.com/spa-bootstrap-manager.php?token=d7P843348fa7ea4LedDae155380aKdDfdO4dKQ10
@@ -574,9 +575,13 @@ module.exports = function (grunt) {
 
     // The following *-min tasks produce minified files in the dist folder
     cssmin: {
+      // https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-programmatically
       options: {
+        //advanced: false,
+        //aggressiveMerging: false,
+        shorthandCompacting: false,
         root: '<%= yeoman.app %>',
-        noRebase: true
+        rebase: false
       }
     },
 
@@ -677,6 +682,13 @@ module.exports = function (grunt) {
           ]
         }]
       },
+      deploy: {
+        files: {
+          '<%= yeoman.deploy %>/_valentine_day.erb': '<%= yeoman.dist %>/replace/lover.html',
+          '<%= yeoman.deploy %>/_spring_festival.erb': '<%= yeoman.dist %>/replace/spring.html',
+          '<%= yeoman.deploy %>/_laishixiong.erb': '<%= yeoman.dist %>/replace/course.html'
+        }
+      },
       styles: {
         expand: true,
         cwd: '<%= yeoman.app %>/styles',
@@ -705,16 +717,6 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= yeoman.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
     // uglify: {
     //   dist: {
     //     files: {
@@ -793,7 +795,7 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('deploy', ['build', 'deployAsset:dist', 'replace', 'deployAsset:replace']);
+  grunt.registerTask('deploy', ['build', 'deployAsset:dist', 'replace', /*'deployAsset:replace'*/ 'copy:deploy']);
 
   //grunt.registerTask('publish', ['build', 'deployAsset:dist', 'spaBootstrap:spring']);
 

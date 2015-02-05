@@ -186,10 +186,14 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window, $locatio
   }
 
   // 提供给 android 主 APP，方便它打点
-  document.cookie = 'activity_id=' + C.app.id + ';path=/';
+  doc.cookie = 'activity_id=' + C.app.id + ';path=/';
   Env.LLSDeviceInfo = LLSDeviceInfo;
 
 
+  // 微信下 screen.height = 568,  clientHeight = 504
+  Env.Browser = {
+    fullHeight: win.screen.height - doc.documentElement.clientHeight <= 20
+  };
 
   win.G = ng.camelCase(win.G || {});
 

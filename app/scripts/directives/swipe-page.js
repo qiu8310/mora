@@ -2,21 +2,24 @@ angular.module('mora.ui')
   .directive('swipePage', function (Env) {
     return {
       restrict: 'C',
+      scope: {
+        swipeChildren: '='
+      },
       link: function(scope, element, attrs) {
 
         var win = Env.win,
           el = element[0],
           pageEls = [].slice.call(el.children),
           pageElIndex = 0,
-          pageElLen = pageEls.length,
+          pageElLen,
           supportTouch = 'ontouchstart' in win,
           events;
 
         // 指定子页面的次数
-        if (attrs.swipeChildren) {
-          pageElLen = parseInt(attrs.swipeChildren) || pageElLen;
-          pageEls = pageEls.slice(0, pageElLen);
+        if (scope.swipeChildren && scope.swipeChildren.length > 0) {
+          pageEls = pageEls.filter(function(el, i) { return scope.swipeChildren.indexOf(i) >= 0; });
         }
+        pageElLen = pageEls.length;
 
 
         var ACTIVE = 'active',
@@ -30,6 +33,7 @@ angular.module('mora.ui')
 
 
         var css = ng.css3;
+        var translate = ng.translate;
 
         function bind(types) {
           types.split(',').forEach(function(type) {
@@ -46,19 +50,6 @@ angular.module('mora.ui')
         function curr() { return pageEls[pageElIndex]; }
         function next() { return pageEls[pageElIndex + 1] || null; }
         function prev() { return pageEls[pageElIndex - 1] || null; }
-
-        function translate (elem, transform, speed, func) {
-          if (!elem) { return false; }
-          transform = transform || {};
-
-          var pos = (transform.x || 0) + 'px, ' + (transform.y || 0) + 'px';
-          var scale = ('scale' in transform) ? transform.scale : 1;
-
-          func = func || 'ease';
-          css(elem, 'transitionTimingFunction', speed > 0 ? func : 'no');
-          css(elem, 'transitionDuration', (speed || 0) + 'ms');
-          css(elem, 'transform', 'translate('+ pos +') scale('+ scale +')');
-        }
         function toggleClass (el, cls, allCls) {
           allCls.forEach(function(key) {
             el.classList[cls === key ? 'add' : 'remove'](key);
@@ -72,7 +63,7 @@ angular.module('mora.ui')
               oldPos = this.pos,
               startPos = this.startPos,
               pos;
-            e.stopPropagation();
+            //e.stopPropagation();
             e.preventDefault();
 
             this.pos = pos = {

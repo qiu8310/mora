@@ -7,6 +7,7 @@
 @import "ui/layout";
 @import "ui/colors";
 @import "ui/swipe-page";
+@import "ui/debug";
 
 
 .container {
@@ -22,6 +23,33 @@
 }
 .ng-click-active {
   opacity: .8;
+}
+
+
+@keyframes move-up {
+  0% { -webkit-transform: translateY(100%); opacity:0;}
+  50% { -webkit-transform: translateY(0%); opacity:1;}
+  100% { -webkit-transform: translateY(-100%); opacity:0;}
+}
+
+.arrow-up {
+  position: fixed;
+  z-index: 9999;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: image-height-ratio('lover/page/up', 0.4) * 2;
+  width: image-width-ratio('lover/page/up', 0.4);
+
+  &::after {
+    content: '';
+    @include sprite(up, 0.4, true, 'lover/page');
+    animation: move-up 1.5s ease infinite;
+  }
+}
+
+.page-last-active ~ .arrow-up {
+  display: none;
 }
 
 
@@ -184,8 +212,9 @@
   }
 
   .page-1 {
-    background: url("../images/lover/hill.png") no-repeat center bottom #363e61;
+    background: url("../images/lover/hill.png") no-repeat center bottom;
     background-size: 100% image-height-ratio('lover/hill', 0.5);
+    background-color: #363e61;
 
     .heart-txt {
       transition: opacity ease-out 1.5s;
@@ -218,8 +247,9 @@
   }
 
   .page-2 {
-    background: url("../images/lover/hill.png") no-repeat center bottom #363e61;
+    background: url("../images/lover/hill.png") no-repeat center bottom;
     background-size: 100% image-height-ratio('lover/hill', 0.5);
+    background-color: #363e61;
     .cloud-1 {
       top: 20px;
       left: -6px;
@@ -241,8 +271,9 @@
   }
 
   .page-3 {
-    background: url("../images/lover/hill-3.png") no-repeat center bottom #474470;
+    background: url("../images/lover/hill-3.png") no-repeat center bottom;
     background-size: 100% image-height-ratio('lover/hill-3', 0.5);
+    background-color: #474470;
 
     .branch {
       top: 360px;
@@ -285,8 +316,9 @@
     }
   }
   .page-5 {
-    background: url("../images/lover/heart-bg.png") repeat #e14864;
+    background: url("../images/lover/heart-bg.png") repeat;
     background-size: 23px 23px;
+    background-color: #e14864;
 
     .bless {
       @include sprite-2x(bless, true, 'lover/sp');
@@ -502,14 +534,14 @@
   }
 }
 .ani {
-  animation-duration: .8s;
+  animation-duration: 1.5s;
   animation-fill-mode: both;
   opacity: 0;
 }
 .active .ani { opacity: 1; }
-.active .delay-1 { animation-delay: .7s; }
-.active .delay-2 { animation-delay: 1.4s; }
-.active .delay-3 { animation-delay: 2.1s; }
+.active .delay-1 { animation-delay: 1.5s; }
+.active .delay-2 { animation-delay: 3.0s; }
+.active .delay-3 { animation-delay: 4.5s; }
 .active .ani-down {  animation-name: bounceInDown;  }
 .active .ani-left {  animation-name: bounceInLeft; }
 .active .ani-right { animation-name: bounceInRight; }

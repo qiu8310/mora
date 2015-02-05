@@ -36,12 +36,10 @@ body.has-footer {
 
 .flex {
   display: flex;
-
-  & > li {
+  .flex-1 {
     flex: 1;
   }
 }
-
 
 .mask {
   @include position(fixed, 0);

@@ -11,12 +11,24 @@ function getFriendlyPrize(prize) {
   prize.label = c === 'red' ? '《Jonathan在中国过新年》' : c === 'green' ? '新年电子贺卡' : '新年手绘贺卡';
 }
 
+function share(Native) {
+  var loc = window.location;
+  Native.share({
+    img: 'http://cdn-l.llsapp.com/connett/db912c75-79b4-4db8-a1a7-0b79b7a331d8',
+    content: '英语流利说新年礼包到了，有什么好东东，快来帮我拆开',
+    url: 'http://' + loc.host + loc.pathname,
+    channels: ['wx_timeline', 'wx_friend']
+  });
+}
+
 
 angular.module('moraApp')
 
-  .controller('SpringHomeCtrl', function($scope, Env, http) {
+  .controller('SpringHomeCtrl', function($scope, Env, http, Native) {
 
     $scope.showNoPrizeTip = false;
+
+    if (!Env.Platform.isLLS) { Native.getLLSApp(); }
 
 
     // 去到个人礼物主页（没有礼物要先提醒用户）
@@ -46,7 +58,9 @@ angular.module('moraApp')
     };
     $scope.showTip = false;
   })
-  .controller('SpringGameCtrl', function($scope, $timeout, http, Env) {
+  .controller('SpringGameCtrl', function($scope, $timeout, http, Env, Native) {
+
+    if (!Env.Platform.isLLS) { Native.getLLSApp(); }
 
     $scope.pickEnable = false;
 
@@ -104,13 +118,15 @@ angular.module('moraApp')
     };
 
   })
-  .controller('SpringGameSuccessCtrl', function(prize, $scope, Env) {
+  .controller('SpringGameSuccessCtrl', function(prize, $scope, Env, Native) {
     getFriendlyPrize(prize);
 
     if (!prize.isOwned) {
       Env.path('/prize/' + prize.id);
       return false;
     }
+
+    $scope.share = function() { share(Native); };
 
     $scope.prize = prize;
 
@@ -129,7 +145,7 @@ angular.module('moraApp')
 
     $scope.$on('$routeChangeStart', function() { player.destroy(); });
   })
-  .controller('SpringPrizeCtrl', function($scope, Env, prize, http) {
+  .controller('SpringPrizeCtrl', function($scope, Env, prize, http, Native) {
 
     getFriendlyPrize(prize);
     $scope.prize = prize;
@@ -137,12 +153,15 @@ angular.module('moraApp')
     $scope.untouched =  prize.touchUsersTotal === 0;
     $scope.touchUsersCount = prize.touchUsersTotal;
 
-    $scope.isOwned = prize.isOwned;
+    /* jshint ignore:start */
+    $scope.isOwned = prize.userId == Env.G.currentUser.id;
+    /* jshint ignore:end */
     $scope.helped = prize.isTouch;
     $scope.owner = prize.nickname;
 
-    $scope.showTip = function() { $scope.showShareTip = true; };
-    $scope.closeTip = function() { $scope.showShareTip = false; };
+    $scope.showTip = function() { share(Native); };
+    //$scope.showTip = function() { $scope.showShareTip = true; };
+    //$scope.closeTip = function() { $scope.showShareTip = false; };
     $scope.helpOpen = function() { Env.path('/prize/open/' + prize.id); };
 
     $scope.input = prize.username || prize.mobile;
@@ -171,15 +190,24 @@ angular.module('moraApp')
   .controller('SpringPrizeOpenCtrl', function($routeParams, http) {
     http.post('api/prize_tickets?ignoreError=yes', {'prize_id': $routeParams.id});
   })
-  .controller('SpringCourseCtrl', function($scope, prize, Env) {
+  .controller('SpringCourseCtrl', function($scope, prize, http, Native) {
     getFriendlyPrize(prize);
     $scope.prize = prize;
-    $scope.claim = function() {
-      Env.path('info');
+
+    $scope.learn = function() {
+      Native.addModule('54bf7ba8636d7304adec0100');
     };
+
+    http.post('api/prizes?ignoreError=yes', {'prize_code': prize.prizeCode})
+      .success(function() { window.alert('领取成功！'); });
+      //.error(function() { window.alert('课程领取失败！'); });
+
+    //$scope.claim = function() {
+    //  Env.path('info');
+    //};
     //$scope.downloadUrl = Env.downloadUrl;
   })
-  .controller('SpringCardCtrl', function($scope, prize, Media) {
+  .controller('SpringCardCtrl', function($scope, prize, Media, Env) {
     var texts = [], allTexts = [
       '2015还要一起走！',
       '很高兴遇见你。',
@@ -203,7 +231,7 @@ angular.module('moraApp')
       '那么问题来了，什么时候请我吃饭呢？'
     ];
 
-    var player, ai,
+    var player, play, ai,
       audios = [];
     for (ai = 111; ai <= 130; ai++) {
       audios.push('http://liulishuo-dream.qiniudn.com/' + ai + '.mp3');
@@ -214,8 +242,13 @@ angular.module('moraApp')
     for (i = 1; i <= 5; i++) { texts.push(allTexts[id * i % len]);}
 
     if (prize.prize === 'music_greeting_card') {
-      player = Media.AudioPlayer(ng.random(audios));
-      player.play();
+      player = Media.AudioPlayer(audios[id % audios.length]);
+      play = function() { player.play(); Env.doc.removeEventListener('touchstart', play, false); };
+      if (Env.Mobile.isAny) {
+        Env.doc.addEventListener('touchstart', play, false);
+      } else {
+        play();
+      }
       player.on('ended', function() { player.play(); });
       $scope.$on('$routeChangeStart', function() { player.destroy(); });
     }

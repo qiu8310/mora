@@ -16,10 +16,12 @@ angular.module('mora.ui')
       restrict: 'A',
       link: function(scope, element, attrs) {
         var clickHandler = $parse(attrs.asyncClick);
+        var async = /\(.*?\bdone\b/.test(attrs.asyncClick);
 
         element.on('click', function(event) {
           ng.asyncClick(element, function() {
-            return clickHandler(scope, {$event: event});
+            if (async) { this.async(); }
+            return clickHandler(scope, ng.extend({$event: event}, this));
           }, attrs);
 
         });

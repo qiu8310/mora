@@ -1,0 +1,45 @@
+<div class="container" data-ci-class="bfc text-hide">
+  <banner></banner>
+  <div class="hero gap">
+    <div class="fg-p1 l19 mb15 mt15">
+      <p>赖世雄系列经典课程，等你来挑战!成功就有奖，就是这么任性！</p>
+      <p>活动期间只能选择一本书的一项任务进行挑战</p>
+      <p>报名时间：2015年2月10日-2015年2月15日</p>
+    </div>
+
+    <ul class="flex">
+      <li class="flex-1" style="padding-right: 11px;">
+        <a class="btn">活动详情</a>
+      </li>
+      <li class="flex-1" style="padding-left: 11px;">
+        <a class="btn" ng-click="fightingInfo()">学习进度</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="gap">
+    <sub-title>挑战课程</sub-title>
+    <ul class="courses">
+      <li class="course bfc mt24" ng-repeat="c in ::courses">
+        <h3 class="course__title fg-p2 text-center f21 f-bold l33 mt20 mb10">{{::c.title}}</h3>
+        <p class="course__desc fg-f l20 f16">{{::c.desc}}</p>
+        <a ng-if="::(c !== course)" class="btn btn-light mt28" ng-click="learn($index)" ng-class="{disabled: applied }">我要免费学</a>
+        <a ng-if="::(c === course)" class="btn btn-light mt28" ng-click="learn($index)">{{success ? '挑战成功' : failed ? '挑战失败' : '挑战中'}}</a>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    <a class="footer-btn" ng-click="share()">点击邀请<br/>小伙伴来挑战</a>
+  </footer>
+
+  <div class="mask" ng-show="chargeTipModal">
+    <div class="modal">
+      <div class="content">你还没有接受挑战<br/>快点击“我要免费学”报名吧！</div>
+      <div class="control">
+        <a class="btn" ng-click="chargeTipModal=false">知道了</a>
+      </div>
+    </div>
+  </div>
+</div>
+

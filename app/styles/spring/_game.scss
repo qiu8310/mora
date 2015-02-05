@@ -236,7 +236,7 @@ $star: "../images/spring/star.svg";
     .gift {
       top: 3px;
       left: 60px;
-      animation: open-ani step-end .4s infinite;
+      animation: open-ani step-end .6s infinite;
     }
   }
 }
@@ -248,7 +248,9 @@ $star: "../images/spring/star.svg";
 
 @keyframes open-ani {
   0%  { @include sprite-2x(1, true, 'spring/open'); }
-  25% { @include sprite-2x(2, true, 'spring/open'); }
-  50% { @include sprite-2x(3, true, 'spring/open'); }
-  75% { @include sprite-2x(4, true, 'spring/open'); }
+  17% { @include sprite-2x(2, true, 'spring/open'); }
+  33% { @include sprite-2x(3, true, 'spring/open'); }
+  50% { @include sprite-2x(4, true, 'spring/open'); }
+  67% { @include sprite-2x(3, true, 'spring/open'); }
+  83% { @include sprite-2x(2, true, 'spring/open'); }
 }

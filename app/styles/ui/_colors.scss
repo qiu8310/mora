@@ -49,12 +49,10 @@ $border-style: 1px solid $border-color;
 
 // my defined
 $colors: (
-  black: black,
-  yellow: #ffe600,
-  red: #ef4a41,
-  white: #f7f5ed,
-  gray: #aaa
-);
+  black: $black,
+  yellow: $yellow,
+  red: $red
+) !default;
 
 @each $key, $val in $colors {
   $bg: selector-append('.bg', '-' + $key);

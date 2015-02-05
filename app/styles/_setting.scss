@@ -13,7 +13,7 @@ $root-paragraph-height: 20px; // 段落高度基本是 20 px 了
 $root-line-height: $root-paragraph-height / $root-font-size;
 
 
-$default-font: "MICROSOFT YaHei", "Helvetica Neue", Helvetica, Arial, Tahoma, sans-serif !default;
+$default-font: Helvetica, "MICROSOFT YaHei", "Helvetica Neue", Arial, Tahoma, sans-serif !default;
 $code-font: Courier, "Courier New", monospace !default;
 
 

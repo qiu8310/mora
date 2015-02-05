@@ -36,6 +36,7 @@ angular.module('mora.ui')
             // 如果没有 path，则使用非 html5 模式
             C.app.html5Mode = false;
             basePath = '/' + appName;
+            if (/\/(\d+)$/.test(pathname)) { id = parseInt(RegExp.$1, 10); }
           }
 
           if (!id && /\bid=(\d+)\b/.test(window.location.search)) {id = parseInt(RegExp.$1, 10); }

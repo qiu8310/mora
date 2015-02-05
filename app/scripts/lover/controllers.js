@@ -1,6 +1,6 @@
 angular.module('moraApp')
-  .controller('LoverLetterCtrl', function(Data, Env, $scope, Native) {
-    var uid = Data.id;
+  .controller('LoverLetterCtrl', function(Data, Env, $scope, Native, Media) {
+    var uid = parseInt(Data.id, 10);
 
     $scope.data = Data;
 
@@ -8,15 +8,48 @@ angular.module('moraApp')
       createdAt = new Date(Data.createdAt * 1000),
       elapsed = Env.G.currentTimestamp - Data.createdAt;
 
+    $scope.elapsed = elapsed;
     $scope.elapsedDays = Math.floor(elapsed/86400);
-    $scope.elapsedHours = Math.round((elapsed % 86400) / 3600);
+    $scope.elapsedHours = Math.floor((elapsed % 86400) / 3600);
+    $scope.elapsedMinutes = Math.round(((elapsed % 86400) % 3600) / 60);
     $scope.createdAt = createdAt;
 
-    $scope.pageNumber = Data.findUser ? 0 : 1;
-
+    var pages = [0, 1, 2, 3, 4];
     if (Data.findUser) {
       $scope.lowestScoreDate = new Date(Data.lowDate * 1000);
+
+      // 去掉 第3页
+      if (Data.topicsCount < 1 && Data.topicRepliesCount < 20) {
+        pages.splice(2, 1);
+      }
+      // 学习数据不足，就去掉第2页，否则去掉第1页
+      pages.splice(Data.sentenceCount < 32 ? 1 : 0, 1);
+
+    } else {
+      pages = [0, 3, 4];
     }
+    $scope.swipeChildren = pages;
+
+    var player,
+      audios = [
+        'http://cdn-l.llsapp.com/connett/029e3cef-f150-4a09-bf7c-60a26073ee9b',
+        'http://cdn-l.llsapp.com/connett/437a3bf9-54b2-4a33-8696-97c0237fe78d'],
+      play = function() { player.play(); Env.doc.removeEventListener('touchstart', play, false); },
+    destroy = function() { player.destroy(); };
+
+    player = Media.AudioPlayer(audios[Date.now() % audios.length]);
+    if (!Env.isLocal) {
+      if (Env.Mobile.isAny) {
+        Env.doc.addEventListener('touchstart', play, false);
+      } else {
+        player.play();
+      }
+    }
+
+
+    Native.invoke('nativeBack', destroy);
+    Native.invoke('nativeMinimize', destroy);
+    $scope.$on('$routeChangeStart', destroy);
 
     $scope.share = function() {
       var loc = Env.win.location;
@@ -24,7 +57,8 @@ angular.module('moraApp')
       if (Env.Platform.isLLS) {
         Native.share({
           url: 'http://' + loc.host + loc.pathname + '?uid=' + uid,
-          content: '我收到的最感人滴情书，感觉整个情人节都暖暖的～'
+          content: '我收到的最感人滴情书，感觉整个情人节都暖暖的～',
+          img: 'http://cdn-l.llsapp.com/connett/976bc125-74d7-459c-8d0f-f5d0e1e463ae'
         });
       } else {
         Native.getLLSApp();
@@ -62,7 +96,7 @@ angular.module('moraApp')
       var m = new Asset.Manager(), now = Env.now();
       if (!$templateCache.get(tpl)) {
         m.add('http', tplPath);
-        m.add('http', 'api/userinfo', {cache: true});
+        m.add('http', 'api/userinfo' + (Env.QUERY.uid ? '?userId=' + Env.QUERY.uid : ''), {cache: true});
       }
       m.add('image', images);
 

@@ -1,23 +1,24 @@
 <div class="container fragment">
-  <div class="slogan fg-f f-bold f20 l26 pt25 text-center">
+  <div class="slogan fg-f f-bold f20 l26 text-center">
     <p>价值188颗流利钻课程<br/>{{prize.label}}</p>
   </div>
 
-  <div class="f14 l17 fg-yellow text-center mt10">
-    <p>课程提取码：{{prize.mobile}}</p>
-    <p>登录英语流利说APP，在新年送礼活动页面<br/>领课输入框内，输入领取码领走课程<br/>不支持游客登录领取</p>
-  </div>
+  <!--<div class="f14 l17 fg-yellow text-center mt10">-->
+    <!--<p>课程提取码：{{prize.mobile}}</p>-->
+    <!--<p>登录英语流利说APP，在新年送礼活动页面<br/>领课输入框内，输入领取码领走课程<br/>不支持游客登录领取</p>-->
+  <!--</div>-->
 
 
-  <div class="prize opened mt2 center-block">
+  <div class="prize opened mt20 center-block">
     <prize-box></prize-box>
   </div>
 
 
   <div class="control">
-    <a class="btn block mt5" ng-click="goHome()">传递好运</a>
-    <!--<a class="btn btn-white block mt13 mb13" ng-href="{{downloadUrl}}">学习课程</a>-->
-    <a class="btn btn-white block mt13 mb13" ng-click="claim()">领取课程</a>
+    <!--<a class="btn block mt5" ng-click="claim()">领取课程</a>-->
+    <a class="btn block mt30" ng-click="goHome()">传递好运</a>
+    <a class="btn btn-white block mt13 mb13" ng-click="learn()">学习课程</a>
+
   </div>
 
   <div class="mask ani-scale" ng-show="showShareTip" ng-click="closeTip()">

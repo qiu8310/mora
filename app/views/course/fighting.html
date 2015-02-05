@@ -1,0 +1,40 @@
+<div class="container">
+  <banner data-title="course.title"></banner>
+
+  <div class="gap" ng-if="::charging">
+    <sub-title>学习进度</sub-title>
+
+    <count-down data-rest-seconds="restSeconds"></count-down>
+
+    <progress-bar data-title="关卡" data-target="完成{{Data.lessonsCount}}关" data-current="{{Data.finishedLessonsCount}}关" data-width="Data.finishedLessonsCount/Data.lessonsCount"></progress-bar>
+
+    <progress-bar data-title="平均分" data-target="达到{{Data.planScore}}分" data-current="{{Data.lessonsAvgScore}}分" data-width="Data.lessonsAvgScore/Data.planScore"></progress-bar>
+
+    <progress-bar data-title="点赞数" data-target="达到{{Data.planLikesCount}}赞" data-current="{{Data.ballot}}赞" data-width="Data.ballot/Data.planLikesCount"></progress-bar>
+  </div>
+
+  <div class="gap" ng-if="::success">
+    <sub-title>挑战成功</sub-title>
+    <i class="i-success"></i>
+    <p class="fg-p1 l19 center-block" style="width: 230px">我已经在20天内完成了《{{course.title}}》的学习，闯完了{{Data.lessonsCount}}关，平均分高达{{Data.planScore}}分，掌握了200+实用表达！感觉自己棒棒哒！</p>
+  </div>
+  <div class="gap" ng-if="::failed">
+    <sub-title>挑战失败</sub-title>
+    <i class="i-failed"></i>
+    <p class="fg-p1 l19 center-block" style="width: 230px">虽然我挑战失败了，但是我还是掌握了200+实用表达，口语有很大进步哦。我会继续勤加练习！Practice makes perfect!</p>
+  </div>
+
+  <div ng-if="::(!Env.Platform.isLLS)">
+    <p class="text-center fg-p1 l20 f16 mt44">TA正在参加赖世雄系列课程<br/>限时闯关大挑战，请亲门为TA加油吧！</p>
+    <a class="vote-btn btn large center-block" ng-if="Data.tickets > 0" ng-click="vote()">为TA点赞</a>
+    <a class="vote-btn btn center-block disabled" ng-if="Data.tickets <= 0">么么哒<br/>明天再来赞</a>
+  </div>
+
+  <footer>
+    <a ng-if="::success" class="footer-btn large" ng-click="share()">炫耀一下</a>
+    <a ng-if="::failed" class="footer-btn large" ng-click="share()">求安慰</a>
+    <a ng-if="::charging" class="footer-btn large" ng-click="share()">{{Env.Platform.isLLS ? '分享求点赞' : '我也来挑战'}}</a>
+  </footer>
+
+  <div class="mask" ng-show="voteSuccessToast"><div class="toast">点赞成功！</div></div>
+</div>

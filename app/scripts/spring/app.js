@@ -8,7 +8,7 @@ angular
   ])
   .config(function (C, $locationProvider, $httpProvider, $sceDelegateProvider, $routeProvider) {
 
-    C.app.set('spring', {allowAccessFrom: ['lls', 'wechat']});
+    C.app.set('spring');
 
 
     var basePath = C.app.basePath;
@@ -73,7 +73,11 @@ angular
         controller: 'SpringInfoCtrl',
         templateUrl: 'views/spring/info.html'
       })
-      .otherwise(C.app.mainPage);
+      .otherwise({
+        redirectTo: function() {
+          return C.app.mainPage;
+        }
+      });
 
   })
   .run(function(Env, $rootScope, $location) {
@@ -85,11 +89,9 @@ angular
 
     // 伪造数据
     if (Env.isLocal && !G.currentUser) {
-      var uid = Env.QUERY.refreshToken || 'r_' + Env.now();
-      Env.Platform.isWechat = true;
       G.currentUser = {
-        id: 'weixin:openid-' + uid,
-        refreshToken: uid
+        id: '1842',
+        refreshToken: Env.QUERY.refreshToken
       };
       G.huodong = {};
       Env.win.G = G;

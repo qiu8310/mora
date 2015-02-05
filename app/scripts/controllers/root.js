@@ -1,5 +1,5 @@
 angular.module('mora.ui')
-  .controller('RootCtrl', function($scope, Env, $timeout, Dialog) {
+  .controller('RootCtrl', function($scope, Env, $timeout, Dialog, $location) {
 
     var doc = Env.doc,
       C = Env.C,
@@ -9,7 +9,8 @@ angular.module('mora.ui')
       isWechat = Env.Platform.isWechat,
       isAlipay = Env.Platform.isAlipay;
 
-    $scope.showHeader = !isWechat && !isAlipay;
+    $scope.Env = Env;
+    $scope.fullHeight = Env.Browser.fullHeight;
     $scope.isMainPage = false;
     $scope.downloadUrl = C.app.download[
       isWechat ? 'wechat' :
@@ -35,8 +36,8 @@ angular.module('mora.ui')
 
       if (!cur.$$route) { return true; }
 
-      lastPath = prevRoute.originalPath && prevRoute.originalPath.substr(basePathLen);
-      currentPath = curRoute.originalPath && curRoute.originalPath.substr(basePathLen);
+      lastPath = prevRoute.originalPath;
+      currentPath = curRoute.originalPath;
 
       $scope.isMainPage = currentPath === C.app.mainPage;
 
@@ -60,19 +61,19 @@ angular.module('mora.ui')
     };
 
     $scope.goHome = function() {
-      Env.path(C.app.mainPage);
+      $location.path(C.app.mainPage);
     };
 
     // 跳到上一个页面，不是用 history.back
     $scope.goBack = function() {
-      Env.path(lastPath || C.app.mainPage);
+      $location.path(lastPath || C.app.mainPage);
     };
 
     $scope.back = function() {
       if (lastPath) {
         Env.win.history.back();
       } else {
-        Env.path(C.app.mainPage);
+        $location.path(C.app.mainPage);
       }
     };
 

@@ -40,11 +40,16 @@ angular
         templateUrl: 'views/lover/letter.html',
         resolve: {
           Data: function(http, Env) {
-            return http.get('api/userinfo', {cache: true}).then(function(d) { return d.data; });
+            var path = 'api/userinfo' + (Env.QUERY.uid ? '?userId=' + Env.QUERY.uid : '');
+            return http.get(path, {cache: true}).then(function(d) { return d.data; });
           }
         }
       })
-      .otherwise(C.app.mainPage);
+      .otherwise({
+        redirectTo: function() {
+          return C.app.mainPage;
+        }
+      });
 
   })
   .run(function(Env) {

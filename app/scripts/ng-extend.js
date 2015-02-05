@@ -91,13 +91,22 @@ var ng = angular;
 
 
     el.blur();
-    promise = fn.apply(options.context, options.args || []);
+
+
+    var async = false,
+      context = {
+        async: function(flag) { async = flag !== false; },
+        done: function() { async = false; finish(); }
+      };
+    promise = fn.apply(context, options.args || []);
 
     // promise 结束时的回调
     var promiseFn = promise && (promise.always || promise.finally);
     if (typeof promiseFn === 'function') {
       start();
       promiseFn.call(promise, finish);
+    } else if (async) {
+      start();
     }
 
   }
@@ -224,7 +233,32 @@ var ng = angular;
     });
     return [].concat.apply([], args);
   };
+  ng.find = function(arr, identity) {
+    var i, item, res, key, flag;
+    switch (ng.type(identity)) {
+      case 'string':
+        for (i = 0; i < arr.length; i++) { if (arr[i] && arr[i][identity]) { break; } } break;
+      case 'function':
+        for (i = 0; i < arr.length; i++) { if (identity(arr[i], i, arr)) { break; } } break;
+      case 'object':
+        for (i = 0; i < arr.length; i++) {
+          item = arr[i];
+          flag = true;
+          for (key in identity) {
+            if (identity.hasOwnProperty(key) && identity[key] !== item[key]) {
+              flag = false;
+              break;
+            }
+          }
+          if (flag) { break; }
+        }
+        break;
+      default:
+        return res;
+    }
+    return arr[i];
 
+  };
   ng.random = function() {
     var args = [].slice.call(arguments);
     if (ng.type(args[0]) === 'array') {
@@ -255,7 +289,18 @@ var ng = angular;
   ng.element.prototype.css3 = function(key, val) {
     for (var i = 0; i < this.length; i++) { ng.css3(this[i], key, val); }
   };
+  ng.translate = function(elem, transform, speed, func) {
+    if (!elem) { return false; }
+    transform = transform || {};
 
+    var pos = (transform.x || 0) + 'px, ' + (transform.y || 0) + 'px';
+    var scale = ('scale' in transform) ? transform.scale : 1;
+
+    func = func || 'ease';
+    ng.css3(elem, 'transitionTimingFunction', speed > 0 ? func : 'no');
+    ng.css3(elem, 'transitionDuration', (speed || 0) + 'ms');
+    ng.css3(elem, 'transform', 'translate('+ pos +') scale('+ scale +')');
+  };
 
   ng.info = function(title, args) {
     try {

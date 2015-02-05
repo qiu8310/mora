@@ -1,9 +1,41 @@
+$colors: (
+  black: black,
+  yellow: #ffe600,
+  red: #ef4a41,
+  white: #f7f5ed,
+  gray: #aaa
+);
+
+
 @import "setting";
 
 @import "lib/bootstrap";
 @import "mixin/bootstrap";
 @import "ui/bootstrap";
 @import "spring/bootstrap";
+
+.btn {
+  font-size: 20px;
+  font-weight: 700;
+  color: #64421f;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: map-get($colors, yellow);
+  box-shadow: inset 0 -3px #ffb600, 0 4px rgba(0,0,0,.14);
+  text-align: center;
+  @include size(200px 52px true, block, 26px);
+}
+
+.btn-small {
+  font-size: 14px;
+  @include size(68px 30px true, block, 15px);
+}
+
+.btn-white {
+  background-color: map-get($colors, white);
+  box-shadow: inset 0 -3px #c9cdd0, 0 4px rgba(0,0,0,.14);
+}
+
 
 .animate-repeat.ng-move,
 .animate-repeat.ng-enter,
