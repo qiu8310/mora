@@ -12,7 +12,7 @@ angular.module('moraApp')
     function getList() {
       var query, params;
       params = $scope.search.params();
-      query = $.param(_.assign({}, params.classify, params.filters, $scope.pager || {}));
+      query = $scope.search.params().toQuery();
 
       var isHot = params.filters.hot === 'yes';
       return $http.get('api/team/' + (isHot ? 'hot_groups' : '') + '?' + query)
@@ -55,10 +55,6 @@ angular.module('moraApp')
       keyword: '',
       placeholder: '搜索小组',
       searchFn: function(e, params) {
-        if (params.keyword) {
-          Dialog.alert('暂不支持关键字搜索');
-          $scope.search.keyword = '';
-        }
         return getList();
       },
 
