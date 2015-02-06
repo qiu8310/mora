@@ -14,7 +14,7 @@
             <p class="heart-txt">亲爱滴，<br/>
               我们相遇在 <span class="y">{{createdAt|date:'yyyy'}}</span><br/>
               已经相伴了 <span class="y">{{elapsedDays}}</span> 天<br/>
-              <span class="y">{{elapsedHours}}</span> 小时 <span class="y">{{elapsedMinutes}}</span> 分了<i class="shy"></i></p>
+              <span class="y">{{elapsedHours}}</span> 小时 <span class="y">{{elapsedMinutes}}</span> 分<i class="shy"></i></p>
 
           </div>
         </div>
@@ -36,17 +36,17 @@
           亲爱滴<br/>
           我们相遇在 <span class="r">{{createdAt|date:'yyyy'}}</span> <br/>
           已经相伴了 <span class="r">{{elapsedDays}}</span> 天<br/>
-          <span class="r">{{elapsedHours}}</span> 小时 <span class="r">{{elapsedMinutes}}</span> 分了
+          <span class="r">{{elapsedHours}}</span> 小时 <span class="r">{{elapsedMinutes}}</span> 分
         </p>
         <p class="mt25 ani ani-left delay-1">
           从我们认识到现在，你对我说过<br/>
-          了 <span class="r">{{data.sentenceCount}}</span> 句话<br/>
+          <span class="r">{{data.sentenceCount}}</span> 句话<br/>
           每一句都是我们的回忆!
         </p>
 
         <p class="mt25 ani ani-right delay-2">
-          <span class="b">{{lowestScoreDate|date:'yyyy-MM-dd'}}</span> 年你还只有 <span class="r">{{data.lowScore}}</span> 分<br/>
-          现在你都是 <span class="r">{{data.highScore}}</span> 分了<br/>
+          <span class="b">{{lowestScoreDate|date:'yyyy-MM-dd'}}</span> 你还只有 <span class="r">{{data.lowScore}}</span> 分<br/>
+          现在你都 <span class="r">{{data.highScore}}</span> 分了<br/>
           进步的不止一点点哦<i class="shy"></i>
         </p>
       </div>
@@ -101,7 +101,7 @@
 
           <p class="bless text-hide mt16">亲爱的，情人节快乐，永远爱你！</p>
           <p class="text-right mt10">英语流利说敬上</p>
-          <p class="text-right">2015.2.14</p>
+          <p class="text-right">{{Env.G.currentTimestamp * 1000|date:'yyyy-MM-dd'}}</p>
         </div>
 
         <div class="share ani ani-flipX delay-1">

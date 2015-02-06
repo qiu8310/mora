@@ -142,6 +142,53 @@ footer {
   margin-top: 12px;
 }
 
+.course-info-ctrl {
+  .box-title {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 20px 0 10px;
+    color: map-get($colors, p3);
+  }
+  .box-sub-title {
+    text-align: center;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 12px 0 5px;
+    color: map-get($colors, p3);
+  }
+  h5 {
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0;
+    color: map-get($colors, p3);
+  }
+  .txt {
+    line-height: 22px;
+    font-size: 16px;
+    color: map-get($colors, p1);
+  }
+  .man-t, .man-b {
+    position: relative;
+    margin-left: -16px;
+    margin-right: -16px;
+    &::after {
+      content: '';
+      position: absolute;
+    }
+  }
+  .man-t::after {
+    @include sprite-2x(man-t, true, 'course/sp');
+    top: -10px;
+    right: 0;
+  }
+  .man-b::after {
+    @include sprite-2x(man-b, true, 'course/sp');
+    top: -10px;
+    left: 0;
+  }
+}
 
 
 .banner {

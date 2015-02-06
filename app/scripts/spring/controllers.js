@@ -33,6 +33,7 @@ angular.module('moraApp')
 
     // 去到个人礼物主页（没有礼物要先提醒用户）
     $scope.goToMyPrizes = function() {
+      Env.ga('我的礼物');
       return http.get('api/lottery').success(function(data) {
         if (data.prizes.length) {
           Env.path('/prizes');
@@ -59,7 +60,7 @@ angular.module('moraApp')
     $scope.showTip = false;
   })
   .controller('SpringGameCtrl', function($scope, $timeout, http, Env, Native) {
-
+    Env.ga('开始游戏');
     if (!Env.Platform.isLLS) { Native.getLLSApp(); }
 
     $scope.pickEnable = false;
@@ -126,7 +127,10 @@ angular.module('moraApp')
       return false;
     }
 
-    $scope.share = function() { share(Native); };
+    $scope.share = function() {
+      Env.ga('分享');
+      share(Native);
+    };
 
     $scope.prize = prize;
 
@@ -167,6 +171,7 @@ angular.module('moraApp')
     $scope.input = prize.username || prize.mobile;
     $scope.inputDisabled = !!$scope.input;
     $scope.open = function() {
+      Env.ga('打开礼物');
       if (!$scope.input) { return false; }
       var next = function() {
         if (prize.username) {
@@ -190,11 +195,12 @@ angular.module('moraApp')
   .controller('SpringPrizeOpenCtrl', function($routeParams, http) {
     http.post('api/prize_tickets?ignoreError=yes', {'prize_id': $routeParams.id});
   })
-  .controller('SpringCourseCtrl', function($scope, prize, http, Native) {
+  .controller('SpringCourseCtrl', function($scope, prize, http, Native, Env) {
     getFriendlyPrize(prize);
     $scope.prize = prize;
 
     $scope.learn = function() {
+      Env.ga('打开课程');
       Native.addModule('54bf7ba8636d7304adec0100');
     };
 

@@ -23,9 +23,10 @@ angular.module('mora.ui')
         }
 
         url = API_BASE + url.substr(PREFIX.length);
-        if (Env.Platform.isWechat) {
-          ng.extend(params, {wechat: '1', refreshToken: Env.G.currentUser.refreshToken});
-        } else if (Env.Platform.isLLS) {
+        //if (Env.Platform.isWechat) {
+          //ng.extend(params, {wechat: '1', refreshToken: Env.G.currentUser.refreshToken});
+        //} else if (Env.Platform.isLLS) {
+        if (Env.Platform.isLLS) {
           ng.extend(params, Env.LLSDeviceInfo);
         }
 
@@ -50,6 +51,7 @@ angular.module('mora.ui')
         //request.url = Env.isTest && C.res.proxyUrl ? C.res.proxyUrl + '?_url=' + encodeURIComponent(url) : url;
 
         ng.info('request', url, request.data || {}, 'verbose:', request);
+        Env.L.debug('Request: ' + url);
 
         return request;
       },
@@ -74,11 +76,13 @@ angular.module('mora.ui')
 
         response.data = ng.camelCase(response.data);
         ng.info('response', url, response.data, 'verbose:', response);
+        Env.L.info('Response Data: ' + JSON.stringify(response.data));
         return response;
       },
 
 
       responseError: function(response) {
+        Env.L.error('Response Error: ' + JSON.stringify(response));
         if (response.config.url.indexOf('ignoreError') < 0) {
           if (response.status === 401) {
             $rootScope.$broadcast('login:required');
@@ -88,7 +92,6 @@ angular.module('mora.ui')
             $rootScope.$broadcast('HTTPError',
               'Server was unable to find what you were looking for... Sorry!!');
           } else if (response.status >= 500 && response.status < 600) {
-            Env.L.error(response);
             $rootScope.$broadcast('HTTPError',
               'There is something wrong with the server, please contact the administrator!!');
           }

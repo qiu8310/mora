@@ -81,6 +81,7 @@ angular.module('mora.ui')
       iosSupportEvents = ['uploadImage', 'uploadVoice'];
 
     Native.invoke = function(event, callback, paramsArray) {
+      if (!Env.Platform.isLLS) { return false; }
       /*
        // 安卓上 WebView 与 Native 通信
        LLSAndroid.invoke('uploadImage',    callback);
@@ -116,19 +117,22 @@ angular.module('mora.ui')
         parts.push(param + '');
       });
 
-      if (Env.Mobile.isIOS && iosSupportEvents.indexOf(event) >= 0) {
-        var urlScheme = 'lls://' + parts.join('/');
-        Env.L.log('ios invoke ' + urlScheme);
-        loadFrame(urlScheme);
+      try {
+        if (Env.Mobile.isIOS && iosSupportEvents.indexOf(event) >= 0) {
+          var urlScheme = 'lls://' + parts.join('/');
+          Env.L.log('ios invoke ' + urlScheme);
+          loadFrame(urlScheme);
 
-      } else if (Env.Mobile.isAndroid && androidSupportEvents.indexOf(event) >= 0) {
-        Env.L.log('android invoke ' + parts.join(','));
-        if (parts.length === 2) {
-          LLSAndroid.invoke(parts[0], parts[1]);
-        } else if (parts.length === 3) {
-          LLSAndroid.invoke(parts[0], parts[1], parts[2]);
+        } else if (Env.Mobile.isAndroid && androidSupportEvents.indexOf(event) >= 0) {
+          Env.L.log('android invoke ' + parts.join(','));
+          if (parts.length === 2) {
+            LLSAndroid.invoke(parts[0], parts[1]);
+          } else if (parts.length === 3) {
+            LLSAndroid.invoke(parts[0], parts[1], parts[2]);
+          }
         }
-      }
+      } catch (e) { Env.L.error('Native invoke error', e); }
+
     };
 
 

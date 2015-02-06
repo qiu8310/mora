@@ -1,0 +1,76 @@
+<div class="container">
+  <banner></banner>
+
+  <div class="gap">
+
+    <sub-title>活动详情</sub-title>
+
+    <div class="box">
+      <h3 class="box-title" style="margin-top: 0">课程介绍：</h3>
+      <p class="txt">《赖世雄美语从头学》这套书是赖世雄老师这套书是专为英语初学者以及想重新学好英语的人士所编写的。流利说和《赖世雄美语从头学》合作，将书中的内容改编成在“英语流利说”app里的课程，为学习者提供更好的学习体验。</p>
+    </div>
+
+    <div class="box">
+      <h3 class="box-title">活动参加时间：</h3>
+      <p class="txt">
+        活动时间<br/>
+        {{(mainAct.startAt * 1000)|date:'yyyy年M月d日'}}-{{(mainAct.endAt * 1000)|date:'yyyy年M月d日'}}<br/>
+        报名时间<br/>
+        {{(applyAct.startAt * 1000)|date:'yyyy年M月d日'}}-{{(applyAct.endAt * 1000)|date:'yyyy年M月d日'}}<br/>
+      </p>
+    </div>
+
+    <div class="box">
+      <h3 class="box-title">活动规则：</h3>
+      <p class="txt">
+        在活动期间内，在《赖世雄美语入门》、《赖世雄初级美语》、《赖世雄中级美语》中选择一册进行挑战。挑战者需要在规定时间完成所有关卡，达到规定的闯关平均分，集齐500个赞（挑战者可以分享“我的进度”页面，邀请小伙伴点赞支持）。<br/>
+        挑战和奖励如下：
+      </p>
+
+      <div class="mb12 man-t">
+        <h4 class="box-sub-title">个人挑战</h4>
+        <h5>《赖世雄美语入门》</h5>
+        <h5>（60关）</h5>
+      </div>
+
+      <ul class="charges">
+        <li class="charge bfc l19 f16 fg-p3 mt24" ng-repeat="charge in ::charges[0]">
+          <h3 class="charge__title fg-f text-center f21 f-bold l33 mt20 mb10">挑战{{$index+1}}</h3>
+          <p><span class="fg-f">任务：</span>{{::charge.task}}</p>
+          <p class="mt12"><span class="fg-f">奖励：</span>{{::charge.prize}}</p>
+        </li>
+      </ul>
+
+      <div class="mt25 mb12 man-b">
+        <h5>《赖世雄初级美语》</h5>
+        <h5>《赖世雄中级美语》</h5>
+        <h5>（各148关）</h5>
+      </div>
+
+
+      <ul class="charges">
+        <li class="charge bfc l19 f16 fg-p3 mt24" ng-repeat="charge in ::charges[1]">
+          <h3 class="charge__title fg-f text-center f21 f-bold l33 mt20 mb10">挑战{{$index+1}}</h3>
+          <p><span class="fg-f">任务：</span>{{::charge.task}}</p>
+          <p class="mt12"><span class="fg-f">奖励：</span>{{::charge.prize}}</p>
+        </li>
+      </ul>
+
+      <h4 class="box-sub-title" style="margin-top: 22px">群组挑战</h4>
+
+      <p class="txt">
+        1.在“学习小组”的“正能量”内，以【赖世雄·入门/初级/中级】命名建小组<br/>
+        2.组员≥20人，全体组员需接受打赌挑战<br/>
+        3.在活动时间内，全体平均分排名前三的小组组员皆可获得流利说价值69元的独家定制U盘一个；全体组员平均分排名第一的小组长还可获得iPad air一台，第二三名小组长还可获得流利说出品价值99元的《英文面试全攻略》一本。<br/>
+      </p>
+
+    </div>
+  </div>
+
+
+  <footer>
+    <a class="footer-btn" ng-click="share()">点击邀请<br/>小伙伴来挑战</a>
+  </footer>
+
+
+</div>

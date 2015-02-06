@@ -46,13 +46,14 @@ angular.module('moraApp')
       }
     }
 
-
     Native.invoke('nativeBack', destroy);
     Native.invoke('nativeMinimize', destroy);
     $scope.$on('$routeChangeStart', destroy);
 
+
     $scope.share = function() {
       var loc = Env.win.location;
+      Env.ga('分享');
 
       if (Env.Platform.isLLS) {
         Native.share({
@@ -71,6 +72,7 @@ angular.module('moraApp')
   .controller('LoverHomeCtrl', function($scope, Env, Asset, $templateCache) {
 
     $scope.start = function() {
+      Env.ga('生成情书');
       $scope.loading = true;
       load(function() {
         $scope.loading = false;
@@ -83,15 +85,17 @@ angular.module('moraApp')
     function load(cb) {
       if (loaded) { return false; }
 
-      var assets = Env.G.ASSETS;
+      //loaded = true;
+      //setTimeout(cb, 800);
+      //var assets = Env.G.ASSETS;
 
       // 预先加载 letter.html 文件
+      var assets = Env.G.ASSETS;
       var tpl = assets.views['letter.html'];
       var tplPath = Env.isLocal ? 'http://' + location.host + '/' + tpl : tpl;
 
       // 预先加载所有图片
       var images = Object.keys(assets.images).map(function(key) { return assets.images[key]; });
-
 
       var m = new Asset.Manager(), now = Env.now();
       if (!$templateCache.get(tpl)) {
@@ -100,10 +104,9 @@ angular.module('moraApp')
       }
       m.add('image', images);
 
-
       m.downloadAll(function() {
-        loaded = true;
-        var tplItem = this.get('http', tplPath), elapse = Env.now() - now;
+        var tplItem = this.get('http', tplPath),
+          elapse = Env.now() - now;
         if (tplItem && tplItem.status === 'success') { $templateCache.put(tpl, tplItem.data); }
         setTimeout(cb, elapse > 800 ? 0 : 800 - elapse);
       });

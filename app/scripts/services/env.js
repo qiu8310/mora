@@ -111,7 +111,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window, $locatio
   Env.DEBUG = DEBUG;
   Env.DEBUG_VERBOSE = DEBUG_VERBOSE;
 
-
+  win.addEventListener('error', function() { L.error('On Error', arguments); }, false);
 
   /**
    * Mobile
@@ -206,6 +206,15 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window, $locatio
   Env.C = C;
   Env.L = L;
   Env.G = win.G; // 全局变量，可以是后台传给页面上的
+
+  Env.ga = function() {
+    if (win.ga) {
+      var args = [].slice.call(arguments), base = ['send', 'event'];
+      if (args.length <= 2) { base.push(Env.C.app.name || 'app'); }
+      if (args.length <= 1) { base.push('click'); }
+      win.ga.apply(win.ga, base.concat(args));
+    }
+  };
 
   var basePath = C.app.basePath;
   Env.path = function(url) { $location.path( basePath + url ); };

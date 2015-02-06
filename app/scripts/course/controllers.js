@@ -2,10 +2,15 @@
 var D = {
   shareImg: 'http://cdn-l.llsapp.com/connett/c90f1d6e-313f-49ea-b279-2844a7ccbb77',
   charges: [
-    {n: 'a', task: '10天完成课程所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送5000钻！'},
-    {n: 'b', task: '20天完成课程所有关卡，闯关平均分在90分以上，集齐500赞', prize: '全额返还钻石'},
-    {n: 'c', task: '20天完成课程所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的90%钻石'},
-    {n: 'd', task: '20天完成课程所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的50%钻石'}
+    [{n: 'a', task: '10天完成课程所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送5000钻！'},
+      {n: 'b', task: '20天完成课程所有关卡，闯关平均分在90分以上，集齐500赞', prize: '全额返还钻石'},
+      {n: 'c', task: '20天完成课程所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的90%钻石'},
+      {n: 'd', task: '20天完成课程所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的50%钻石'}],
+
+    [{n: 'a', task: '15天完成所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送5000钻！'},
+      {n: 'b', task: '30天完成所有关卡，闯关平均分在90分以上，集齐500赞', prize: '全额返还钻石'},
+      {n: 'c', task: '30天完成所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的90%钻石'},
+      {n: 'd', task: '30天完成所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的50%钻石'}]
   ],
   courses: [
     {id: '53d63b2d7368653bcf300000', title: '赖世雄美语入门',
@@ -46,6 +51,7 @@ var D = {
     };
   }
 };
+D.charges[2] = D.charges[1];
 
 
 angular.module('moraApp')
@@ -122,11 +128,26 @@ angular.module('moraApp')
     };
   })
 
+  .controller('CourseInfoCtrl', function(Env, $scope, Native) {
+
+    $scope.mainAct = Env.G.huodong;
+    $scope.applyAct = ng.find(Env.G.subHuodongs, {identifier: 'study_plan'});
+    $scope.charges = D.charges;
+
+    $scope.share = function() {
+      Env.ga('分享');
+      if (!Env.Platform.isLLS) { Native.getLLSApp(); return false; }
+      Native.share(D.shareData(0));
+    };
+
+
+  })
   .controller('CourseFightingCtrl', function($scope, Data, Env, Native, $location, $routeParams, http, $timeout) {
     D.challengeDetail($scope, Data, Env);
     $scope.Data = Data;
 
     $scope.vote = function() {
+      Env.ga('点赞');
       http.post('api/user_vote?user_id=' + $routeParams.uid, {'user_id': $routeParams.uid})
         .success(function(data) {
           $scope.voteSuccessToast = true;
@@ -138,8 +159,9 @@ angular.module('moraApp')
         });
     };
     $scope.share = function() {
+      Env.ga('分享');
       if (Env.Platform.isLLS) {
-        var path = Env.win.location.pathname + '?hash=!' + $location.path() + '#!' + $location.path();
+        var path = Env.win.location.pathname + '?hash=' + $location.path();
         Native.share(D.shareData($scope.charging ? 1 : $scope.success ? 2 : 3, path, $scope.course.title));
       } else {
         $scope.goHome();
@@ -150,10 +172,10 @@ angular.module('moraApp')
   .controller('CourseChargeCtrl', function($scope, $routeParams, http, Native, Env, Data) {
     if (!Env.Platform.isLLS) { Native.getLLSApp(); return false; }
 
-    $scope.charges = D.charges;
+    $scope.charges = D.charges[$routeParams.courseIndex];
     var course = $scope.course = D.courses[$routeParams.courseIndex];
 
-    $scope.charged = Data && ng.find(D.charges, {n: Data.planType});
+    $scope.charged = Data && ng.find($scope.charges, {n: Data.planType});
 
     $scope.charge = null;
     $scope.goToCourse = function() {
@@ -165,6 +187,7 @@ angular.module('moraApp')
         .finally(function() { $scope.challengeTipModal = true; });
     };
     $scope.challenge = function(charge, done) {
+      Env.ga('我要挑战');
       http.get('api/course?course_id=:id', course).success(function(data){
         done();
         if (!data.isPaid) {
@@ -176,6 +199,7 @@ angular.module('moraApp')
       });
     };
     $scope.share = function() {
+      Env.ga('分享');
       Native.share(D.shareData(0));
     };
   })
@@ -187,9 +211,13 @@ angular.module('moraApp')
     var uid = Env.G.currentUser.id;
     if (Data) { D.challengeDetail($scope, Data, Env); }
 
+    $scope.goToInfo = function() {
+      Env.ga('活动详情');
+      Env.path('/info');
+    };
     $scope.fightingInfo = function() {
+      Env.ga('学习进度');
       if (!Env.Platform.isLLS) { Native.getLLSApp(); return false; }
-
       if (Data) {
         Env.path('/' + uid + '/fighting');
       } else {
@@ -198,12 +226,14 @@ angular.module('moraApp')
     };
 
     $scope.learn = function(index) {
+      Env.ga('我要免费学');
       if (!Env.Platform.isLLS) { Native.getLLSApp(); return false; }
 
       Env.path('/' + uid + '/charge/' + index);
     };
 
     $scope.share = function() {
+      Env.ga('分享');
       if (!Env.Platform.isLLS) { Native.getLLSApp(); return false; }
       Native.share(D.shareData(0));
     };

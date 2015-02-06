@@ -154,6 +154,9 @@
 
 .lover-letter-ctrl {
 
+//  .view, .container, .pages {
+//    @include position(absolute, 0);
+//  }
 
   .cloud { position: absolute; }
   .cloud-1 {@include sprite-2x(cloud-1, true, 'lover/page');}

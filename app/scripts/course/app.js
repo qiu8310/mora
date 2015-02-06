@@ -40,6 +40,10 @@ angular
           }
         }
       })
+      .when(basePath + '/info', {
+        controller: 'CourseInfoCtrl',
+        templateUrl: 'views/course/info.html'
+      })
       .when(basePath + '/:uid/charge/:courseIndex', {
         controller: 'CourseChargeCtrl',
         templateUrl: 'views/course/charge.html',
@@ -65,7 +69,7 @@ angular
       });
   })
 
-  .run(function(Env) {
+  .run(function(Env, $location) {
 
     // 强制运行一下 Env，让它里面的变量都生效
     ng.info('run at', Env.now());
@@ -78,8 +82,16 @@ angular
       //appId=lls&deviceId=357246052044482&sDeviceId=357246052044482&token=f50d31008ce10132ef8b02d26dd0e38e&appVer=2
       Env.G.currentUser = {id: 1842};
 
+
+      Env.G.huodong = { endAt: 1427212800, startAt: 1420560000 };
+      Env.G.subHuodongs = [
+        {endAt: 1427212800, identifier: 'study_plan', startAt: 1420560000 }
+      ];
+
       //appId=lls&deviceId=357246052044482&sDeviceId=357246052044482&token=fa7fbd308e820132efa702d26dd0e38e&appVer=2
       //Env.G.currentUser = {id: 2102};
     }
+
+    if (Env.QUERY.hash) { $location.path(Env.QUERY.hash); return false; }
 
   });

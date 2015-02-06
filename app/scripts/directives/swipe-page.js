@@ -31,7 +31,6 @@ angular.module('mora.ui')
         var TYPE = {};
         ['SCROLL', 'SCALE'].forEach(function(key) { TYPE[key] = (attrs.swipe || 'scale').toUpperCase() === key; });
 
-
         var css = ng.css3;
         var translate = ng.translate;
 
