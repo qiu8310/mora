@@ -445,7 +445,7 @@ module.exports = function (grunt) {
     cssmin: {
       options: {
         root: '<%= yeoman.app %>',
-        noRebase: true
+        rebase: false
       }
     },
 
@@ -492,19 +492,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // ngmin tries to make the code safe for minification automatically by
-    // using the Angular long form for dependency injection. It doesn't work on
-    // things like resolve or inject so those have to be done manually.
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: ['*.js', '!vendor.js', '!templates.js'],
-          dest: '.tmp/concat/scripts'
-        }]
-      }
-    },
 
     ngAnnotate: {
       options: {
