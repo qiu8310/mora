@@ -151,6 +151,10 @@ angular.module('moraApp')
     D.challengeDetail($scope, Data, Env);
     $scope.Data = Data;
 
+    var index = 0;
+    D.courses.forEach(function(item, i) {if (item.id === Data.courseId) { index = i; } });
+    $scope.charged = ng.find(D.charges[index], {n: Data.planType});
+
     $scope.vote = function() {
       Env.ga('点赞');
       http.post('api/user_vote?user_id=' + $routeParams.uid, {'user_id': $routeParams.uid})
