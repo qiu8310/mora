@@ -48,6 +48,17 @@
   }
 }
 
+.music {
+  position: fixed;
+  z-index: 99999;
+  top: 10px;
+  right: 10px;
+  @include sprite(music-off, 40px, true, 'lover/sp');
+}
+.music.playing {
+  @include sprite(music-on, 40px, false, 'lover/sp');
+}
+
 .page-last-active ~ .arrow-up {
   display: none;
 }
@@ -152,18 +163,43 @@
 }
 
 
-.lover-letter-ctrl {
+@media only screen and (min-height: 545px) and (max-height: 570px) {
+  .bp3-520 { padding-top: 10px !important; }
+}
+@media only screen and (min-height: 571px) {
+  .bp3-520 { padding-top: 20px !important; }
+}
 
-//  .view, .container, .pages {
-//    @include position(absolute, 0);
-//  }
+@media only screen and (min-height: 480px) and (max-height: 520px) {
+  .bp4-460 { padding-top: 10px !important; }
+  .bp4-460.time { margin-top: 30px; }
+}
+@media only screen and (min-height: 521px) and (max-height: 540px) {
+  .bp4-460 { padding-top: 18px !important; }
+  .bp4-460.time { margin-top: 38px; }
+}
+@media only screen and (min-height: 541px) {
+  .bp4-460 { padding-top: 25px !important; }
+  .bp4-460.time { margin-top: 45px; }
+}
+
+@media only screen and (min-height: 520px) and (max-height: 555px) {
+  .bp4-500 { padding-top: 10px !important; }
+  .bp4-500.bless { margin-top: 26px; }
+}
+@media only screen and (min-height: 556px) {
+  .bp4-500 { padding-top: 20px !important; }
+  .bp4-500.bless { margin-top: 36px; }
+}
+
+
+.lover-letter-ctrl {
 
   .cloud { position: absolute; }
   .cloud-1 {@include sprite-2x(cloud-1, true, 'lover/page');}
   .cloud-2 {@include sprite-2x(cloud-2, true, 'lover/page');}
   .cloud-3 {@include sprite-2x(cloud-3, true, 'lover/page');}
   .cloud-4 {@include sprite-2x(cloud-4, true, 'lover/page');}
-
   .tree {
     @include position(absolute, 0);
     z-index: 100;
@@ -207,13 +243,11 @@
       @include sprite-2x(heart, true, 'lover/page');
     }
   }
-
   .page {
     @include position(fixed, 0);
     min-width: 320px;
     overflow: hidden;
   }
-
   .page-1 {
     background: url("../images/lover/hill.png") no-repeat center bottom;
     background-size: 100% image-height-ratio('lover/hill', 0.5);
@@ -248,7 +282,6 @@
     }
 
   }
-
   .page-2 {
     background: url("../images/lover/hill.png") no-repeat center bottom;
     background-size: 100% image-height-ratio('lover/hill', 0.5);
@@ -272,7 +305,6 @@
 
 
   }
-
   .page-3 {
     background: url("../images/lover/hill-3.png") no-repeat center bottom;
     background-size: 100% image-height-ratio('lover/hill-3', 0.5);
@@ -330,20 +362,21 @@
 
 
     .share {
-      position: relative;
       margin-top: 60px;
     }
 
     .btn {
+      position: relative;
       @include size(245px 60px true, block);
       background: linear-gradient(to bottom, #6763a8 0%, #6763a8 49%, #706cb0 50%);
       box-shadow: -3px 5px rgba(0,0,0,.2);
     }
 
     .star-bird {
+      display: block;
       position: absolute;
       top: -107px;
-      left: 30px;
+      left: -12px;
     }
   }
 
@@ -360,6 +393,10 @@
   color: white;
   font-size: 14px;
   .r, .b, .y, .w { font-size: 15px; vertical-align: baseline; font-weight: 700; }
+  @media only screen and (min-height: 520px) {
+    font-size: 15px;
+    .r, .b, .y, .w { font-size: 16px; }
+  }
   .r { color: #f24e6c; }
   .b { color: #479eb5; }
   .y { color: #fed156; }

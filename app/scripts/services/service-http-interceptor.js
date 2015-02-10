@@ -23,10 +23,9 @@ angular.module('mora.ui')
         }
 
         url = API_BASE + url.substr(PREFIX.length);
-        //if (Env.Platform.isWechat) {
-          //ng.extend(params, {wechat: '1', refreshToken: Env.G.currentUser.refreshToken});
-        //} else if (Env.Platform.isLLS) {
-        if (Env.Platform.isLLS) {
+        if (Env.Platform.isWechat) {
+          ng.extend(params, {refreshToken: Env.G.currentUser.refreshToken});
+        } else if (Env.Platform.isLLS) {
           ng.extend(params, Env.LLSDeviceInfo);
         }
 

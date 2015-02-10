@@ -26,7 +26,6 @@ angular.module('mora.ui')
         player.classList.add(className);
       }
 
-
       ng.extend(player, defaultCfg, cfg);
       player.ref = this;
       this.player = player;
@@ -123,10 +122,14 @@ angular.module('mora.ui')
 
     // isSinglePlayer 为 true 表示同时只允许一个 play 在播放
     Player.setupPlayers = function(type, selector, opts, isSinglePlayer) {
+      opts = opts || {};
       var players = [],
+        src = opts.src || [],
         els = [].slice.call(doc.querySelectorAll(selector));
-      els.forEach(function(control) {
-        var player = new Player(type, control.dataset.src, opts);
+
+      delete opts.src;
+      els.forEach(function(control, index) {
+        var player = new Player(type, control.dataset.src || src[index], opts);
         player.on('playing', function() {
           control.classList.add('playing');
         });

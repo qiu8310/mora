@@ -11,11 +11,13 @@ function getFriendlyPrize(prize) {
   prize.label = c === 'red' ? '《Jonathan在中国过新年》' : c === 'green' ? '新年电子贺卡' : '新年手绘贺卡';
 }
 
-function share(Native) {
+function share(Native, type) {
   var loc = window.location;
+  var msg = type === 'card' ? '亲爱的，2015你还跟我一起走吗？' :
+    '英语流利说新年礼包到了，有什么好东东，快来帮我拆开';
   Native.share({
     img: 'http://cdn-l.llsapp.com/connett/db912c75-79b4-4db8-a1a7-0b79b7a331d8',
-    content: '英语流利说新年礼包到了，有什么好东东，快来帮我拆开',
+    content: msg,
     url: 'http://' + loc.host + loc.pathname,
     channels: ['wx_timeline', 'wx_friend']
   });
@@ -67,7 +69,7 @@ angular.module('moraApp')
 
     $timeout(function() {
       $scope.pickEnable = true;
-    }, 4000);
+    }, 2000);
 
     // 126 [10] 262 [10] 147 => 555
     var win = Env.win, doc = win.document, h = 126 + 147, scale,
@@ -102,7 +104,7 @@ angular.module('moraApp')
         goTo('error');
       }
 
-      if (!Env.isLocal && Math.round(Math.random() * 100) % 2) {
+      if (Math.round(Math.random() * 100) % 2) {
         goToError();
         goTo('error');
         return false;
@@ -213,7 +215,7 @@ angular.module('moraApp')
     //};
     //$scope.downloadUrl = Env.downloadUrl;
   })
-  .controller('SpringCardCtrl', function($scope, prize, Media, Env) {
+  .controller('SpringCardCtrl', function($scope, prize, Media, Env, Native) {
     var texts = [], allTexts = [
       '2015还要一起走！',
       '很高兴遇见你。',
@@ -255,12 +257,19 @@ angular.module('moraApp')
       } else {
         play();
       }
-      player.on('ended', function() { player.play(); });
+      //player.on('ended', function() { player.play(); });
       $scope.$on('$routeChangeStart', function() { player.destroy(); });
     }
 
     $scope.username = prize.username;
     $scope.texts = texts;
+    $scope.share = function() {
+      if (Env.Platform.isLLS) {
+        share(Native, 'card');
+      } else {
+        Native.getLLSApp();
+      }
+    };
 
   })
   .controller('SpringPrizesCtrl', function($scope, http, Env) {
@@ -274,7 +283,7 @@ angular.module('moraApp')
 
     http.get('api/lottery').success(function(data) {
       var prizes = data.prizes;
-      prizes.sort(function(a, b) { return b.touchUsersTotal - a.touchUsersTotal; });
+      //prizes.sort(function(a, b) { return b.touchUsersTotal - a.touchUsersTotal; });
 
       var allClosed = [];
       prizes.forEach(function(prize) {

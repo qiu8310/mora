@@ -5,12 +5,12 @@
     <sub-title>个人挑战</sub-title>
 
     <ul class="charges">
-      <li class="charge bfc l19 f16 fg-p3 mt24" ng-repeat="charge in ::charges">
+      <li class="charge bfc l19 f16 fg-p3 mt24" ng-repeat="c in ::charges">
         <h3 class="charge__title fg-f text-center f21 f-bold l33 mt20 mb10">挑战{{$index+1}}</h3>
-        <p><span class="fg-f">任务：</span>{{::charge.task}}</p>
-        <p class="mt12"><span class="fg-f">奖励：</span>{{::charge.prize}}</p>
-        <a ng-if="::charged" class="btn btn-light mt29" ng-class="{disabled: charged !== charge}" ng-click="goToCourse()">{{charged === charge ? '打开课程' : '我要挑战'}}</a>
-        <a ng-if="::(!charged)" class="btn btn-light mt29" async-click="challenge(charge, done)">我要挑战</a>
+        <p><span class="fg-f">任务：</span>{{::c.task}}</p>
+        <p class="mt12"><span class="fg-f">奖励：</span>{{::c.prize}}</p>
+        <a ng-if="::charged" class="btn btn-light mt29" ng-class="{disabled: charged !== c}" ng-click="goToCourse()">{{charged === c ? '打开课程' : '我要挑战'}}</a>
+        <a ng-if="::(!charged)" class="btn btn-light mt29" async-click="challenge(c, done)">我要挑战</a>
       </li>
     </ul>
   </div>

@@ -6,7 +6,7 @@
 .slogan {
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 
 .full-height {
@@ -17,13 +17,22 @@
   width: 320px;
   margin: 0 auto;
 }
+.container {
+  min-height: 520px;
+  padding-bottom: 40px;
+}
+
+.spring-card-ctrl .container {
+  min-height: 0;
+  padding-bottom: 0;
+}
 
 header {
   position: relative;
   .back {
     position: absolute;
     z-index: 9999;
-    @include size(38px);
+    @include size(30px);
 
     &::after {
       content: '';

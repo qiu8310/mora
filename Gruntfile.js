@@ -11,7 +11,7 @@ var TF = require('text-free');
 var path = require('path');
 var modRewrite = require('connect-modrewrite');
 
-var APPS = ['spring', 'lover', 'course'];
+var APPS = ['spring', 'course', 'lover'];
 
 
 module.exports = function (grunt) {
@@ -213,7 +213,7 @@ module.exports = function (grunt) {
               replacement: ''
             },
             {
-              match: /\/\*@REMOVE_START([\s\S]*?)@REMOVE_END\*\//g,
+              match: /\/\/@REMOVE_START([\s\S]*?)\/\/@REMOVE_END/g,
               replacement: ''
             },
             {
@@ -281,7 +281,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.dist %>',
           dest: '<%= yeoman.dist %>/replace',
-          src: ['*.html', '!404.html']
+          src: ['{' + APPS.join(',') + '}.html', '!404.html']
         }]
       }
 

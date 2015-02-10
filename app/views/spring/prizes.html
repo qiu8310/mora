@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="slogan fg-f f-bold f20 l26 pt35 text-center">
+  <div class="slogan fg-f f-bold f20 l26 text-center">
     <p>英语流利说送给你的新年礼物</p>
     <p class="l16">&nbsp;</p>
   </div>
@@ -18,7 +18,7 @@
       <li class="list__item" ng-repeat="it in opened">
         <p>{{::it.label}}</p>
         <div class="pull-right">
-          <span>1张</span>
+          <span>{{it.color == 'red' ? '' : '1张'}}</span>
           <a class="btn btn-small" ng-click="goToPrize(it)">查看</a>
         </div>
       </li>

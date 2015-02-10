@@ -50,7 +50,8 @@ angular.module('mora.ui')
         },
 
         html5Mode: true,
-        hashPrefix: '!',
+        //hashPrefix: '!',
+        hashPrefix: '',
 
         // console.x(..., 'verbose:', ...)
         // 如果 logVerbose 为 false，则 verbose 之后的数据是不会显示的

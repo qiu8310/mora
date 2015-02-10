@@ -73,6 +73,18 @@
       var G = {};
       //@INJECT try { eval('G = ' + document.getElementById('global').textContent.trim());  } catch (e) {}
       //@INJECT G.VERSION = '@@VERSION_LOVER@@';
+
+      //@REMOVE_START
+      //appId=lls&deviceId=357246052044482&sDeviceId=357246052044482&token=f50d31008ce10132ef8b02d26dd0e38e&appVer=2
+      //appId=lls&deviceId=357246052044482&sDeviceId=357246052044482&token=fa7fbd308e820132efa702d26dd0e38e&appVer=2
+      G = {
+        currentTimestamp: Math.round(Date.now()/1000),
+        currentUser: {id: 1842},
+        //currentUser: {id: 2012},
+        huodong: {endAt: 1427212800, startAt: 1420560000},
+        subHuodongs: [{"id":54,"identifier":"course","startAt":1420560000,"endAt":1420791600,"data":{}},{"id":55,"identifier":"study_plan","startAt":1420560000,"endAt":1420791600,"data":{"plans":{"53d63b2d7368653bcf300000":{"name":"美语入门","level":1,"planTypes":{"a":{"planTime":3600,"planScore":60,"returnDiamonds":5},"b":{"planTime":1728000,"planScore":90,"returnDiamonds":990},"c":{"planTime":1728000,"planScore":85,"returnDiamonds":891},"d":{"planTime":1728000,"planScore":80,"returnDiamonds":495}}},"53e0d1e673686574aa1c0000":{"name":"初级美语","level":2,"planTypes":{"a":{"planTime":1296000,"planScore":95,"returnDiamonds":6490},"b":{"planTime":2592000,"planScore":90,"returnDiamonds":1490},"c":{"planTime":2592000,"planScore":85,"returnDiamonds":1341},"d":{"planTime":2592000,"planScore":80,"returnDiamonds":745}}},"54859c1b636d737a7b280000":{"name":"中级美语","level":3,"planTypes":{"a":{"planTime":1296000,"planScore":95,"returnDiamonds":6990},"b":{"planTime":2592000,"planScore":90,"returnDiamonds":1990},"c":{"planTime":2592000,"planScore":85,"returnDiamonds":1791},"d":{"planTime":2592000,"planScore":80,"returnDiamonds":995}}}},"planLikesCount":2}},{"id":56,"identifier":"user_vote","startAt":1420560000,"endAt":1420791600,"data":{}}]
+      };
+      //@REMOVE_END
     </script>
 
     <!--<script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>-->

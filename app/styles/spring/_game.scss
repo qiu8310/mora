@@ -78,10 +78,10 @@
 
 
   .box-left {
-    animation: box-left-ani linear .4s 10;
+    animation: box-left-ani linear .4s 5;
   }
   .box-right {
-    animation: box-right-ani linear .4s 10;
+    animation: box-right-ani linear .4s 5;
     .front {
       @include sprite-2x-pos(right, 'spring/game');
     }

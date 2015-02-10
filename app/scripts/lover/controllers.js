@@ -37,14 +37,17 @@ angular.module('moraApp')
       play = function() { player.play(); Env.doc.removeEventListener('touchstart', play, false); },
     destroy = function() { player.destroy(); };
 
-    player = Media.AudioPlayer(audios[Date.now() % audios.length]);
-    if (!Env.isLocal) {
-      if (Env.Mobile.isAny) {
-        Env.doc.addEventListener('touchstart', play, false);
-      } else {
-        player.play();
+    $scope.$evalAsync(function() {
+      player = Media.setupAudioPlayers('.music', {src: [audios[Date.now() % audios.length]]})[0];
+      //player = Media.AudioPlayer(audios[Date.now() % audios.length]);
+      if (player) {
+        if (Env.Mobile.isAny) {
+          Env.doc.addEventListener('touchstart', play, false);
+        } else {
+          player.play();
+        }
       }
-    }
+    });
 
     Native.invoke('nativeBack', destroy);
     Native.invoke('nativeMinimize', destroy);

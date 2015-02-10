@@ -1,31 +1,31 @@
-
+/* global G */
 var D = {
   shareImg: 'http://cdn-l.llsapp.com/connett/c90f1d6e-313f-49ea-b279-2844a7ccbb77',
   charges: [
-    [{n: 'a', task: '10天完成课程所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送5000钻！'},
+    [{n: 'a', task: '10天完成课程所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送200钻'},
       {n: 'b', task: '20天完成课程所有关卡，闯关平均分在90分以上，集齐500赞', prize: '全额返还钻石'},
-      {n: 'c', task: '20天完成课程所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的90%钻石'},
-      {n: 'd', task: '20天完成课程所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的50%钻石'}],
+      {n: 'c', task: '20天完成课程所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的50%钻石'},
+      {n: 'd', task: '20天完成课程所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的20%钻石'}],
 
-    [{n: 'a', task: '15天完成所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送5000钻！'},
+    [{n: 'a', task: '15天完成所有关卡，闯关平均分在95分以上，集齐500赞', prize: '不仅全额返还钻石，更另外赠送200钻'},
       {n: 'b', task: '30天完成所有关卡，闯关平均分在90分以上，集齐500赞', prize: '全额返还钻石'},
-      {n: 'c', task: '30天完成所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的90%钻石'},
-      {n: 'd', task: '30天完成所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的50%钻石'}]
+      {n: 'c', task: '30天完成所有关卡，闯关平均分在85分以上，集齐500赞', prize: '返还课程价值的50%钻石'},
+      {n: 'd', task: '30天完成所有关卡，闯关平均分在80分以上，集齐500赞', prize: '返还课程价值的20%钻石'}]
   ],
   courses: [
-    {id: '53d63b2d7368653bcf300000', title: '赖世雄美语入门',
-      desc: '专门为想学好日常对话的入门学习者所编写，简单实用贴近生活'},
-    {id: '53e0d1e673686574aa1c0000', title: '赖世雄初级美语',
-      desc: '适合稍具英语基础的学习者，内容生动新颖，为您打下坚实语法和句型基础'},
-    {id: '54859c1b636d737a7b280000', title: '赖世雄中级美语',
-      desc: '适合有一定基础的学习者，课文涉及多个领域话题，让您从容面对口语交际和书面表达'}
+    {id: '', title: '赖世雄美语入门',
+      desc: '共60关，专门为入门学习者所编写，简单实用贴近生活，助您攻克日常基础会话'},
+    {id: '', title: '赖世雄初级美语',
+      desc: '共148关，适合稍具英语基础的学习者，内容生动新颖，为您打下坚实语法和句型基础'},
+    {id: '', title: '赖世雄中级美语',
+      desc: '共148关，适合有一定基础的学习者，课文涉及多个领域话题，让您从容面对口语交际和书面表达'}
   ],
   challengeDetail: function ($scope, Data, Env) {
     var endTime = Data.planEndAt,
       curTime = Env.G.currentTimestamp;
 
     $scope.course = ng.find(D.courses, {id: Data.courseId});
-    $scope.ended = curTime >= endTime;
+    $scope.ended = curTime >= endTime || curTime >= Env.G.huodong.endAt;
 
     $scope.success = Data.finishedLessonsCount >= Data.lessonsCount &&
       Data.lessonsAvgScore >= Data.planScore && Data.ballot >= Data.planLikesCount;
@@ -51,7 +51,14 @@ var D = {
     };
   }
 };
-D.charges[2] = D.charges[1];
+(function() {
+  D.charges[2] = D.charges[1];
+
+  var data = ng.find(ng.camelCase(G).subHuodongs, {identifier: 'study_plan'});
+  data = data.data.plans;
+  ng.forEach(data, function(item, id) { D.courses[item.level-1].id = id; });
+})();
+
 
 
 angular.module('moraApp')
@@ -139,8 +146,6 @@ angular.module('moraApp')
       if (!Env.Platform.isLLS) { Native.getLLSApp(); return false; }
       Native.share(D.shareData(0));
     };
-
-
   })
   .controller('CourseFightingCtrl', function($scope, Data, Env, Native, $location, $routeParams, http, $timeout) {
     D.challengeDetail($scope, Data, Env);
@@ -207,6 +212,11 @@ angular.module('moraApp')
   .controller('CourseHomeCtrl', function($scope, Data, Env, Native) {
     $scope.courses = D.courses;
     $scope.applied = !!Data;
+
+    var applyAct = ng.find(Env.G.subHuodongs, {identifier: 'study_plan'});
+    $scope.applyAct = applyAct;
+    $scope.expired = applyAct.endAt <= Env.G.currentTimestamp;
+    $scope.canApply = !$scope.applied && !$scope.expired;
 
     var uid = Env.G.currentUser.id;
     if (Data) { D.challengeDetail($scope, Data, Env); }

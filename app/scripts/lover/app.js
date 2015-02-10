@@ -15,6 +15,7 @@ angular
 
     $sceDelegateProvider.resourceUrlWhitelist([
       'self',
+      'http://cdn-l.llsapp.com/**',
       'http://*.clouddn.com/**',
       'http://*.qiniudn.com/**'
     ]);
