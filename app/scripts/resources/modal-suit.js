@@ -321,6 +321,54 @@ angular.module('moraApp')
 
   })
 
+  .controller('EpisodeEditorCtrl', function($scope, $modalInstance, PodcastData, $http, _) {
+    PodcastData = PodcastData || {};
+
+    $scope.episode = {};
+
+    var fields = ['title', 'body', 'attached_img', 'audio_url', 'audio_length'];
+    var requiredFields = _.reject(fields, function(f) { return f === 'attached_img'; });
+
+    _.each(fields, function(key) {
+      $scope.episode[key] = '';
+    });
+
+    $scope.save = function() {
+      if (_.all(requiredFields, function(key) { return $scope.episode[key] !== ''; })) {
+        var data = $scope.episode;
+        return $http.post('api/podcasts/' + PodcastData.id + '/episodes', data).success(function(new_data) {
+          _.each(new_data, function(val, key) {
+            $scope.episode[key] = val;
+          });
+          $modalInstance.close(new_data);
+        });
+      } else {
+        $modalInstance.dismiss('nothing_change');
+      }
+
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+
+    var setDuration = function() {
+      if (this.duration > 0) {
+        $scope.episode.audio_length = parseInt(this.duration);
+      }
+    };
+    $scope.$watch('episode.audio_url', function(newValue, oldValue) {
+      var audioEle = document.getElementById('new_audio');
+      if (audioEle) {
+        audioEle.removeEventListener('durationchange', setDuration);
+        audioEle.addEventListener('durationchange', setDuration);
+        audioEle.removeEventListener('canplaythrough', setDuration);
+        audioEle.addEventListener('canplaythrough', setDuration);
+      }
+    });
+
+  })
+
   .controller('PodcastFinderCtrl', function($scope, $http, $modalInstance) {
     $scope.pager = {
       page: 1,

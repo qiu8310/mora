@@ -188,7 +188,8 @@ angular
 
     $sceDelegateProvider.resourceUrlWhitelist([
       'self',
-      'http://llss.qiniudn.com/**'
+      'http://llss.qiniudn.com/**',
+      'http://cdn.llsapp.com/**'
     ]);
 
     $httpProvider.interceptors.push('HttpInterceptor');
