@@ -37,6 +37,18 @@ angular.module('moraApp')
       play = function() { player.play(); Env.doc.removeEventListener('touchstart', play, false); },
     destroy = function() { player.destroy(); };
 
+
+
+    Native.invoke('nativeBack', destroy);
+    Native.invoke('nativeMinimize', destroy);
+    $scope.$on('$routeChangeStart', destroy);
+
+
+    // 这里用 ng-click 在 android 上有问题，触发不了事件
+    //$scope.shareX = function() {
+    //
+    //};
+
     $scope.$evalAsync(function() {
       player = Media.setupAudioPlayers('.music', {src: [audios[Date.now() % audios.length]]})[0];
       //player = Media.AudioPlayer(audios[Date.now() % audios.length]);
@@ -47,28 +59,21 @@ angular.module('moraApp')
           player.play();
         }
       }
+
+      Env.doc.querySelector('.btn').addEventListener('touchstart', function() {
+        var loc = Env.win.location;
+        Env.ga('分享');
+        if (Env.Platform.isLLS) {
+          Native.share({
+            url: 'http://' + loc.host + loc.pathname + '?uid=' + uid,
+            content: '我收到的最感人滴情书，感觉整个情人节都暖暖的～',
+            img: 'http://cdn-l.llsapp.com/connett/976bc125-74d7-459c-8d0f-f5d0e1e463ae'
+          });
+        } else {
+          Native.getLLSApp();
+        }
+      }, false);
     });
-
-    Native.invoke('nativeBack', destroy);
-    Native.invoke('nativeMinimize', destroy);
-    $scope.$on('$routeChangeStart', destroy);
-
-
-    $scope.share = function() {
-      var loc = Env.win.location;
-      Env.ga('分享');
-
-      if (Env.Platform.isLLS) {
-        Native.share({
-          url: 'http://' + loc.host + loc.pathname + '?uid=' + uid,
-          content: '我收到的最感人滴情书，感觉整个情人节都暖暖的～',
-          img: 'http://cdn-l.llsapp.com/connett/976bc125-74d7-459c-8d0f-f5d0e1e463ae'
-        });
-      } else {
-        Native.getLLSApp();
-      }
-
-    };
 
   })
 

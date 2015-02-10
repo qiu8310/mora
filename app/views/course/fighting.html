@@ -16,7 +16,7 @@
   <div class="gap" ng-if="::success">
     <sub-title>挑战成功</sub-title>
     <i class="i-success"></i>
-    <p class="fg-p1 l19 center-block" style="width: 230px">我已经在20天内完成了《{{course.title}}》的学习，闯完了{{Data.lessonsCount}}关，平均分高达{{Data.planScore}}分，掌握了200+实用表达！感觉自己棒棒哒！</p>
+    <p class="fg-p1 l19 center-block" style="width: 230px">我已经在{{charged.day}}天内完成了《{{course.title}}》的学习，闯完了{{Data.lessonsCount}}关，平均分高达{{Data.planScore}}分，掌握了200+实用表达！感觉自己棒棒哒！</p>
   </div>
   <div class="gap" ng-if="::failed">
     <sub-title>挑战失败</sub-title>

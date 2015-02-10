@@ -23,7 +23,7 @@ angular.module('mora.ui')
 
 
         var ACTIVE = 'active',
-          INVALID_GAP = 50,  // 如果拖动的距离小于 此值，则不翻页
+          INVALID_GAP = 100,  // 如果拖动的距离小于 此值，则不翻页
           INVALID_SPEED = 200,  // 无效拖动时，需要把页面恢复到原始位置所用的时间（ms）
           VALID_SPEED = 500; // 有效拖动时，将页面设置成新状态需要要用的时间（ms）
 

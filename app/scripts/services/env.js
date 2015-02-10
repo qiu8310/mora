@@ -111,7 +111,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window, $locatio
   Env.DEBUG = DEBUG;
   Env.DEBUG_VERBOSE = DEBUG_VERBOSE;
 
-  win.addEventListener('error', function() { L.error('On Error', arguments); }, false);
+  win.addEventListener('error', function() { L.error('On Error', [].slice.call(arguments)); }, false);
 
   /**
    * Mobile
@@ -209,10 +209,12 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window, $locatio
 
   Env.ga = function() {
     if (win.ga) {
-      var args = [].slice.call(arguments), base = ['send', 'event'];
-      if (args.length <= 2) { base.push(Env.C.app.name || 'app'); }
-      if (args.length <= 1) { base.push('click'); }
-      win.ga.apply(win.ga, base.concat(args));
+      try {
+        var args = [].slice.call(arguments), base = ['send', 'event'];
+        if (args.length <= 2) { base.push(Env.C.app.name || 'app'); }
+        if (args.length <= 1) { base.push('click'); }
+        win.ga.apply(win.ga, base.concat(args));
+      } catch (e) {}
     }
   };
 
