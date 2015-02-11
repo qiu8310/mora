@@ -12,7 +12,7 @@ angular.module('moraApp')
             destroy();
 
             var username = user.name || user.userName || '',
-              id = user.id || user.resourceId || user.userId,
+              id = user.userId || user.resourceId || user.id,
               avatar = user.avatar || user.imageUrl || user.userAvatar || C.res.defaultAvatar;
 
             avatar = avatar + '?imageView2/5/w/100/h/100';
