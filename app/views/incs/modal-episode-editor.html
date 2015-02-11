@@ -1,0 +1,74 @@
+<form class="clearfix form-horizontal">
+
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title">创建节目</h3>
+  </div>
+  <div class="modal-body" bindonce>
+
+    <form-control label="标题" ref="title">
+      <input type="text" class="form-control"
+      name="title"
+      ng-model="episode.title"
+      required
+      />
+    </form-control>
+
+    <form-control label="描述" ref="body">
+      <textarea class="form-control" rows="8"
+      name="body"
+      ng-model="episode.body"
+      required></textarea>
+    </form-control>
+
+    <form-control label="图片" ref="attached_img">
+      <div class="banner">
+        <img id="backgroundImage" ng-src="{{episode.attached_img}}"/>
+      </div>
+      <div class="btn-group" ng-init="uploaderType='a'">
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'a'">填写图片URL</label>
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'b'">上传本地图片</label>
+      </div>
+      <div class="radio-btn-group-types type-{{uploaderType}}">
+        <div class="type-a">
+          <input class="form-control" type="url"
+          ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }"
+          ng-model="episode.attached_img"
+          name="attached_img">
+        </div>
+        <div class="type-b">
+          <input class="form-control" uploader="episode.attached_img" type="file">
+        </div>
+      </div>
+    </form-control>
+
+    <form-control label="录音" ref="audio_url">
+      <div class="banner">
+        <audio controls ng-src="{{episode.audio_url}}" id="new_audio"></audio>
+      </div>
+      <div class="btn-group" ng-init="uploaderType='a'">
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'a'">填写音频URL</label>
+        <label class="btn btn-default btn-sm" ng-model="uploaderType" btn-radio="'b'">上传本地音频</label>
+      </div>
+      <div class="radio-btn-group-types type-{{uploaderType}}">
+        <div class="type-a">
+          <input class="form-control" type="url"
+          ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }"
+          ng-model="episode.audio_url"
+          name="audio_url"
+          required>
+        </div>
+        <div class="type-b">
+          <input class="form-control" uploader="episode.audio_url" type="file">
+        </div>
+      </div>
+    </form-control>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">取消</button>
+    <button class="btn btn-primary" async-click="save()">保存</button>
+  </div>
+
+</form>
