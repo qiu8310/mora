@@ -37,7 +37,10 @@
         </td>
         <td>
           <div class="btn-group item__status">
-            <label class="btn btn-primary fa fa-angellist" async-click="official(team)" ng-class="{active: team.isOfficial}">官方</label>
+            <label class="btn btn-primary fa fa-car" async-click="upgrade(team, 25)" ng-class="{active: team.maxMembers === 25}">25人</label>
+            <label class="btn btn-primary fa fa-plane" async-click="upgrade(team, 100)" ng-class="{active: team.maxMembers === 100}">100人</label>
+            <label class="btn btn-primary fa fa-fighter-jet" async-click="upgrade(team, 200)" ng-class="{active: team.maxMembers === 200}">200人</label>
+            <label class="btn btn-primary fa fa-rocket" async-click="official(team)" ng-class="{active: team.isOfficial}">官方</label>
             <label class="btn btn-primary fa fa-fire" async-click="hot(team)" ng-class="{active: team.isHot}">热门</label>
           </div>
 

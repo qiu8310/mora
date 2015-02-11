@@ -96,6 +96,12 @@ angular.module('moraApp')
       });
     };
 
+    $scope.upgrade = function(team, max) {
+      var data = { 'max_members': max };
+      return $http.put('api/team/' + team.resourceId + '/upgrade', data).success(function(newData) {
+        team.maxMembers = newData.maxMembers;
+      });
+    };
 
     // 将指定的小组 设置或取消 官方
     $scope.official = function(team) {
