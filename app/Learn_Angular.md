@@ -50,7 +50,7 @@ ng-repeat="item in ::items"
 
 ### 解决方案：
 
-1. 使用 `$timeout(fn, 0)`， 而不是 `$scope.$apply(fn)`
+1. 使用 `$timeout(fn, 0)` 或 `$scope.$evalAsync()`，[evalAsync VS timeout](http://www.bennadel.com/blog/2605-scope-evalasync-vs-timeout-in-angularjs.htm)
 2. 使用下面方法
 
 ```js
