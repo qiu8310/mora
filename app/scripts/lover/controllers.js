@@ -77,9 +77,13 @@ angular.module('moraApp')
 
   })
 
-  .controller('LoverHomeCtrl', function($scope, Env, Asset, $templateCache) {
+  .controller('LoverHomeCtrl', function($scope, Env, Asset, $templateCache, Native) {
 
     $scope.start = function() {
+      if (!Env.QUERY.uid || !Env.Platform.isLLS) {
+        Native.getLLSApp();
+        return false;
+      }
       Env.ga('生成情书');
       $scope.loading = true;
       load(function() {

@@ -105,6 +105,7 @@ angular.module('mora.ui').service('Env', function (C, Storage, $window, $locatio
       L[key] = wrap(key);
     } else {
       console[key] = nope;
+      L[key] = nope;
     }
   });
 
