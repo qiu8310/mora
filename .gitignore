@@ -6,6 +6,9 @@ dist
 sinaapp/*/*
 !sinaapp/*/publish.sh
 
+# doc project
+doc
+
 .tmp
 .sass-cache
 test/coverage
