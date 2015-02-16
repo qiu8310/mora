@@ -27,9 +27,9 @@ angular.module('moraApp')
           event_cover_img: m.event_cover_img,
           test: m.test
         }).success(function(data) {
-          if (data.success === 'ok') {
-            Dialog.alert('提交成功');
-          }
+          //if (data.success === 'ok') {
+          Dialog.alert('提交成功');
+          //}
         });
       });
     };
