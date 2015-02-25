@@ -47,4 +47,20 @@ angular.module('moraApp')
     });
   };
 
+  $scope.buildEpisodesFromTopics = function (podcast) {
+    return $modal.open({
+      templateUrl: 'views/incs/modal-episodes-from-topics.html',
+      controller: 'EpisodesFromTopicsCtrl',
+      backdrop: 'static',
+      windowClass: 'episodes-from-topics-modal',
+      resolve: {
+        PodcastData: function() { return _.cloneDeep(podcast); }
+      },
+      size: 'lg'
+    }).result.then(function(data) {
+      $scope.episodes = $scope.episodes.concat(data.episodes);
+      return data;
+    });
+  };
+
 });

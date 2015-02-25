@@ -369,6 +369,65 @@ angular.module('moraApp')
 
   })
 
+  .controller('EpisodesFromTopicsCtrl', function($scope, $modalInstance, PodcastData, $http, _) {
+    $scope.pager = {
+      page: 1,
+      pageSize: 6,
+      maxSize: 10
+    };
+
+    PodcastData = PodcastData || {};
+
+    $scope.topics = [];
+
+    function getTopics() {
+      return $http.get('api/users/' + PodcastData.user.id + '/topics?' + $scope.search.params().toQuery())
+        .success(function(data) {
+          $scope.pager.total = data.total;
+          $scope.list = $scope.topics = data.topics;
+        });
+    }
+
+    $scope.search = {
+      async: {target: '.modal-thread-list'},
+      options: {hideLatestSearch: true},
+      placeholder: '请输入帖子标题',
+      searchFn: getTopics,
+      cleanFn: getTopics
+    };
+
+    $scope.$watch('pager.page', _.ignoreFirstCall(getTopics));
+    $scope.$on('search:init:finished', getTopics);
+
+    $scope.topicIds = [];
+
+    $scope.check = function (topic) {
+      if (!_.include($scope.topicIds, topic.id)) {
+        $scope.topicIds.push(topic.id);
+      }
+    };
+
+    $scope.save = function() {
+      if ($scope.topicIds.length > 0) {
+        var url = 'api/podcasts/' + PodcastData.id + '/episodes/create_from_topics';
+        return $http.post(url, {topic_ids: $scope.topicIds}).success(function(new_data) {
+          // _.each(new_data, function(val, key) {
+          //   $scope.episode[key] = val;
+          // });
+          $modalInstance.close(new_data);
+        });
+      } else {
+        $modalInstance.dismiss('nothing_change');
+      }
+
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+
+  })
+
   .controller('PodcastFinderCtrl', function($scope, $http, $modalInstance) {
     $scope.pager = {
       page: 1,
