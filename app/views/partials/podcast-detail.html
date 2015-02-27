@@ -15,18 +15,15 @@
     </tr>
   </table>
 
+  <a class="new-episode text-ellipsis btn btn-primary" ng-click="newEpisode(podcast)">创建节目</a>
+  <a class="new-episode text-ellipsis btn btn-primary" ng-click="buildEpisodesFromTopics(podcast)">从已有帖子选</a>
+
   <div class="no-item" ng-hide="episodes.length">没有任何节目</div>
 
   <div ng-show="episodes.length">
     <div class="clearfix table-top">
       <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
     </div>
-
-    <tr class="batch-opts">
-      <td colspan="9">
-        <a class="new-episode text-ellipsis btn btn-primary" ng-click="newEpisode(podcast)">创建节目</a>
-      </td>
-    </tr>
 
     <table class="table episode-list">
       <tr class="episode animate-repeat" ng-repeat="episode in episodes">

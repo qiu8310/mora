@@ -1,0 +1,40 @@
+<form class="clearfix form-horizontal">
+
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title">创建节目</h3>
+  </div>
+  <div class="modal-body" bindonce>
+    <search-filter search="search"></search-filter>
+
+    <table class="table table-striped modal-thread-list">
+      <tr class="thread" ng-repeat="thread in topics">
+        <td>
+          <label class="no-select">
+            <input type="checkbox" ng-checked="thread.checked" ng-click="check(thread)"/>
+          </label>
+        </td>
+        <td>
+          <h4 class="title text-ellipsis">
+            <a ui-sref="home.forumDetail({id: thread.id})">{{thread.title}}</a>
+          </h4>
+        </td>
+        </td>
+        <td class="text-center">
+          <p>{{thread.createdAt | time}}</p>
+        </td>
+      </tr>
+    </table>
+
+    <div class="clearfix table-bottom">
+      <div class="pull-right" ng-include="'views/incs/pager.html'"></div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">取消</button>
+    <button class="btn btn-primary" async-click="save()">完成</button>
+  </div>
+
+</form>
