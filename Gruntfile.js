@@ -126,8 +126,8 @@ module.exports = function (grunt) {
     /* jshint ignore:start */
     coveralls: {
       options: {
-        debug: true,
-        coverageDir: 'test/coverage',
+        debug: false,
+        coverage_dir: 'test/coverage/',
         dryRun: false,
         force: true,
         recursive: true
@@ -570,8 +570,7 @@ module.exports = function (grunt) {
     'classImport',
     'autoprefixer',
     'connect:test',
-    'karma',
-    'coveralls'
+    'karma'
   ]);
 
   grunt.registerTask('build', [
